@@ -2,22 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Contact Us</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact | JakeBitt3DPrints</title>
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 40px;
-            background: #f8f8f8;
-            color: #222;
+            background: #f6f8fa;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #222;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        nav {
+            background: #444;
+            padding: 10px 0;
+        }
+        nav a {
+            color: #fff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        main {
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto;
         }
         .contact-container {
-            max-width: 600px;
-            margin: auto;
             background: #fff;
             padding: 30px 40px;
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            max-width: 600px;
+            margin: 40px auto;
         }
         h2 {
             margin-bottom: 20px;
@@ -48,30 +70,60 @@
         button:hover {
             background: #224eb2;
         }
+        footer {
+            background: #222;
+            color: #fff;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        @media (max-width: 600px) {
+            main {
+                padding: 10px;
+            }
+            nav {
+                padding: 5px 0;
+            }
+            .contact-container {
+                padding: 10px 10px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="contact-container">
-        <h2>Contact Us</h2>
-        <p>
-            Use the form below to reach out with any questions, comments, or feedback.
-        </p>
-        <form action="https://api.web3forms.com/submit" method="POST">
-            <!-- Replace with your Access Key -->
-            <input type="hidden" name="access_key" value="a8d930c0-d1fe-423a-840f-35cae1bd0bbb">
-            <!-- Form Inputs. Each input must have a name="" attribute -->
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" required>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" required>
-            <label for="message">Message</label>
-            <textarea name="message" id="message" rows="5" required></textarea>
-            <!-- Honeypot Spam Protection -->
-            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-            <!-- Custom Confirmation / Success Page -->
-            <!-- <input type="hidden" name="redirect" value="https://mywebsite.com/thanks.html"> -->
-            <button type="submit">Submit Form</button>
-        </form>
-    </div>
+    <header>
+        <h1>Welcome to JakeBitt3DPrints</h1>
+        <p>Your home for 3D printing ideas and innovation!</p>
+    </header>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Gallery</a>
+        <a href="#">Shop</a>
+        <a href="contact">Contact</a>
+    </nav>
+    <main>
+        <div class="contact-container">
+            <h2>Contact Us</h2>
+            <p>Use the form below to reach out with any questions, comments, or feedback.</p>
+            <form action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="a8d930c0-d1fe-423a-840f-35cae1bd0bbb">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" required>
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required>
+                <label for="message">Message</label>
+                <textarea name="message" id="message" rows="5" required></textarea>
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                <!-- Custom Confirmation / Success Page -->
+                <!-- <input type="hidden" name="redirect" value="https://mywebsite.com/thanks.html"> -->
+                <button type="submit">Submit Form</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        &copy; 2025 JakeBitt3DPrints. All rights reserved.
+    </footer>
 </body>
 </html>
