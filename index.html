@@ -5,6 +5,10 @@
     <title>JakeBitt3DPrints</title>
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font Awesome for Social Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,12 +46,45 @@
             width: 100%;
             bottom: 0;
         }
+        .social-links {
+            margin-top: 10px;
+        }
+        .social-links a {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 24px;
+            transition: all 0.4s ease;
+        }
+
+        /* Brand hover colors */
+        .social-links a.facebook:hover { color: #1877F2; }
+        .social-links a.twitter:hover { color: #1DA1F2; }
+        .social-links a.youtube:hover { color: #FF0000; }
+
+        /* Instagram gradient hover */
+        .social-links a.instagram:hover {
+            background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* TikTok gradient hover (pink + blue) */
+        .social-links a.tiktok:hover {
+            background: linear-gradient(45deg, #25F4EE, #FE2C55);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         @media (max-width: 600px) {
             main {
                 padding: 10px;
             }
             nav {
                 padding: 5px 0;
+            }
+            .social-links a {
+                margin: 5px;
+                font-size: 20px;
             }
         }
     </style>
@@ -56,27 +93,42 @@
     <header>
         <h1>Welcome to JakeBitt3DPrints</h1>
         <p>Bringing your imagination to life, one layer at a time!</p>
+        
+        <!-- Social Media Icons in Header -->
+        <div class="social-links">
+            <a href="https://facebook.com/YourPage" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://instagram.com/YourPage" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://twitter.com/YourPage" target="_blank" class="twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://youtube.com/YourPage" target="_blank" class="youtube"><i class="fab fa-youtube"></i></a>
+            <a href="https://tiktok.com/@YourPage" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i></a>
+        </div>
     </header>
+
     <nav>
         <a href="#">Home</a>
         <a href="#">Gallery</a>
         <a href="#">Shop</a>
         <a href="contact">Contact</a>
     </nav>
+
     <main>
         <h2>About Us</h2>
         <p>
             JakeBitt3DPrints specializes in creative 3D printing projects, sharing designs, tips, and tutorials for everyone from beginners to experts. Explore our gallery, shop for unique prints, or reach out with your own ideas!
         </p>
-        <!--
-        <h2>Featured Project</h2>
-        <p>
-            Check out our latest project: <strong>Custom Phone Stand</strong> – designed for stability and style. Visit our <a href="#">Gallery</a> for more details!
-        </p>
-        -->
     </main>
+
     <footer>
         &copy; 2025 JakeBitt3DPrints. All rights reserved.
+        
+        <!-- Social Media Icons in Footer -->
+        <div class="social-links">
+            <a href="https://facebook.com/YourPage" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://instagram.com/YourPage" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://twitter.com/YourPage" target="_blank" class="twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://youtube.com/YourPage" target="_blank" class="youtube"><i class="fab fa-youtube"></i></a>
+            <a href="https://tiktok.com/@YourPage" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i></a>
+        </div>
     </footer>
 </body>
 </html>
