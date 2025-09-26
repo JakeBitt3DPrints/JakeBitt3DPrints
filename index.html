@@ -15,9 +15,6 @@
             background: #f6f8fa;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
         }
         header {
             background: #222;
@@ -37,7 +34,6 @@
             font-weight: bold;
         }
         main {
-            flex: 1;
             padding: 30px;
             max-width: 900px;
             margin: 0 auto;
@@ -92,7 +88,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* ---------- Mobile tweaks ---------- */
+        /* ---------- Mobile-only fixes ---------- */
         @media (max-width: 600px) {
             header h1 {
                 font-size: 1.6rem;
@@ -109,9 +105,10 @@
             main {
                 padding: 15px;
                 font-size: 0.95rem;
+                padding-bottom: 70px; /* ✅ breathing room above footer only on mobile */
             }
             footer {
-                padding: 15px 5px;
+                padding: 18px 5px;
                 font-size: 0.85rem;
             }
             .social-links {
@@ -121,8 +118,8 @@
                 flex-wrap: wrap;
             }
             .social-links a {
-                margin: 8px;
-                font-size: 22px;
+                margin: 10px;
+                font-size: 32px; /* ✅ larger touch-friendly icons on mobile */
             }
         }
     </style>
