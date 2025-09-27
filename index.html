@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>JakeBitt3DPrints</title>
     <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <!-- Font Awesome for Social Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,7 +16,6 @@
             margin: 0;
             padding: 0;
 
-            /* ✅ sticky footer structure */
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -39,7 +38,7 @@
             font-weight: bold;
         }
         main {
-            flex: 1; /* ✅ pushes footer down */
+            flex: 1;
             padding: 30px;
             max-width: 900px;
             margin: 0 auto;
@@ -59,7 +58,6 @@
             transition: all 0.4s ease;
             display: inline-block;
         }
-
         /* Default brand colors */
         .social-links a.facebook { color: #1877F2; }
         .social-links a.youtube { color: #FF0000; }
@@ -73,7 +71,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         /* Hover effects */
         .social-links a.facebook:hover { color: #145dbf; }
         .social-links a.youtube:hover { color: #cc0000; }
@@ -105,7 +102,7 @@
             main {
                 padding: 15px;
                 font-size: 0.95rem;
-                padding-bottom: 70px; /* ✅ breathing room above footer only on mobile */
+                padding-bottom: 70px;
             }
             footer {
                 padding: 18px 5px;
@@ -119,7 +116,18 @@
             }
             .social-links a {
                 margin: 10px;
-                font-size: 32px; /* ✅ larger tap-friendly size on mobile */
+                font-size: 32px;
+            }
+            /* ✅ iOS/safe area fixes */
+            body {
+                padding-top: env(safe-area-inset-top, 0px);
+                padding-bottom: env(safe-area-inset-bottom, 0px);
+            }
+            header {
+                padding-top: calc(20px + env(safe-area-inset-top, 0px));
+            }
+            footer {
+                padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px));
             }
         }
     </style>
