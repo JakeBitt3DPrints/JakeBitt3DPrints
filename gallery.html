@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Gallery | JakeBitt3DPrints</title>
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- Font Awesome CSS for footer social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- nanogallery2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css" />
+    <!-- jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <!-- nanogallery2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/jquery.nanogallery2.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6f8fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background: #222;
+            color: #fff;
+            padding: 20px 10px;
+            text-align: center;
+        }
+        nav {
+            background: #444;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+        nav a.active {
+            background-color: #2976f4;
+            color: white;
+        }
+        main {
+            flex: 1;
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        footer {
+            background: #222;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+        .social-links {
+            margin-top: 10px;
+        }
+        .social-links a {
+            margin: 0 12px;
+            font-size: 26px;
+            transition: all 0.4s ease;
+            display: inline-block;
+            color: inherit;
+            text-decoration: none;
+        }
+        .social-links a.facebook { color: #1877f2; }
+        .social-links a.youtube { color: #ff0000; }
+        .social-links a.instagram {
+            background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .social-links a.tiktok {
+            background: linear-gradient(45deg, #25f4ee, #fe2c55);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .social-links a.facebook:hover { color: #145dbf; }
+        .social-links a.youtube:hover { color: #cc0000; }
+        .social-links a.instagram:hover {
+            background: linear-gradient(45deg, #ffdb70, #ff5e30, #e1306c, #a12dcf, #5c6ee9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .social-links a.tiktok:hover {
+            background: linear-gradient(45deg, #38f7f3, #ff477e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* nanogallery container margins */
+        #JakeBitt3DPrints {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        /* Mobile-specific fixes */
+        @media (max-width: 600px) {
+            html, body {
+                height: 100%;
+                min-height: 100svh;
+                min-height: -webkit-fill-available;
+            }
+            header h1 {
+                font-size: 1.6rem;
+            }
+            header p {
+                font-size: 0.9rem;
+                padding: 0 10px;
+            }
+            nav a {
+                display: inline-block;
+                margin: 8px 10px;
+                font-size: 0.95rem;
+            }
+            main {
+                padding: 15px;
+                font-size: 0.95rem;
+                padding-bottom: 70px;
+            }
+            footer {
+                padding: 18px 5px;
+                font-size: 0.85rem;
+            }
+            .social-links {
+                margin-top: 12px;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .social-links a {
+                margin: 10px;
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to JakeBitt3DPrints</h1>
+        <p>Bringing your imagination to life, one layer at a time!</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="#" class="active">Gallery</a>
+        <a href="shop">Shop</a>
+        <a href="contact">Contact</a>
+    </nav>
+
+    <main>
+        <div ID="JakeBitt3DPrints" data-nanogallery2='{
+            "itemsBaseURL": "https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/",
+            "thumbnailWidth": "200",
+            "thumbnailLabel": {
+              "position": "onBottom"
+            },
+            "thumbnailAlignment": "center",
+            "thumbnailOpenImage": true
+          }'>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9986.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9986.jpg" data-ngdesc="">Worlds Greatest Farter</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0142.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0142.jpg" data-ngdesc="">Flexi Snake</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_5024.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_5024.jpg" data-ngdesc="">Crochet Duck</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0186.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0186.jpg" data-ngdesc="">Fidgets-colored</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0187.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0187.jpg" data-ngdesc="">Orange Fidget-Front</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0188.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0188.jpg" data-ngdesc="">Orange Fidget-Back</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4830.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4830.jpg" data-ngdesc="">Emergency Contact NFC Backpack-Front</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4831.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4831.jpg" data-ngdesc="">Emergency Contact NFC Backpack-Back</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9767.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9767.jpg" data-ngdesc="">Charm City Keychain</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0185.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0185.jpg" data-ngdesc="">HW Garages</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0191.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0191.jpg" data-ngdesc="">HW-Carded Stands</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9440.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9440.jpg" data-ngdesc="">HW-Double Carded Stand</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4905.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4905.jpg" data-ngdesc="">HW-Stands</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0192.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0192.jpg" data-ngdesc="">HW-Slim Carded Stands</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9442.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9442.jpg" data-ngdesc="">HW-Singe Carded Stand</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0190.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0190.jpg" data-ngdesc="">HW-Four Carded Stand</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9446.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9446.jpg" data-ngdesc="">HW-Slim Ramp Stand</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9443.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9443.jpg" data-ngdesc="">HW-Trophy Stand</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0184.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0184.jpg" data-ngdesc="">Me at Charm City HW Club</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0081.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0081.jpg" data-ngdesc="">HW Logo/Tire Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0086.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0086.jpg" data-ngdesc="">HW Logo/Tire Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0193.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0193.jpg" data-ngdesc="">HW-Floating Shelf</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0087.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0087.jpg" data-ngdesc="">Mustang Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0080.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0080.jpg" data-ngdesc="">Mustang Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0082.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0082.jpg" data-ngdesc="">HW-Logo Lightbox Black</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0085.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0085.jpg" data-ngdesc="">HW-Logo Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngdesc="">HW-Logo Lightbox-Blue</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngdesc="">HW-Logo Lightbox-Blue</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0189.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0189.jpg" data-ngdesc="">HW-Stands/Holders</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0088.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0088.jpg" data-ngdesc="">Ford Logo Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0079.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0079.jpg" data-ngdesc="">Ford Logo Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0053.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0053.jpg" data-ngdesc="">HW-Red Line Club Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9805.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9805.jpg" data-ngdesc="">Minecraft Creeper Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9426.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9426.jpg" data-ngdesc="">Owl</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/JB-logo" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/JB-logo" data-ngdesc="">JB-Logo</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/Jakebitt3dprints-logo.png" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/Jakebitt3dprints-logo.png" data-ngdesc="">JakeBitt3DPrints-Logo</a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 JakeBitt3DPrints. All rights reserved.
+        <div class="social-links">
+            <a href="https://m.facebook.com/61579251184929/" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" class="youtube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        jQuery(document).ready(function () {
+            jQuery("#JakeBitt3DPrints").nanogallery2();
+        });
+    </script>
+</body>
+</html>
