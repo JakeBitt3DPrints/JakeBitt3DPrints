@@ -5,13 +5,12 @@
     <title>Gallery | JakeBitt3DPrints</title>
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <!-- Font Awesome CSS for footer social icons -->
+    <!-- Font Awesome CSS for consistency in footer icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- nanogallery2 CSS -->
+    
+    <!-- nanogallery2 CSS & JS -->
     <link href="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css" />
-    <!-- jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-    <!-- nanogallery2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/jquery.nanogallery2.min.js"></script>
 
     <style>
@@ -24,6 +23,7 @@
             flex-direction: column;
             min-height: 100vh;
         }
+
         header {
             background: #222;
             color: #fff;
@@ -95,12 +95,12 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        /* nanogallery container margins */
+        /* nanogallery container margin for spacing */
         #JakeBitt3DPrints {
             margin-top: 20px;
             margin-bottom: 20px;
         }
-        /* Mobile-specific fixes */
+        /* Mobile responsive fixes */
         @media (max-width: 600px) {
             html, body {
                 height: 100%;
@@ -155,7 +155,7 @@
     </nav>
 
     <main>
-        <div ID="JakeBitt3DPrints" data-nanogallery2='{
+        <div id="JakeBitt3DPrints" data-nanogallery2='{
             "itemsBaseURL": "https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/",
             "thumbnailWidth": "200",
             "thumbnailLabel": {
@@ -212,7 +212,6 @@
             <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i></a>
         </div>
     </footer>
-
     <script>
         jQuery(document).ready(function () {
             jQuery("#JakeBitt3DPrints").nanogallery2();
