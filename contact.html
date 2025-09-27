@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <title>Contact | JakeBitt3DPrints</title>
     <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <style>
+        html, body {
+            height: 100%;
+        }
         body {
             font-family: Arial, sans-serif;
             background: #f6f8fa;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         header {
             background: #222;
@@ -21,6 +27,7 @@
         nav {
             background: #444;
             padding: 10px 0;
+            text-align: center;
         }
         nav a {
             color: #fff;
@@ -29,6 +36,7 @@
             font-weight: bold;
         }
         main {
+            flex: 1;
             padding: 30px;
             max-width: 900px;
             margin: 0 auto;
@@ -75,19 +83,46 @@
             color: #fff;
             text-align: center;
             padding: 15px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
         }
+        /* ---------- Mobile-only fixes ---------- */
         @media (max-width: 600px) {
-            main {
-                padding: 10px;
+            /* Safari/iOS space fix */
+            html, body {
+                height: 100%;
+                min-height: 100svh;
+                min-height: -webkit-fill-available;
+            }
+            header h1 {
+                font-size: 1.6rem;
+            }
+            header p {
+                font-size: 0.9rem;
+                padding: 0 10px;
             }
             nav {
                 padding: 5px 0;
             }
+            nav a {
+                display: inline-block;
+                margin: 8px 10px;
+                font-size: 0.95rem;
+            }
+            main {
+                padding: 12px;
+                font-size: 0.97rem;
+                padding-bottom: 70px;
+            }
             .contact-container {
-                padding: 10px 10px;
+                padding: 12px 6px;
+                margin: 25px auto;
+            }
+            h2 {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+            }
+            footer {
+                padding: 15px 5px;
+                font-size: 0.91rem;
             }
         }
     </style>
@@ -116,8 +151,6 @@
                 <label for="message">Message</label>
                 <textarea name="message" id="message" rows="5" required></textarea>
                 <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-                <!-- Custom Confirmation / Success Page -->
-                <!-- <input type="hidden" name="redirect" value="https://mywebsite.com/thanks.html"> -->
                 <button type="submit">Submit Form</button>
             </form>
         </div>
@@ -127,5 +160,3 @@
     </footer>
 </body>
 </html>
-
-
