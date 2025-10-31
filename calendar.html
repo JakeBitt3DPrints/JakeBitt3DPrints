@@ -80,7 +80,7 @@
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      flex: 1;
+      flex: 1.2;
       min-width: 0;
     }
     .calendar-container .commonninja_component {
@@ -92,8 +92,11 @@
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin-top: 20px;
       text-align: center;
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
     }
     .map-toggle-btn {
       background: #2976f4;
@@ -235,7 +238,6 @@
       }
       .map-section {
         padding: 15px;
-        margin-top: 15px;
       }
       .map-toggle-btn {
         width: 100%;
@@ -269,21 +271,23 @@
   </nav>
 
   <main>
-    <div class="calendar-container">
-      <div class="commonninja_component pid-5c6d132c-b8cb-4500-b668-e25a31e3d5e7"></div>
-    </div>
+    <div class="content-container">
+      <div class="calendar-container">
+        <div class="commonninja_component pid-5c6d132c-b8cb-4500-b668-e25a31e3d5e7"></div>
+      </div>
 
-    <div class="map-section">
-      <button class="map-toggle-btn" id="mapToggle">
-        <i class="fas fa-map-marked-alt"></i>
-        <span>View Location Map</span>
-      </button>
-      
-      <div class="map-container" id="mapContainer">
-        <div class="flourish-embed flourish-map" data-src="visualisation/25948838">
-          <noscript>
-            <img src="https://public.flourish.studio/visualisation/25948838/thumbnail" width="100%" alt="map visualization" />
-          </noscript>
+      <div class="map-section">
+        <button class="map-toggle-btn" id="mapToggle">
+          <i class="fas fa-map-marked-alt"></i>
+          <span>View Location Map</span>
+        </button>
+        
+        <div class="map-container" id="mapContainer">
+          <div class="flourish-embed flourish-map" data-src="visualisation/25948838">
+            <noscript>
+              <img src="https://public.flourish.studio/visualisation/25948838/thumbnail" width="100%" alt="map visualization" />
+            </noscript>
+          </div>
         </div>
       </div>
     </div>
