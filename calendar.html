@@ -11,7 +11,7 @@
   gtag('config', 'G-34HRY5BP01');
 </script>
   <meta charset="UTF-8" />
-  <title>Calendar - JakeBitt3DPrints</title>
+  <title>Calendar & Location - JakeBitt3DPrints</title>
   <meta name="description" content="Find Out when and where I will be Setup!" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -68,11 +68,16 @@
       box-sizing: border-box;
     }
     .calendar-container {
-      margin: 30px 0;
+      margin: 30px auto;
       background: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 700px;
+    }
+    .calendar-container .commonninja_component {
+      max-height: 600px;
+      overflow: auto;
     }
     footer {
       background: #222;
@@ -192,7 +197,7 @@
     <a href="contact">Contact</a>
   </nav>
 
-
+  <main>
     <div class="calendar-container">
       <div class="commonninja_component pid-5c6d132c-b8cb-4500-b668-e25a31e3d5e7"></div>
     </div>
