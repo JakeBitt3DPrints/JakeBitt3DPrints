@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-34HRY5BP01"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-34HRY5BP01"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-34HRY5BP01');
+  </script>
 
-  gtag('config', 'G-34HRY5BP01');
-</script>
   <meta charset="UTF-8" />
   <title>JakeBitt3DPrints</title>
   <meta name="description" content="Explore innovative 3D printing projects, designs, tutorials, and vibrant prints at JakeBitt3DPrints." />
@@ -23,84 +23,302 @@
   />
 
   <style>
+    :root {
+      /* Light mode */
+      --bg: #f5f5f5;
+      --bg-alt: #ffffff;
+      --text: #111111;
+      --muted: #4b5563;
+      --accent: #2563eb;
+      --border: #e5e7eb;
+      --nav-bg: #ffffff;
+      --nav-text: #111111;
+      --nav-active-bg: #111111;
+      --nav-active-text: #ffffff;
+      --footer-bg: #ffffff;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    :root[data-theme="dark"] {
+      /* Neutral dark greys */
+      --bg: #111827;
+      --bg-alt: #020617;
+      --text: #f9fafb;
+      --muted: #d1d5db;
+      --accent: #9ca3af;
+      --border: #1f2937;
+      --nav-bg: #020617;
+      --nav-text: #e5e7eb;
+      --nav-active-bg: #e5e7eb;
+      --nav-active-text: #020617;
+      --footer-bg: #020617;
+      --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f6f8fa;
       margin: 0;
-      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
-    /* Logo container - commented out */
-    /*
-    .logo-container {
-      text-align: center;
-      margin: 20px 0 10px 0;
-    }
-    .logo-container img {
-      max-width: 200px;
-      width: 80%;
-      height: auto;
-      display: inline-block;
-    }
-    @media (max-width: 600px) {
-      .logo-container {
-        margin: 15px 0 8px 0;
-      }
-      .logo-container img {
-        max-width: 140px;
-        width: 60%;
-      }
-    }
-    */
-    header {
-      background: #222;
-      color: #fff;
-      padding: 20px 10px;
-      text-align: center;
-    }
-    nav {
-      background: #444;
-      padding: 10px 0;
-      text-align: center;
-    }
-    nav a {
-      color: #fff;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 8px 16px;
-      border-radius: 6px;
-      transition: background-color 0.3s ease;
-    }
-    nav a.active {
-      background-color: #2976f4;
-      color: white;
-    }
-    main {
-      flex: 1;
-      padding: 30px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
+
+    .site-shell,
+    .hero-card,
+    nav,
     footer {
-      background: #222;
-      color: #fff;
-      text-align: center;
-      padding: 20px 0;
+      transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
+
+    .site-shell {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 20px 32px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* HEADER / BRAND BAR */
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-alt);
+      overflow: hidden;
+      padding: 4px;
+    }
+
+    .brand-logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      filter: invert(0);
+      transition: filter 0.25s ease;
+    }
+
+    :root[data-theme="dark"] .brand-logo img {
+      filter: invert(1);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      font-size: 1.05rem;
+    }
+
+    .brand-tagline {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--nav-bg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    nav a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      color: var(--nav-text);
+      font-weight: 500;
+      transition: background-color 0.15s ease, color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      background-color: rgba(148, 163, 184, 0.16);
+    }
+
+    nav a.active {
+      background-color: var(--nav-active-bg);
+      color: var(--nav-active-text);
+    }
+
+    /* MAIN CARD */
+    .hero-card {
+      border-radius: 24px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 28px 24px 26px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero-eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .hero-body {
+      font-size: 0.98rem;
+      color: var(--muted);
+      max-width: 32rem;
+      margin: 0 0 20px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-primary,
+    .btn-ghost {
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      outline: none;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    :root[data-theme="dark"] .btn-primary {
+      background-color: #4b5563;
+      border-color: #4b5563;
+    }
+
+    :root[data-theme="dark"] .btn-primary:hover {
+      background-color: #6b7280;
+      border-color: #6b7280;
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-ghost:hover {
+      background-color: rgba(148, 163, 184, 0.12);
+    }
+
+    .hero-contact-email {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+
+    .hero-contact-email a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .hero-contact-email a:hover {
+      text-decoration: underline;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 16px 20px 22px;
+      background-color: var(--footer-bg);
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+    }
+
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      justify-content: space-between;
+    }
+
+    .footer-left {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
     .social-links {
-      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
     }
+
     .social-links a {
-      margin: 0 12px;
-      font-size: 26px;
-      transition: all 0.4s ease;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
       color: inherit;
       text-decoration: none;
+      transition: background-color 0.15s ease, transform 0.12s ease, color 0.15s ease;
     }
+
+    .social-links a:hover {
+      transform: translateY(-1px);
+      background-color: rgba(148, 163, 184, 0.25);
+    }
+
     .social-links a.facebook {
       color: #1877f2;
     }
@@ -108,14 +326,7 @@
       color: #ff0000;
     }
     .social-links a.instagram {
-      background: linear-gradient(
-        45deg,
-        #feda75,
-        #fa7e1e,
-        #d62976,
-        #962fbf,
-        #4f5bd5
-      );
+      background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -124,125 +335,247 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .social-links a.facebook:hover {
-      color: #145dbf;
+
+    /* Snapchat: bright yellow circle, black centered icon */
+    .social-links a.snapchat {
+      background-color: #fffc00;
+      color: #000000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
-    .social-links a.youtube:hover {
-      color: #cc0000;
+
+    .social-links a.snapchat i {
+      font-size: 1.1rem;
+      line-height: 1;
     }
-    .social-links a.instagram:hover {
-      background: linear-gradient(
-        45deg,
-        #ffdb70,
-        #ff5e30,
-        #e1306c,
-        #a12dcf,
-        #5c6ee9
-      );
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+
+    .social-links a.snapchat:hover {
+      background-color: #facc15;
     }
-    .social-links a.tiktok:hover {
-      background: linear-gradient(45deg, #38f7f3, #ff477e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+
+    /* THEME TOGGLE */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      cursor: pointer;
+      background-color: transparent;
+      transition: background-color 0.15s ease, transform 0.1s ease, color 0.15s ease;
     }
-    /* ---------- Mobile-only fixes ---------- */
-    @media (max-width: 600px) {
-      html,
-      body {
-        height: 100%;
-        min-height: 100svh;
-        min-height: -webkit-fill-available;
+
+    .theme-toggle:hover {
+      background-color: rgba(148, 163, 184, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle span.icon {
+      font-size: 0.95rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .site-shell {
+        padding: 18px 16px 24px;
+        gap: 20px;
       }
-      header h1 {
-        font-size: 1.6rem;
+
+      .brand-bar {
+        flex-direction: column;
+        align-items: flex-start;
       }
-      header p {
-        font-size: 0.9rem;
-        padding: 0 10px;
+
+      nav {
+        width: 100%;
+        justify-content: space-between;
+        overflow-x: auto;
       }
-      nav a {
-        display: inline-block;
-        margin: 8px 10px;
-        font-size: 0.95rem;
-        padding: 8px 12px;
+
+      .hero-card {
+        border-radius: 20px;
       }
-      main {
-        padding: 15px;
-        font-size: 0.95rem;
-        padding-bottom: 70px;
-      }
+
       footer {
-        padding: 18px 5px;
-        font-size: 0.85rem;
+        padding: 14px 16px 18px;
       }
-      .social-links a {
-        margin: 8px;
-        font-size: 32px;
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 420px) {
+      nav {
+        padding: 6px 8px;
+        gap: 4px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-primary,
+      .btn-ghost {
+        justify-content: center;
+        width: 100%;
       }
     }
   </style>
 </head>
+
 <body>
-  <!--
-  <div class="logo-container">
-    <img src="path/to/your-logo.png" alt="JakeBitt3DPrints Logo" />
+  <div class="site-shell">
+    <!-- Top brand bar -->
+    <header class="brand-bar">
+      <div class="brand-left">
+        <div class="brand-logo">
+          <!-- GitHub logo -->
+          <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png"
+               alt="JakeBitt3DPrints logo">
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">JakeBitt3DPrints</div>
+          <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="#" class="active">Home</a>
+        <a href="gallery">Gallery</a>
+        <a href="shop">Shop</a>
+        <a href="calendar">Calendar</a>
+        <a href="contact">Contact</a>
+      </nav>
+    </header>
+
+    <!-- Main content card -->
+    <main>
+      <section class="hero-card" aria-labelledby="about-heading">
+        <div class="hero-eyebrow">About Us</div>
+        <p id="about-heading" class="hero-body">
+          JakeBitt3DPrints specializes in creative 3D printing projects, sharing designs, tips, and tutorials for everyone from beginners to experts. Explore our gallery, shop for unique prints, or reach out with your own ideas.
+        </p>
+        <div class="hero-actions">
+          <a href="contact" class="btn-primary">
+            <span>Contact Us</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="gallery" class="btn-ghost">
+            <i class="fa-regular fa-image"></i>
+            <span>View Gallery</span>
+          </a>
+        </div>
+        <p class="hero-contact-email">
+          Prefer email? Reach out at
+          <a href="mailto:contact@jakebitt3dprints.com">contact@jakebitt3dprints.com</a>
+        </p>
+      </section>
+    </main>
   </div>
-  -->
 
-  <header>
-    <h1>Welcome to JakeBitt3DPrints</h1>
-    <p>Bringing your imagination to life, one layer at a time!</p>
-  </header>
-
-  <nav>
-    <a href="#" class="active">Home</a>
-    <a href="gallery">Gallery</a>
-    <a href="shop">Shop</a>
-    <a href="calendar">Calendar</a>
-    <a href="contact">Contact</a>
-  </nav>
-
-  <main>
-    <h2>About Us</h2>
-    <p>
-      JakeBitt3DPrints specializes in creative 3D printing projects,
-      sharing designs, tips, and tutorials for everyone from beginners to
-      experts. Explore our gallery, shop for unique prints, or reach out
-      with your own ideas!
-    </p>
-  </main>
-
+  <!-- Footer with theme toggle and social links -->
   <footer>
-    &copy; 2025 JakeBitt3DPrints. All rights reserved.
+    <div class="footer-inner">
+      <div class="footer-left">
+        &copy; 2025 JakeBitt3DPrints. All rights reserved.
+      </div>
 
-    <div class="social-links">
-      <a
-        href="https://m.facebook.com/61579251184929/"
-        target="_blank"
-        class="facebook"
-        ><i class="fab fa-facebook"></i
-      ></a>
-      <a
-        href="https://www.instagram.com/jakebitt3dprints/"
-        target="_blank"
-        class="instagram"
-        ><i class="fab fa-instagram"></i
-      ></a>
-      <a
-        href="https://www.youtube.com/@JakeBitt3DPrints"
-        target="_blank"
-        class="youtube"
-        ><i class="fab fa-youtube"></i
-      ></a>
-      <a
-        href="https://www.tiktok.com/@jakebitt3dprints"
-        target="_blank"
-        class="tiktok"
-        ><i class="fab fa-tiktok"></i
-      ></a>
+      <div class="social-links" aria-label="Social media links">
+        <a
+          href="https://m.facebook.com/61579251184929/"
+          target="_blank"
+          rel="noopener"
+          class="facebook"
+          aria-label="Facebook"
+        >
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a
+          href="https://www.instagram.com/jakebitt3dprints/"
+          target="_blank"
+          rel="noopener"
+          class="instagram"
+          aria-label="Instagram"
+        >
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a
+          href="https://www.youtube.com/@JakeBitt3DPrints"
+          target="_blank"
+          rel="noopener"
+          class="youtube"
+          aria-label="YouTube"
+        >
+          <i class="fab fa-youtube"></i>
+        </a>
+        <a
+          href="https://www.tiktok.com/@jakebitt3dprints"
+          target="_blank"
+          rel="noopener"
+          class="tiktok"
+          aria-label="TikTok"
+        >
+          <i class="fab fa-tiktok"></i>
+        </a>
+        <a
+          href="https://www.snapchat.com/@jakebitt3dprint"
+          target="_blank"
+          rel="noopener"
+          class="snapchat"
+          aria-label="Snapchat"
+        >
+          <i class="fab fa-snapchat"></i>
+        </a>
+
+        <!-- Theme toggle -->
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
+          <span class="icon" id="themeIcon">🌙</span>
+          <span id="themeLabel">Dark mode</span>
+        </button>
+      </div>
     </div>
   </footer>
+
+  <script>
+    // Light/dark mode with localStorage + smooth transition
+    (function () {
+      const root = document.documentElement;
+      const toggle = document.getElementById('themeToggle');
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+
+      const stored = window.localStorage.getItem('theme');
+      const prefersDark = window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        root.setAttribute('data-theme', 'dark');
+        icon.textContent = '☀️';
+        label.textContent = 'Light mode';
+      }
+
+      toggle.addEventListener('click', () => {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          root.removeAttribute('data-theme');
+          window.localStorage.setItem('theme', 'light');
+          icon.textContent = '🌙';
+          label.textContent = 'Dark mode';
+        } else {
+          root.setAttribute('data-theme', 'dark');
+          window.localStorage.setItem('theme', 'dark');
+          icon.textContent = '☀️';
+          label.textContent = 'Light mode';
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
