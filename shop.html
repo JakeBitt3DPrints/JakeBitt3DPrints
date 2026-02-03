@@ -1,182 +1,516 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-34HRY5BP01"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-34HRY5BP01"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-34HRY5BP01');
+  </script>
 
-  gtag('config', 'G-34HRY5BP01');
-</script>
-    <meta charset="UTF-8" />
-    <title>Shop | JakeBitt3DPrints</title>
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <!-- Font Awesome CSS for footer social icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f6f8fa;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            background: #222;
-            color: #fff;
-            padding: 20px 10px;
-            text-align: center;
-        }
-        nav {
-            background: #444;
-            padding: 10px 0;
-            text-align: center;
-        }
-        nav a {
-            color: #fff;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 8px 16px;
-            border-radius: 6px;
-            transition: background-color 0.3s ease;
-        }
-        nav a.active {
-            background-color: #2976f4;
-            color: white;
-        }
-        main {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .coming-soon {
-            background: linear-gradient(135deg, #2976f4, #6ba8ff);
-            color: white;
-            font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: 3px;
-            padding: 80px 40px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(41, 118, 244, 0.45);
-            text-align: center;
-            max-width: 450px;
-            width: 90%;
-            user-select: none;
-            text-transform: uppercase;
-        }
-        footer {
-            background: #222;
-            color: #fff;
-            text-align: center;
-            padding: 20px 0;
-        }
-        .social-links {
-            margin-top: 10px;
-        }
-        .social-links a {
-            margin: 0 12px;
-            font-size: 26px;
-            transition: all 0.4s ease;
-            display: inline-block;
-            color: inherit;
-            text-decoration: none;
-        }
-        .social-links a.facebook { color: #1877f2; }
-        .social-links a.youtube { color: #ff0000; }
-        .social-links a.instagram {
-            background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .social-links a.tiktok {
-            background: linear-gradient(45deg, #25f4ee, #fe2c55);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .social-links a.facebook:hover { color: #145dbf; }
-        .social-links a.youtube:hover { color: #cc0000; }
-        .social-links a.instagram:hover {
-            background: linear-gradient(45deg, #ffdb70, #ff5e30, #e1306c, #a12dcf, #5c6ee9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .social-links a.tiktok:hover {
-            background: linear-gradient(45deg, #38f7f3, #ff477e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        /* ---------- Mobile-only fixes ---------- */
-        @media (max-width: 600px) {
-            html, body {
-                height: 100%;
-                min-height: 100svh;
-                min-height: -webkit-fill-available;
-            }
-            header h1 {
-                font-size: 1.6rem;
-            }
-            header p {
-                font-size: 0.9rem;
-                padding: 0 10px;
-            }
-            nav a {
-                display: inline-block;
-                margin: 8px 10px;
-                font-size: 0.95rem;
-                padding: 8px 12px;
-            }
-            main {
-                padding: 20px;
-            }
-            .coming-soon {
-                font-size: 2.3rem;
-                padding: 60px 30px;
-                max-width: 90%;
-            }
-            footer {
-                padding: 18px 5px;
-                font-size: 0.85rem;
-            }
-            .social-links a {
-                margin: 8px;
-                font-size: 32px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Shop | JakeBitt3DPrints</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <!-- Font Awesome CSS for social icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <style>
+    :root {
+      /* Light mode */
+      --bg: #f5f5f5;
+      --bg-alt: #ffffff;
+      --text: #111111;
+      --muted: #4b5563;
+      --accent: #2563eb;
+      --border: #e5e7eb;
+      --nav-bg: #ffffff;
+      --nav-text: #111111;
+      --nav-active-bg: #111111;
+      --nav-active-text: #ffffff;
+      --footer-bg: #ffffff;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    :root[data-theme="dark"] {
+      /* Neutral dark greys */
+      --bg: #111827;
+      --bg-alt: #020617;
+      --text: #f9fafb;
+      --muted: #d1d5db;
+      --accent: #9ca3af;
+      --border: #1f2937;
+      --nav-bg: #020617;
+      --nav-text: #e5e7eb;
+      --nav-active-bg: #e5e7eb;
+      --nav-active-text: #020617;
+      --footer-bg: #020617;
+      --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .site-shell,
+    .page-card,
+    nav,
+    footer {
+      transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .site-shell {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 20px 32px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* HEADER / BRAND BAR */
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-alt);
+      overflow: hidden;
+      padding: 4px;
+    }
+
+    .brand-logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      filter: invert(0);
+      transition: filter 0.25s ease;
+    }
+
+    :root[data-theme="dark"] .brand-logo img {
+      filter: invert(1);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      font-size: 1.05rem;
+    }
+
+    .brand-tagline {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--nav-bg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    nav a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      color: var(--nav-text);
+      font-weight: 500;
+      transition: background-color 0.15s ease, color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      background-color: rgba(148, 163, 184, 0.16);
+    }
+
+    nav a.active {
+      background-color: var(--nav-active-bg);
+      color: var(--nav-active-text);
+    }
+
+    /* MAIN SHOP CARD */
+    main {
+      flex: 1;
+    }
+
+    .page-card {
+      border-radius: 24px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 32px 24px 30px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      min-height: 260px;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .page-eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .page-title {
+      font-size: 1.6rem;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .page-body {
+      margin: 0;
+      max-width: 28rem;
+      font-size: 0.96rem;
+      color: var(--muted);
+    }
+
+    .coming-pill {
+      margin-top: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px dashed var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 16px 20px 22px;
+      background-color: var(--footer-bg);
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+    }
+
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      justify-content: space-between;
+    }
+
+    .footer-left {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .social-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: inherit;
+      text-decoration: none;
+      transition: background-color 0.15s ease, transform 0.12s ease, color 0.15s ease;
+    }
+
+    .social-links a:hover {
+      transform: translateY(-1px);
+      background-color: rgba(148, 163, 184, 0.25);
+    }
+
+    .social-links a.facebook {
+      color: #1877f2;
+    }
+    .social-links a.youtube {
+      color: #ff0000;
+    }
+    .social-links a.instagram {
+      background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .social-links a.tiktok {
+      background: linear-gradient(45deg, #25f4ee, #fe2c55);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Snapchat: bright yellow circle, black centered icon */
+    .social-links a.snapchat {
+      background-color: #fffc00;
+      color: #000000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .social-links a.snapchat i {
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+    .social-links a.snapchat:hover {
+      background-color: #facc15;
+    }
+
+    /* THEME TOGGLE (matches home page) */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      cursor: pointer;
+      background-color: transparent;
+      transition: background-color 0.15s ease, transform 0.1s ease, color 0.15s ease;
+    }
+
+    .theme-toggle:hover {
+      background-color: rgba(148, 163, 184, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle span.icon {
+      font-size: 0.95rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .site-shell {
+        padding: 18px 16px 24px;
+        gap: 20px;
+      }
+
+      .brand-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        width: 100%;
+        justify-content: space-between;
+        overflow-x: auto;
+      }
+
+      .page-card {
+        border-radius: 20px;
+      }
+
+      footer {
+        padding: 14px 16px 18px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 420px) {
+      nav {
+        padding: 6px 8px;
+        gap: 4px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <header>
-        <h1>Welcome to JakeBitt3DPrints</h1>
-        <p>Bringing your imagination to life, one layer at a time!</p>
-    </header>
-    <nav>
+  <div class="site-shell">
+    <!-- Header / brand -->
+    <header class="brand-bar">
+      <div class="brand-left">
+        <div class="brand-logo">
+          <img
+            src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png"
+            alt="JakeBitt3DPrints logo"
+          >
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">JakeBitt3DPrints</div>
+          <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
         <a href="index.html">Home</a>
         <a href="gallery">Gallery</a>
         <a href="#" class="active">Shop</a>
         <a href="calendar">Calendar</a>
         <a href="contact">Contact</a>
-    </nav>
+      </nav>
+    </header>
+
+    <!-- Shop content -->
     <main>
-        <div class="coming-soon">Coming Soon!</div>
+      <section class="page-card" aria-labelledby="shop-heading">
+        <div class="page-eyebrow">Shop</div>
+        <h1 id="shop-heading" class="page-title">Shop coming soon</h1>
+        <p class="page-body">
+          The online shop is being set up. Check back soon for unique 3D printed designs and custom order options.
+        </p>
+        <div class="coming-pill">Coming soon – stay tuned.</div>
+      </section>
     </main>
-    <footer>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
         &copy; 2025 JakeBitt3DPrints. All rights reserved.
-        <div class="social-links">
-            <a href="https://m.facebook.com/61579251184929/" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" class="youtube"><i class="fab fa-youtube"></i></a>
-            <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i></a>
-        </div>
-    </footer>
+      </div>
+
+      <div class="social-links" aria-label="Social media links">
+        <a
+          href="https://m.facebook.com/61579251184929/"
+          target="_blank"
+          rel="noopener"
+          class="facebook"
+          aria-label="Facebook"
+        >
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a
+          href="https://www.instagram.com/jakebitt3dprints/"
+          target="_blank"
+          rel="noopener"
+          class="instagram"
+          aria-label="Instagram"
+        >
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a
+          href="https://www.youtube.com/@JakeBitt3DPrints"
+          target="_blank"
+          rel="noopener"
+          class="youtube"
+          aria-label="YouTube"
+        >
+          <i class="fab fa-youtube"></i>
+        </a>
+        <a
+          href="https://www.tiktok.com/@jakebitt3dprints"
+          target="_blank"
+          rel="noopener"
+          class="tiktok"
+          aria-label="TikTok"
+        >
+          <i class="fab fa-tiktok"></i>
+        </a>
+        <a
+          href="https://www.snapchat.com/@jakebitt3dprint"
+          target="_blank"
+          rel="noopener"
+          class="snapchat"
+          aria-label="Snapchat"
+        >
+          <i class="fab fa-snapchat"></i>
+        </a>
+
+        <button
+          type="button"
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle light and dark mode"
+        >
+          <span class="icon" id="themeIcon">🌙</span>
+          <span id="themeLabel">Dark mode</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle (same behavior as home page)
+    (function () {
+      const root = document.documentElement;
+      const toggle = document.getElementById('themeToggle');
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+
+      const stored = window.localStorage.getItem('theme');
+      const prefersDark = window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        root.setAttribute('data-theme', 'dark');
+        icon.textContent = '☀️';
+        label.textContent = 'Light mode';
+      }
+
+      toggle.addEventListener('click', () => {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          root.removeAttribute('data-theme');
+          window.localStorage.setItem('theme', 'light');
+          icon.textContent = '🌙';
+          label.textContent = 'Dark mode';
+        } else {
+          root.setAttribute('data-theme', 'dark');
+          window.localStorage.setItem('theme', 'dark');
+          icon.textContent = '☀️';
+          label.textContent = 'Light mode';
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
