@@ -1,167 +1,409 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-34HRY5BP01"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-34HRY5BP01"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-34HRY5BP01');
+  </script>
 
-  gtag('config', 'G-34HRY5BP01');
-</script>
-    <meta charset="UTF-8" />
-    <title>Gallery | JakeBitt3DPrints</title>
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <!-- Font Awesome CSS for footer social icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- nanogallery2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css" />
-    <!-- jQuery -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-    <!-- nanogallery2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/jquery.nanogallery2.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f6f8fa;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            background: #222;
-            color: #fff;
-            padding: 20px 10px;
-            text-align: center;
-        }
-        nav {
-            background: #444;
-            padding: 10px 0;
-            text-align: center;
-        }
-        nav a {
-            color: #fff;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 8px 16px;
-            border-radius: 6px;
-            transition: background-color 0.3s ease;
-        }
-        nav a.active {
-            background-color: #2976f4;
-            color: white;
-        }
-        main {
-            flex: 1;
-            padding: 30px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        footer {
-            background: #222;
-            color: #fff;
-            text-align: center;
-            padding: 20px 0;
-        }
-        .social-links {
-            margin-top: 10px;
-        }
-        .social-links a {
-            margin: 0 12px;
-            font-size: 26px;
-            transition: all 0.4s ease;
-            display: inline-block;
-            color: inherit;
-            text-decoration: none;
-        }
-        .social-links a.facebook { color: #1877f2; }
-        .social-links a.youtube { color: #ff0000; }
-        .social-links a.instagram {
-            background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .social-links a.tiktok {
-            background: linear-gradient(45deg, #25f4ee, #fe2c55);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .social-links a.facebook:hover { color: #145dbf; }
-        .social-links a.youtube:hover { color: #cc0000; }
-        .social-links a.instagram:hover {
-            background: linear-gradient(45deg, #ffdb70, #ff5e30, #e1306c, #a12dcf, #5c6ee9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .social-links a.tiktok:hover {
-            background: linear-gradient(45deg, #38f7f3, #ff477e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        #JakeBitt3DPrints {
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        @media (max-width: 600px) {
-            html, body {
-                height: 100%;
-                min-height: 100svh;
-                min-height: -webkit-fill-available;
-            }
-            header h1 {
-                font-size: 1.6rem;
-            }
-            header p {
-                font-size: 0.9rem;
-                padding: 0 10px;
-            }
-            nav a {
-                display: inline-block;
-                margin: 8px 10px;
-                font-size: 0.95rem;
-            }
-            main {
-                padding: 15px;
-                font-size: 0.95rem;
-                padding-bottom: 70px;
-            }
-            footer {
-                padding: 18px 5px;
-                font-size: 0.85rem;
-            }
-            .social-links {
-                margin-top: 12px;
-                display: flex;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .social-links a {
-                margin: 10px;
-                font-size: 32px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Gallery | JakeBitt3DPrints</title>
+  <meta name="description" content="Explore our 3D printing gallery - coming soon with even more amazing projects!" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <!-- Font Awesome for Social Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- nanogallery2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css" />
+  <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+  <!-- nanogallery2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/jquery.nanogallery2.min.js"></script>
+
+  <style>
+    :root {
+      /* Light mode */
+      --bg: #f5f5f5;
+      --bg-alt: #ffffff;
+      --text: #111111;
+      --muted: #4b5563;
+      --accent: #2563eb;
+      --border: #e5e7eb;
+      --nav-bg: #ffffff;
+      --nav-text: #111111;
+      --nav-active-bg: #111111;
+      --nav-active-text: #ffffff;
+      --footer-bg: #ffffff;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+      --shadow-card: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    :root[data-theme="dark"] {
+      /* Dark mode */
+      --bg: #111827;
+      --bg-alt: #020617;
+      --text: #f9fafb;
+      --muted: #d1d5db;
+      --accent: #9ca3af;
+      --border: #1f2937;
+      --nav-bg: #020617;
+      --nav-text: #e5e7eb;
+      --nav-active-bg: #e5e7eb;
+      --nav-active-text: #020617;
+      --footer-bg: #020617;
+      --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.75);
+      --shadow-card: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .site-shell,
+    .card,
+    nav,
+    footer {
+      transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .site-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px 32px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* HEADER / BRAND BAR */
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-alt);
+      overflow: hidden;
+      padding: 4px;
+    }
+
+    .brand-logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      filter: invert(0);
+      transition: filter 0.25s ease;
+    }
+
+    :root[data-theme="dark"] .brand-logo img {
+      filter: invert(1);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      font-size: 1.05rem;
+    }
+
+    .brand-tagline {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--nav-bg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    nav a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      color: var(--nav-text);
+      font-weight: 500;
+      transition: background-color 0.15s ease, color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      background-color: rgba(148, 163, 184, 0.16);
+    }
+
+    nav a.active {
+      background-color: var(--nav-active-bg);
+      color: var(--nav-active-text);
+    }
+
+    /* MAIN CONTENT */
+    .card {
+      border-radius: 24px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 32px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0 0 28px 0;
+      line-height: 1.3;
+    }
+
+    /* COMING SOON NOTICE */
+    .coming-soon {
+      background: rgba(37, 99, 235, 0.1);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .coming-soon h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 0 0 12px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .coming-soon p {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* GALLERY CONTAINER */
+    .gallery-container {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-alt);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 16px 20px 22px;
+      background-color: var(--footer-bg);
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      justify-content: space-between;
+    }
+
+    .footer-left {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .social-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.3rem;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .social-links a:hover {
+      transform: translateY(-1px);
+      background-color: rgba(148, 163, 184, 0.25);
+    }
+
+    .social-links a.facebook { color: #1877f2; }
+    .social-links a.youtube { color: #ff0000; }
+    .social-links a.instagram {
+      background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .social-links a.tiktok {
+      background: linear-gradient(45deg, #25f4ee, #fe2c55);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .social-links a.snapchat {
+      background-color: #fffc00;
+      color: #000000;
+    }
+    .social-links a.snapchat:hover { background-color: #facc15; }
+
+    /* THEME TOGGLE */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.15s ease;
+    }
+
+    .theme-toggle:hover {
+      background-color: rgba(148, 163, 184, 0.18);
+      transform: translateY(-1px);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .site-shell { 
+        padding: 18px 16px 24px; 
+        gap: 20px; 
+        max-width: 960px;
+      }
+      .brand-bar { 
+        flex-direction: column; 
+        align-items: flex-start; 
+        gap: 16px;
+      }
+      nav { 
+        width: 100%; 
+        justify-content: center; 
+        overflow-x: auto; 
+        gap: 12px;
+      }
+      .card { 
+        padding: 24px 20px; 
+        border-radius: 20px; 
+      }
+    }
+
+    @media (max-width: 420px) {
+      .card { padding: 20px 16px; }
+      nav { padding: 6px 8px; gap: 4px; }
+      .brand-name { font-size: 1rem; }
+      .page-title { font-size: 1.5rem; }
+    }
+  </style>
 </head>
-<body>
-    <header>
-        <h1>Welcome to JakeBitt3DPrints</h1>
-        <p>Bringing your imagination to life, one layer at a time!</p>
-    </header>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="#" class="active">Gallery</a>
+<body>
+  <div class="site-shell">
+    <!-- HEADER -->
+    <header class="brand-bar">
+      <div class="brand-left">
+        <div class="brand-logo">
+          <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="JakeBitt3DPrints logo">
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">JakeBitt3DPrints</div>
+          <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
+        </div>
+      </div>
+      <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="gallery" class="active">Gallery</a>
         <a href="shop">Shop</a>
         <a href="calendar">Calendar</a>
         <a href="contact">Contact</a>
-    </nav>
+      </nav>
+    </header>
 
-    <main>
+    <!-- MAIN CONTENT -->
+    <main class="card">
+      <div class="eyebrow">3D Print Showcase</div>
+      <h1 class="page-title">Gallery</h1>
+
+      <!-- COMING SOON NOTICE -->
+      <div class="coming-soon">
+        <h3>
+          <i class="fas fa-sparkles"></i>
+          Gallery Upgrades Coming Soon!
+        </h3>
+        <p>
+          We're working on an amazing new gallery experience with improved layouts, 
+          filters, and even more of our incredible 3D prints. Stay tuned!
+        </p>
+      </div>
+
+      <!-- EXISTING GALLERY (fully functional) -->
+      <div class="gallery-container">
         <div id="JakeBitt3DPrints" data-nanogallery2='{
             "itemsBaseURL": "https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/",
             "thumbnailWidth": 200,
@@ -176,59 +418,103 @@
             "thumbnailOpenImage": true,
             "viewerToolbar": { "standard": true }
           }'>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9986.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9986.jpg" data-ngdesc="">Worlds Greatest Farter</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0142.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0142.jpg" data-ngdesc="">Flexi Snake</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_5024.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_5024.jpg" data-ngdesc="">Crochet Duck</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0186.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0186.jpg" data-ngdesc="">Fidgets-colored</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0187.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0187.jpg" data-ngdesc="">Orange Fidget-Front</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0188.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0188.jpg" data-ngdesc="">Orange Fidget-Back</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4830.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4830.jpg" data-ngdesc="">Emergency Contact NFC Backpack-Front</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4831.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4831.jpg" data-ngdesc="">Emergency Contact NFC Backpack-Back</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9767.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9767.jpg" data-ngdesc="">Charm City Keychain</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0185.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0185.jpg" data-ngdesc="">HW Garages</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0191.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0191.jpg" data-ngdesc="">HW-Carded Stands</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9440.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9440.jpg" data-ngdesc="">HW-Double Carded Stand</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4905.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4905.jpg" data-ngdesc="">HW-Stands</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0192.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0192.jpg" data-ngdesc="">HW-Slim Carded Stands</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9442.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9442.jpg" data-ngdesc="">HW-Singe Carded Stand</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0190.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0190.jpg" data-ngdesc="">HW-Four Carded Stand</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9446.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9446.jpg" data-ngdesc="">HW-Slim Ramp Stand</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9443.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9443.jpg" data-ngdesc="">HW-Trophy Stand</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0184.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0184.jpg" data-ngdesc="">Me at Charm City HW Club</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0081.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0081.jpg" data-ngdesc="">HW Logo/Tire Lightbox</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0086.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0086.jpg" data-ngdesc="">HW Logo/Tire Lightbox</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0193.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0193.jpg" data-ngdesc="">HW-Floating Shelf</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0087.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0087.jpg" data-ngdesc="">Mustang Lightbox</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0080.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0080.jpg" data-ngdesc="">Mustang Lightbox</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0082.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0082.jpg" data-ngdesc="">HW-Logo Lightbox Black</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0085.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0085.jpg" data-ngdesc="">HW-Logo Lightbox</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngdesc="">HW-Logo Lightbox-Blue</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngdesc="">HW-Logo Lightbox-Blue</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0189.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0189.jpg" data-ngdesc="">HW-Stands/Holders</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0088.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0088.jpg" data-ngdesc="">Ford Logo Lightbox</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0079.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0079.jpg" data-ngdesc="">Ford Logo Lightbox</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0053.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0053.jpg" data-ngdesc="">HW-Red Line Club Lightbox</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9805.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9805.jpg" data-ngdesc="">Minecraft Creeper Lightbox</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9426.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9426.jpg" data-ngdesc="">Owl</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/JB-logo" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/JB-logo" data-ngdesc="">JB-Logo</a>
-      <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/Jakebitt3dprints-logo.png" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/Jakebitt3dprints-logo.png" data-ngdesc="">JakeBitt3DPrints-Logo</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9986.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9986.jpg" data-ngdesc="">Worlds Greatest Farter</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0142.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0142.jpg" data-ngdesc="">Flexi Snake</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_5024.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_5024.jpg" data-ngdesc="">Crochet Duck</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0186.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0186.jpg" data-ngdesc="">Fidgets-colored</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0187.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0187.jpg" data-ngdesc="">Orange Fidget-Front</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0188.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0188.jpg" data-ngdesc="">Orange Fidget-Back</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4830.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4830.jpg" data-ngdesc="">Emergency Contact NFC Backpack-Front</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4831.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4831.jpg" data-ngdesc="">Emergency Contact NFC Backpack-Back</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9767.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9767.jpg" data-ngdesc="">Charm City Keychain</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0185.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0185.jpg" data-ngdesc="">HW Garages</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0191.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0191.jpg" data-ngdesc="">HW-Carded Stands</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9440.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9440.jpg" data-ngdesc="">HW-Double Carded Stand</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4905.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4905.jpg" data-ngdesc="">HW-Stands</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0192.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0192.jpg" data-ngdesc="">HW-Slim Carded Stands</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9442.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9442.jpg" data-ngdesc="">HW-Singe Carded Stand</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0190.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0190.jpg" data-ngdesc="">HW-Four Carded Stand</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9446.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9446.jpg" data-ngdesc="">HW-Slim Ramp Stand</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9443.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9443.jpg" data-ngdesc="">HW-Trophy Stand</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0184.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0184.jpg" data-ngdesc="">Me at Charm City HW Club</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0081.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0081.jpg" data-ngdesc="">HW Logo/Tire Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0086.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0086.jpg" data-ngdesc="">HW Logo/Tire Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0193.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0193.jpg" data-ngdesc="">HW-Floating Shelf</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0087.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0087.jpg" data-ngdesc="">Mustang Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0080.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0080.jpg" data-ngdesc="">Mustang Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0082.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0082.jpg" data-ngdesc="">HW-Logo Lightbox Black</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0085.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0085.jpg" data-ngdesc="">HW-Logo Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngdesc="">HW-Logo Lightbox-Blue</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0189.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0189.jpg" data-ngdesc="">HW-Stands/Holders</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0088.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0088.jpg" data-ngdesc="">Ford Logo Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0079.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0079.jpg" data-ngdesc="">Ford Logo Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0053.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0053.jpg" data-ngdesc="">HW-Red Line Club Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9805.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9805.jpg" data-ngdesc="">Minecraft Creeper Lightbox</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9426.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9426.jpg" data-ngdesc="">Owl</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/JB-logo" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/JB-logo" data-ngdesc="">JB-Logo</a>
+          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/Jakebitt3dprints-logo.png" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/Jakebitt3dprints-logo.png" data-ngdesc="">JakeBitt3DPrints-Logo</a>
         </div>
+      </div>
     </main>
+  </div>
 
-    <footer>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
         &copy; 2025 JakeBitt3DPrints. All rights reserved.
-        <div class="social-links">
-            <a href="https://m.facebook.com/61579251184929/" target="_blank" class="facebook"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" class="youtube"><i class="fab fa-youtube"></i></a>
-            <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" class="tiktok"><i class="fab fa-tiktok"></i></a>
-        </div>
-    </footer>
+      </div>
+      <div class="social-links" aria-label="Social media links">
+        <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
+          <span class="icon" id="themeIcon">🌙</span>
+          <span id="themeLabel">Dark mode</span>
+        </button>
+      </div>
+    </div>
+  </footer>
 
-    <script>
-        jQuery(document).ready(function(){
-            jQuery("#JakeBitt3DPrints").nanogallery2();
-        });
-    </script>
+  <script>
+    // nanogallery2 initialization
+    jQuery(document).ready(function(){
+        jQuery("#JakeBitt3DPrints").nanogallery2();
+    });
+
+    // Theme toggle - IDENTICAL to main page
+    (function () {
+      const root = document.documentElement;
+      const toggle = document.getElementById('themeToggle');
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+
+      const stored = window.localStorage.getItem('theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        root.setAttribute('data-theme', 'dark');
+        icon.textContent = '☀️';
+        label.textContent = 'Light mode';
+      }
+
+      toggle.addEventListener('click', () => {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          root.removeAttribute('data-theme');
+          window.localStorage.setItem('theme', 'light');
+          icon.textContent = '🌙';
+          label.textContent = 'Dark mode';
+        } else {
+          root.setAttribute('data-theme', 'dark');
+          window.localStorage.setItem('theme', 'dark');
+          icon.textContent = '☀️';
+          label.textContent = 'Light mode';
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
