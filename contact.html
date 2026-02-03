@@ -316,7 +316,7 @@
       max-width: 960px;
       margin: 0 auto;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap:  wrap;
       align-items: center;
       gap: 14px;
       justify-content: space-between;
@@ -433,7 +433,10 @@
       <div class="eyebrow">Get In Touch</div>
       <h1 class="page-title">Ready to start your project?</h1>
       
-      <form action="https://formspree.io/f/xgenwdeo" method="POST" class="contact-form">
+      <!-- YOUR EXACT WEB3FORMS SETUP WITH PERFECT STYLING -->
+      <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+        <input type="hidden" name="access_key" value="a8d930c0-d1fe-423a-840f-35cae1bd0bbb">
+        
         <div class="contact-grid">
           <div class="form-group">
             <label for="name" class="form-label">Full Name</label>
@@ -446,8 +449,8 @@
           </div>
           
           <div class="form-group form-row-full">
-            <label for="project" class="form-label">Project Details</label>
-            <textarea id="project" name="project" class="form-textarea" placeholder="Tell us about your 3D printing project, dimensions, materials needed, timeline, or anything else!" required></textarea>
+            <label for="message" class="form-label">Project Details</label>
+            <textarea id="message" name="message" class="form-textarea" placeholder="Tell us about your 3D printing project, dimensions, materials needed, timeline, or anything else!" required></textarea>
           </div>
         </div>
         
