@@ -211,9 +211,10 @@
     /* CONTENT GRID */
     .content-grid {
       display: grid;
-      grid-template-columns: 2fr 1.3fr;
+      grid-template-columns: 2fr 1.9fr;
       gap: 24px;
       margin-top: 24px;
+      align-items: start;
     }
 
     .calendar-container {
@@ -278,18 +279,15 @@
       font-weight: 500;
       border-radius: 999px;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: var(--shadow-soft);
     }
 
     .map-toggle-btn:hover {
       background: #1d4ed8;
       border-color: #1d4ed8;
-      transform: translateY(-1px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0,0, 0.1), 0 10px 10px -5px rgba(0, 0,0, 0.04);
     }
 
     :root[data-theme="dark"] .map-toggle-btn {
@@ -302,29 +300,62 @@
       border-color: #6b7280;
     }
 
+    .map-toggle-btn i {
+      transition: transform 0.35s ease;
+    }
+
     .map-toggle-btn.active i {
       transform: rotate(180deg);
+    }
+
+    .map-toggle-btn .btn-text {
+      transition: opacity 0.2s ease;
     }
 
     .map-container {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.5s ease;
+      position: relative;
+      z-index: 1;
     }
 
     .map-container.visible {
-      max-height: 600px;
+      max-height: 400px;
+    }
+
+    .flourish-wrapper {
+      height: 400px;
+      max-height: 400px;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      transition: border-color 0.25s ease;
     }
 
     .flourish-embed {
       border-radius: 16px;
       overflow: hidden;
-      border: 1px solid var(--border);
-      height: 450px;
+      height: 400px !important;
+      max-height: 400px !important;
+      min-height: 0;
       transition: border-color 0.25s ease;
     }
 
-    :root[data-theme="dark"] .flourish-embed {
+    .flourish-embed iframe {
+      display: block;
+      margin: 0;
+    }
+
+    /* Hide Flourish attribution - clip bottom and hide any links */
+    .flourish-wrapper .flourish-embed a,
+    .flourish-wrapper .flourish-embed [class*="attribution"],
+    .flourish-wrapper .flourish-embed [class*="credit"],
+    .flourish-wrapper .flourish-embed [class*="flourish-studio"] {
+      display: none !important;
+    }
+
+    :root[data-theme="dark"] .flourish-wrapper {
       border-color: #334155;
     }
 
@@ -495,14 +526,16 @@
         <div class="map-section">
           <button class="map-toggle-btn" id="mapToggle">
             <i class="fas fa-map-marked-alt"></i>
-            <span>View Location Map</span>
+            <span class="btn-text">View Location Map</span>
           </button>
           
           <div class="map-container" id="mapContainer">
-            <div class="flourish-embed flourish-map" data-src="visualisation/25948838">
-              <noscript>
-                <img src="https://public.flourish.studio/visualisation/25948838/thumbnail" width="100%" alt="map visualization" />
-              </noscript>
+            <div class="flourish-wrapper">
+              <div class="flourish-embed flourish-map" data-src="visualisation/25948838">
+                <noscript>
+                  <img src="https://public.flourish.studio/visualisation/25948838/thumbnail" width="100%" alt="map visualization" />
+                </noscript>
+              </div>
             </div>
           </div>
         </div>
@@ -534,17 +567,21 @@
     // Map toggle functionality
     const mapToggle = document.getElementById('mapToggle');
     const mapContainer = document.getElementById('mapContainer');
-    const toggleText = mapToggle.querySelector('span');
+    const toggleText = mapToggle.querySelector('.btn-text');
 
     mapToggle.addEventListener('click', function() {
       mapContainer.classList.toggle('visible');
       mapToggle.classList.toggle('active');
-      
-      if (mapContainer.classList.contains('visible')) {
-        toggleText.textContent = 'Hide Location Map';
-      } else {
-        toggleText.textContent = 'View Location Map';
-      }
+
+      toggleText.style.opacity = '0';
+      setTimeout(function() {
+        if (mapContainer.classList.contains('visible')) {
+          toggleText.textContent = 'Hide Location Map';
+        } else {
+          toggleText.textContent = 'View Location Map';
+        }
+        toggleText.style.opacity = '1';
+      }, 200);
     });
 
     // Theme toggle - IDENTICAL to main page
