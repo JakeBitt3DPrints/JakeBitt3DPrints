@@ -73,6 +73,7 @@
 
     .site-shell,
     .hero-card,
+    .page-card,
     nav,
     footer {
       transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
@@ -179,6 +180,12 @@
     }
 
     /* MAIN CARD */
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
     .hero-card {
       border-radius: 24px;
       background: var(--bg-alt);
@@ -270,6 +277,53 @@
 
     .hero-contact-email a:hover {
       text-decoration: underline;
+    }
+
+    /* SHOP COMING SOON CARD */
+    .page-card {
+      border-radius: 24px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 32px 24px 30px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      min-height: 200px;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .page-eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .page-title {
+      font-size: 1.6rem;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .page-body {
+      margin: 0;
+      max-width: 28rem;
+      font-size: 0.96rem;
+      color: var(--muted);
+    }
+
+    .coming-pill {
+      margin-top: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px dashed var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+      transition: border-color 0.25s ease, color 0.25s ease;
     }
 
     /* FOOTER */
@@ -396,7 +450,8 @@
         overflow-x: auto;
       }
 
-      .hero-card {
+      .hero-card,
+      .page-card {
         border-radius: 20px;
       }
 
@@ -476,6 +531,15 @@
           Prefer email? Reach out at
           <a href="mailto:contact@jakebitt3dprints.com">contact@jakebitt3dprints.com</a>
         </p>
+      </section>
+
+      <section class="page-card" aria-labelledby="shop-heading">
+        <div class="page-eyebrow">Shop</div>
+        <h2 id="shop-heading" class="page-title">Shop coming soon</h2>
+        <p class="page-body">
+          The online shop is being set up. Check back soon for unique 3D printed designs and custom order options.
+        </p>
+        <div class="coming-pill">Coming soon – stay tuned.</div>
       </section>
     </main>
   </div>
