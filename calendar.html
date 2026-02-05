@@ -16,6 +16,24 @@
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
+  <!-- Early theme application to prevent light→dark flash -->
+  <script>
+    (function () {
+      try {
+        var stored = window.localStorage.getItem('theme');
+        var prefersDark = window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        // If stored === 'light', leave default (no data-theme)
+      } catch (e) {
+        // Fail silently; page remains default light
+      }
+    })();
+  </script>
+
   <!-- Font Awesome for Social Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
@@ -359,6 +377,20 @@
       border-color: #334155;
     }
 
+    /* Smooth fade-in for calendar and map */
+    .commonninja_component,
+    .flourish-wrapper {
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .commonninja_component.loaded,
+    .flourish-wrapper.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* FOOTER */
     footer {
       padding: 16px 20px 22px;
@@ -584,37 +616,50 @@
       }, 200);
     });
 
-    // Theme toggle - IDENTICAL to main page
+    // Theme toggle – reads theme from <html> and updates icon/label
     (function () {
       const root = document.documentElement;
       const toggle = document.getElementById('themeToggle');
       const icon = document.getElementById('themeIcon');
       const label = document.getElementById('themeLabel');
 
-      const stored = window.localStorage.getItem('theme');
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-      if (stored === 'dark' || (!stored && prefersDark)) {
-        root.setAttribute('data-theme', 'dark');
-        icon.textContent = '☀️';
-        label.textContent = 'Light mode';
+      function applyThemeFromRoot() {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          icon.textContent = '☀️';
+          label.textContent = 'Light mode';
+        } else {
+          icon.textContent = '🌙';
+          label.textContent = 'Dark mode';
+        }
       }
+
+      // Initial sync with current theme
+      applyThemeFromRoot();
 
       toggle.addEventListener('click', () => {
         const isDark = root.getAttribute('data-theme') === 'dark';
         if (isDark) {
           root.removeAttribute('data-theme');
           window.localStorage.setItem('theme', 'light');
-          icon.textContent = '🌙';
-          label.textContent = 'Dark mode';
         } else {
           root.setAttribute('data-theme', 'dark');
           window.localStorage.setItem('theme', 'dark');
-          icon.textContent = '☀️';
-          label.textContent = 'Light mode';
         }
+        applyThemeFromRoot();
       });
     })();
+
+    // Smooth fade-in for calendar and map after load
+    window.addEventListener('load', function () {
+      const calendar = document.querySelector('.commonninja_component');
+      const mapWrapper = document.querySelector('.flourish-wrapper');
+
+      setTimeout(() => {
+        if (calendar) calendar.classList.add('loaded');
+        if (mapWrapper) mapWrapper.classList.add('loaded');
+      }, 300);
+    });
   </script>
 </body>
 </html>
