@@ -15,67 +15,50 @@
   <meta name="description" content="Explore innovative 3D printing projects, designs, tutorials, and vibrant prints at JakeBitt3DPrints." />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  
+  <!-- SMOOTH PAGE TRANSITIONS -->
+  <meta name="view-transition" content="same-origin">
 
-  <!-- Early theme application to prevent light→dark flash -->
+  <!-- EARLY THEME - NO FLASH GUARANTEED -->
+  <style>
+    /* HIDE UNTIL THEME IS READY */
+    html { visibility: hidden; }
+    html.theme-ready { visibility: visible; }
+  </style>
   <script>
-    (function () {
+    (function() {
       try {
-        var stored = window.localStorage.getItem('theme');
-        var prefersDark = window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches;
-
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (stored === 'dark' || (!stored && prefersDark)) {
           document.documentElement.setAttribute('data-theme', 'dark');
         }
-        // If stored === 'light', leave default (no data-theme)
-      } catch (e) {
-        // Fail silently; page remains default light
+        document.documentElement.classList.add('theme-ready');
+      } catch(e) {
+        document.documentElement.classList.add('theme-ready');
       }
     })();
   </script>
 
-  <!-- Font Awesome for Social Icons -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
     :root {
-      /* Light mode */
-      --bg: #f5f5f5;
-      --bg-alt: #ffffff;
-      --text: #111111;
-      --muted: #4b5563;
-      --accent: #2563eb;
-      --border: #e5e7eb;
-      --nav-bg: #ffffff;
-      --nav-text: #111111;
-      --nav-active-bg: #111111;
-      --nav-active-text: #ffffff;
-      --footer-bg: #ffffff;
+      --bg: #f5f5f5; --bg-alt: #ffffff; --text: #111111; --muted: #4b5563;
+      --accent: #2563eb; --border: #e5e7eb; --nav-bg: #ffffff; --nav-text: #111111;
+      --nav-active-bg: #111111; --nav-active-text: #ffffff; --footer-bg: #ffffff;
       --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
     }
 
     :root[data-theme="dark"] {
-      /* Neutral dark greys */
-      --bg: #111827;
-      --bg-alt: #020617;
-      --text: #f9fafb;
-      --muted: #d1d5db;
-      --accent: #9ca3af;
-      --border: #1f2937;
-      --nav-bg: #020617;
-      --nav-text: #e5e7eb;
-      --nav-active-bg: #e5e7eb;
-      --nav-active-text: #020617;
-      --footer-bg: #020617;
+      --bg: #111827; --bg-alt: #020617; --text: #f9fafb; --muted: #d1d5db;
+      --accent: #9ca3af; --border: #1f2937; --nav-bg: #020617; --nav-text: #e5e7eb;
+      --nav-active-bg: #e5e7eb; --nav-active-text: #020617; --footer-bg: #020617;
       --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.75);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -86,441 +69,158 @@
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
-      transition: background-color 0.25s ease, color 0.25s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .site-shell,
-    .hero-card,
-    .page-card,
-    nav,
-    footer {
+    /* SMOOTH PAGE TRANSITION SUPPORT */
+    ::view-transition-old(root), ::view-transition-new(root) {
+      animation-duration: 0.4s;
+    }
+
+    /* SMOOTH CONTENT FADE-IN */
+    .site-shell { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+    html.theme-ready .site-shell { opacity: 1; transform: translateY(0); }
+
+    .site-shell, .hero-card, .page-card, nav, footer {
       transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
 
     .site-shell {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 24px 20px 32px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+      max-width: 960px; margin: 0 auto; padding: 24px 20px 32px;
+      flex: 1; display: flex; flex-direction: column; gap: 24px;
     }
 
-    /* HEADER / BRAND BAR */
-    .brand-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .brand-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
+    .brand-bar { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand-left { display: flex; align-items: center; gap: 14px; }
     .brand-logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-alt);
-      overflow: hidden;
-      padding: 4px;
+      width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; background: var(--bg-alt);
+      overflow: hidden; padding: 4px;
     }
-
     .brand-logo img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center;
-      filter: invert(0);
+      display: block; width: 100%; height: 100%; object-fit: contain; filter: invert(0);
       transition: filter 0.25s ease;
     }
+    :root[data-theme="dark"] .brand-logo img { filter: invert(1); }
+    .brand-text { display: flex; flex-direction: column; gap: 2px; }
+    .brand-name { font-weight: 600; letter-spacing: 0.02em; font-size: 1.05rem; }
+    .brand-tagline { font-size: 0.85rem; color: var(--muted); }
 
-    :root[data-theme="dark"] .brand-logo img {
-      filter: invert(1);
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .brand-name {
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      font-size: 1.05rem;
-    }
-
-    .brand-tagline {
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    /* NAV */
     nav {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: var(--nav-bg);
-      border: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+      border-radius: 999px; background: var(--nav-bg); border: 1px solid var(--border);
       box-shadow: var(--shadow-soft);
     }
-
     nav a {
-      text-decoration: none;
-      font-size: 0.9rem;
-      padding: 6px 12px;
-      border-radius: 999px;
-      color: var(--nav-text);
-      font-weight: 500;
-      transition: background-color 0.15s ease, color 0.15s ease;
-      white-space: nowrap;
+      text-decoration: none; font-size: 0.9rem; padding: 6px 12px; border-radius: 999px;
+      color: var(--nav-text); font-weight: 500; transition: all 0.15s ease; white-space: nowrap;
     }
+    nav a:hover { background-color: rgba(148, 163, 184, 0.16); }
+    nav a.active { background-color: var(--nav-active-bg); color: var(--nav-active-text); }
 
-    nav a:hover {
-      background-color: rgba(148, 163, 184, 0.16);
-    }
-
-    nav a.active {
-      background-color: var(--nav-active-bg);
-      color: var(--nav-active-text);
-    }
-
-    /* MAIN CARD */
-    main {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
+    main { display: flex; flex-direction: column; gap: 24px; }
     .hero-card {
-      border-radius: 24px;
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      padding: 28px 24px 26px;
-      box-shadow: var(--shadow-soft);
+      border-radius: 24px; background: var(--bg-alt); border: 1px solid var(--border);
+      padding: 28px 24px 26px; box-shadow: var(--shadow-soft);
     }
-
     .hero-eyebrow {
-      font-size: 0.78rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 600;
-      margin-bottom: 12px;
+      font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 12px;
     }
-
-    .hero-body {
-      font-size: 0.98rem;
-      color: var(--muted);
-      max-width: 32rem;
-      margin: 0 0 20px;
+    .hero-body { font-size: 0.98rem; color: var(--muted); max-width: 32rem; margin: 0 0 20px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .btn-primary, .btn-ghost {
+      border-radius: 999px; padding: 8px 16px; font-size: 0.9rem; font-weight: 500;
+      border: 1px solid transparent; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px; transition: all 0.15s ease;
     }
+    .btn-primary { background-color: var(--accent); color: #ffffff; border-color: var(--accent); }
+    .btn-primary:hover { background-color: #1d4ed8; border-color: #1d4ed8; }
+    :root[data-theme="dark"] .btn-primary { background-color: #4b5563; border-color: #4b5563; }
+    :root[data-theme="dark"] .btn-primary:hover { background-color: #6b7280; border-color: #6b7280; }
+    .btn-ghost { background-color: transparent; color: var(--text); border-color: var(--border); }
+    .btn-ghost:hover { background-color: rgba(148, 163, 184, 0.12); }
+    .hero-contact-email { font-size: 0.9rem; color: var(--muted); margin-top: 14px; }
+    .hero-contact-email a { color: var(--accent); text-decoration: none; }
+    .hero-contact-email a:hover { text-decoration: underline; }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .btn-primary,
-    .btn-ghost {
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      border: 1px solid transparent;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-      outline: none;
-    }
-
-    .btn-primary {
-      background-color: var(--accent);
-      color: #ffffff;
-      border-color: var(--accent);
-    }
-
-    .btn-primary:hover {
-      background-color: #1d4ed8;
-      border-color: #1d4ed8;
-    }
-
-    :root[data-theme="dark"] .btn-primary {
-      background-color: #4b5563;
-      border-color: #4b5563;
-    }
-
-    :root[data-theme="dark"] .btn-primary:hover {
-      background-color: #6b7280;
-      border-color: #6b7280;
-    }
-
-    .btn-ghost {
-      background-color: transparent;
-      color: var(--text);
-      border-color: var(--border);
-    }
-
-    .btn-ghost:hover {
-      background-color: rgba(148, 163, 184, 0.12);
-    }
-
-    .hero-contact-email {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-top: 14px;
-    }
-
-    .hero-contact-email a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .hero-contact-email a:hover {
-      text-decoration: underline;
-    }
-
-    /* SHOP COMING SOON CARD */
     .page-card {
-      border-radius: 24px;
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      padding: 32px 24px 30px;
-      box-shadow: var(--shadow-soft);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      min-height: 200px;
-      justify-content: center;
-      gap: 14px;
+      border-radius: 24px; background: var(--bg-alt); border: 1px solid var(--border);
+      padding: 32px 24px 30px; box-shadow: var(--shadow-soft);
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      min-height: 200px; justify-content: center; gap: 14px;
     }
-
-    .page-eyebrow {
-      font-size: 0.78rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .page-title {
-      font-size: 1.6rem;
-      margin: 0;
-      letter-spacing: -0.02em;
-    }
-
-    .page-body {
-      margin: 0;
-      max-width: 28rem;
-      font-size: 0.96rem;
-      color: var(--muted);
-    }
-
+    .page-eyebrow { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    .page-title { font-size: 1.6rem; margin: 0; letter-spacing: -0.02em; }
+    .page-body { margin: 0; max-width: 28rem; font-size: 0.96rem; color: var(--muted); }
     .coming-pill {
-      margin-top: 6px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px dashed var(--border);
-      font-size: 0.8rem;
-      color: var(--muted);
-      transition: border-color 0.25s ease, color 0.25s ease;
+      margin-top: 6px; padding: 6px 12px; border-radius: 999px; border: 1px dashed var(--border);
+      font-size: 0.8rem; color: var(--muted); transition: all 0.25s ease;
     }
 
-    /* FOOTER */
-    footer {
-      padding: 16px 20px 22px;
-      background-color: var(--footer-bg);
-      border-top: 1px solid var(--border);
-      margin-top: 16px;
-    }
-
+    footer { padding: 16px 20px 22px; background-color: var(--footer-bg); border-top: 1px solid var(--border); margin-top: 16px; }
     .footer-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 14px;
-      justify-content: space-between;
+      max-width: 960px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center;
+      gap: 14px; justify-content: space-between;
     }
-
-    .footer-left {
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-
-    .social-links {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.3rem;
-    }
-
+    .footer-left { font-size: 0.82rem; color: var(--muted); }
+    .social-links { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; }
     .social-links a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      color: inherit;
-      text-decoration: none;
-      transition: background-color 0.15s ease, transform 0.12s ease, color 0.15s ease;
+      display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px;
+      border-radius: 50%; color: inherit; text-decoration: none; transition: all 0.15s ease;
     }
-
-    .social-links a:hover {
-      transform: translateY(-1px);
-      background-color: rgba(148, 163, 184, 0.25);
-    }
-
-    .social-links a.facebook {
-      color: #1877f2;
-    }
-    .social-links a.youtube {
-      color: #ff0000;
-    }
+    .social-links a:hover { transform: translateY(-1px); background-color: rgba(148, 163, 184, 0.25); }
+    .social-links a.facebook { color: #1877f2; }
+    .social-links a.youtube { color: #ff0000; }
     .social-links a.instagram {
       background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .social-links a.tiktok {
-      background: linear-gradient(45deg, #25f4ee, #fe2c55);
-      -webkit-background-clip: text;
+      background: linear-gradient(45deg, #25f4ee, #fe2c55); -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    .social-links a.snapchat { background-color: #fffc00; color: #000000; }
+    .social-links a.snapchat:hover { background-color: #facc15; }
 
-    /* Snapchat: bright yellow circle, black centered icon */
-    .social-links a.snapchat {
-      background-color: #fffc00;
-      color: #000000;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .social-links a.snapchat i {
-      font-size: 1.1rem;
-      line-height: 1;
-    }
-
-    .social-links a.snapchat:hover {
-      background-color: #facc15;
-    }
-
-    /* THEME TOGGLE */
     .theme-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      padding: 5px 10px;
-      font-size: 0.78rem;
-      color: var(--muted);
-      cursor: pointer;
-      background-color: transparent;
-      transition: background-color 0.15s ease, transform 0.1s ease, color 0.15s ease;
+      display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
+      border: 1px solid var(--border); padding: 5px 10px; font-size: 0.78rem;
+      color: var(--muted); cursor: pointer; background: transparent; transition: all 0.15s ease;
     }
-
-    .theme-toggle:hover {
-      background-color: rgba(148, 163, 184, 0.18);
-      transform: translateY(-1px);
-    }
-
-    .theme-toggle span.icon {
-      font-size: 0.95rem;
-    }
+    .theme-toggle:hover { background-color: rgba(148, 163, 184, 0.18); transform: translateY(-1px); }
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-      .site-shell {
-        padding: 18px 16px 24px;
-        gap: 20px;
-      }
-
-      .brand-bar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav {
-        width: 100%;
-        justify-content: space-between;
-        overflow-x: auto;
-      }
-
-      .hero-card,
-      .page-card {
-        border-radius: 20px;
-      }
-
-      footer {
-        padding: 14px 16px 18px;
-      }
-
-      .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+      .site-shell { padding: 18px 16px 24px; gap: 20px; }
+      .brand-bar { flex-direction: column; align-items: flex-start; }
+      nav { width: 100%; justify-content: space-between; overflow-x: auto; }
+      .hero-card, .page-card { border-radius: 20px; }
+      footer { padding: 14px 16px 18px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
     }
-
     @media (max-width: 420px) {
-      nav {
-        padding: 6px 8px;
-        gap: 4px;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .btn-primary,
-      .btn-ghost {
-        justify-content: center;
-        width: 100%;
-      }
+      nav { padding: 6px 8px; gap: 4px; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-ghost { justify-content: center; width: 100%; }
     }
   </style>
 </head>
 
 <body>
   <div class="site-shell">
-    <!-- Top brand bar -->
     <header class="brand-bar">
       <div class="brand-left">
         <div class="brand-logo">
-          <!-- GitHub logo -->
-          <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png"
-               alt="JakeBitt3DPrints logo">
+          <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="JakeBitt3DPrints logo">
         </div>
         <div class="brand-text">
           <div class="brand-name">JakeBitt3DPrints</div>
           <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
         </div>
       </div>
-
       <nav aria-label="Main navigation">
-        <a href="#" class="active">Home</a>
+        <a href="/" class="active">Home</a>
         <a href="gallery">Gallery</a>
         <a href="shop">Shop</a>
         <a href="calendar">Calendar</a>
@@ -528,7 +228,6 @@
       </nav>
     </header>
 
-    <!-- Main content card -->
     <main>
       <section class="hero-card" aria-labelledby="about-heading">
         <div class="hero-eyebrow">About Us</div>
@@ -562,61 +261,15 @@
     </main>
   </div>
 
-  <!-- Footer with theme toggle and social links -->
   <footer>
     <div class="footer-inner">
-      <div class="footer-left">
-        &copy; 2025 JakeBitt3DPrints. All rights reserved.
-      </div>
-
+      <div class="footer-left">&copy; 2025 JakeBitt3DPrints. All rights reserved.</div>
       <div class="social-links" aria-label="Social media links">
-        <a
-          href="https://m.facebook.com/61579251184929/"
-          target="_blank"
-          rel="noopener"
-          class="facebook"
-          aria-label="Facebook"
-        >
-          <i class="fab fa-facebook"></i>
-        </a>
-        <a
-          href="https://www.instagram.com/jakebitt3dprints/"
-          target="_blank"
-          rel="noopener"
-          class="instagram"
-          aria-label="Instagram"
-        >
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a
-          href="https://www.youtube.com/@JakeBitt3DPrints"
-          target="_blank"
-          rel="noopener"
-          class="youtube"
-          aria-label="YouTube"
-        >
-          <i class="fab fa-youtube"></i>
-        </a>
-        <a
-          href="https://www.tiktok.com/@jakebitt3dprints"
-          target="_blank"
-          rel="noopener"
-          class="tiktok"
-          aria-label="TikTok"
-        >
-          <i class="fab fa-tiktok"></i>
-        </a>
-        <a
-          href="https://www.snapchat.com/@jakebitt3dprint"
-          target="_blank"
-          rel="noopener"
-          class="snapchat"
-          aria-label="Snapchat"
-        >
-          <i class="fab fa-snapchat"></i>
-        </a>
-
-        <!-- Theme toggle -->
+        <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
         <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
           <span class="icon" id="themeIcon">🌙</span>
           <span id="themeLabel">Dark mode</span>
@@ -626,37 +279,30 @@
   </footer>
 
   <script>
-    // Theme toggle – reads theme from <html> and updates icon/label
-    (function () {
+    // Theme toggle - syncs with already-applied theme
+    (function() {
       const root = document.documentElement;
       const toggle = document.getElementById('themeToggle');
       const icon = document.getElementById('themeIcon');
       const label = document.getElementById('themeLabel');
 
-      function applyThemeFromRoot() {
+      function syncToggle() {
         const isDark = root.getAttribute('data-theme') === 'dark';
-        if (isDark) {
-          icon.textContent = '☀️';
-          label.textContent = 'Light mode';
-        } else {
-          icon.textContent = '🌙';
-          label.textContent = 'Dark mode';
-        }
+        icon.textContent = isDark ? '☀️' : '🌙';
+        label.textContent = isDark ? 'Light mode' : 'Dark mode';
       }
 
-      // Initial sync with current theme
-      applyThemeFromRoot();
-
+      syncToggle();
       toggle.addEventListener('click', () => {
         const isDark = root.getAttribute('data-theme') === 'dark';
         if (isDark) {
           root.removeAttribute('data-theme');
-          window.localStorage.setItem('theme', 'light');
+          localStorage.setItem('theme', 'light');
         } else {
           root.setAttribute('data-theme', 'dark');
-          window.localStorage.setItem('theme', 'dark');
+          localStorage.setItem('theme', 'dark');
         }
-        applyThemeFromRoot();
+        syncToggle();
       });
     })();
   </script>
