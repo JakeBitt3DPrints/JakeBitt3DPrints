@@ -10,11 +10,15 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="theme-color" content="#ffffff" id="themeColorMeta" />
 
-  <script>
+  <!--
+    data-cfasync="false" tells Cloudflare NOT to defer this script.
+    This is required for dark mode auto-detection to work correctly.
+  -->
+  <script data-cfasync="false">
     (function() {
       try {
-        const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var stored = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (stored === 'dark' || (!stored && prefersDark)) {
           document.documentElement.setAttribute('data-theme', 'dark');
         }
@@ -171,14 +175,6 @@
       background: var(--border); border: 1px solid var(--border); height: 120px;
     }
     .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .photo-placeholder {
-      width: 100%; height: 100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;
-      color: var(--muted); font-size: 0.76rem; font-weight: 500;
-      background: linear-gradient(135deg, var(--bg) 0%, var(--border) 100%);
-      text-align: center; padding: 10px;
-    }
-    .photo-placeholder i { font-size: 1.5rem; opacity: 0.3; }
 
     /* ITEMS CARD */
     .items-card {
@@ -235,7 +231,7 @@
       text-decoration: none; color: inherit;
       background: rgba(255,255,255,0.10); border-radius: 13px; padding: 13px 14px;
       font-size: 0.88rem; font-weight: 500; border: 1px solid rgba(255,255,255,0.12);
-      transition: background 0.12s; min-height: 52px;
+      transition: background 0.12s; min-height: 52px; cursor: pointer;
     }
     :root[data-theme="dark"] .contact-link { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); }
     .contact-link:active { background: rgba(255,255,255,0.2); }
@@ -244,15 +240,58 @@
       display: flex; align-items: center; justify-content: center;
       border-radius: 9px; background: rgba(255,255,255,0.15); font-size: 0.9rem;
     }
-    .contact-link .cl-text { display: flex; flex-direction: column; gap: 2px; }
+    .contact-link .cl-text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
     .contact-link .cl-sub { font-size: 0.72rem; opacity: 0.55; }
+    .contact-link .cl-chevron { font-size: 0.7rem; opacity: 0.4; margin-left: auto; }
 
-    /* CALL + TEXT SPLIT */
-    .phone-row { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
-    .contact-link.small { padding: 11px 12px; min-height: 48px; justify-content: center; flex-direction: column; align-items: center; text-align: center; gap: 5px; }
-    .contact-link.small .cl-icon { width: 26px; height: 26px; border-radius: 8px; }
-    .contact-link.small .cl-label { font-size: 0.82rem; font-weight: 600; }
-    .contact-link.small .cl-sub { font-size: 0.70rem; }
+    /* PHONE POPUP OVERLAY */
+    .phone-overlay {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.45);
+      align-items: flex-end; justify-content: center;
+      padding-bottom: calc(16px + var(--safe-b));
+    }
+    .phone-overlay.open { display: flex; }
+    .phone-sheet {
+      background: var(--bg-alt); border-radius: 20px 20px 16px 16px;
+      width: 100%; max-width: 480px; padding: 20px 16px 16px;
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+      display: flex; flex-direction: column; gap: 10px;
+      animation: sheetUp 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    @keyframes sheetUp {
+      from { transform: translateY(60px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .phone-sheet-title {
+      font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--muted); text-align: center; margin-bottom: 2px;
+    }
+    .phone-action {
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none; color: var(--text);
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 13px; padding: 14px 16px;
+      font-size: 0.92rem; font-weight: 600; transition: background 0.12s;
+    }
+    .phone-action:active { background: var(--border); }
+    .phone-action .pa-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .phone-action.call .pa-icon { background: #dcfce7; color: #16a34a; }
+    .phone-action.text .pa-icon { background: #dbeafe; color: #2563eb; }
+    :root[data-theme="dark"] .phone-action.call .pa-icon { background: #14532d; color: #4ade80; }
+    :root[data-theme="dark"] .phone-action.text .pa-icon { background: #1e3a5f; color: #7c9fff; }
+    .phone-action .pa-text { display: flex; flex-direction: column; gap: 2px; }
+    .phone-action .pa-sub { font-size: 0.74rem; font-weight: 400; color: var(--muted); }
+    .phone-cancel {
+      background: none; border: 1px solid var(--border); border-radius: 13px;
+      padding: 12px; font-size: 0.88rem; font-weight: 600; color: var(--muted);
+      cursor: pointer; font-family: var(--font-body); transition: background 0.12s;
+    }
+    .phone-cancel:active { background: var(--border); }
 
     /* SOCIAL ROW */
     .social-row { display: flex; align-items: center; justify-content: center; gap: 9px; flex-wrap: wrap; }
@@ -308,13 +347,13 @@
     <div class="info-chip">
       <div class="ic-icon"><i class="fa-solid fa-door-open"></i></div>
       <div class="ic-label">Room</div>
-      <!-- ✏️ Update when you know your room number -->
+      <!-- Update when you know your room number -->
       <div class="ic-value">TBA</div>
     </div>
     <div class="info-chip">
       <div class="ic-icon"><i class="fa-solid fa-building"></i></div>
       <div class="ic-label">Floor</div>
-      <!-- ✏️ Update when you know your floor -->
+      <!-- Update when you know your floor -->
       <div class="ic-value">TBA</div>
     </div>
   </div>
@@ -336,9 +375,11 @@
       <i class="fa-regular fa-images"></i> Photos
     </div>
     <div class="photo-grid">
+      <!-- Large banner image -->
       <div class="photo">
         <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/image1.jpeg" alt="Diecast display stand">
       </div>
+      <!-- 3 smaller images -->
       <div class="photo">
         <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/image2.JPG" alt="3D printed organizer">
       </div>
@@ -347,12 +388,6 @@
       </div>
       <div class="photo">
         <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/image4.JPG" alt="3D printed fidget">
-      </div>
-      <div class="photo">
-        <div class="photo-placeholder">
-          <i class="fa-regular fa-image"></i>
-          Image Placeholder
-        </div>
       </div>
     </div>
   </div>
@@ -416,20 +451,26 @@
   <div class="contact-card animate d5">
     <div class="cc-title">Questions? Get in touch.</div>
     <div class="contact-links">
-      <a href="tel:+14439283011" class="contact-link">
+
+      <!-- Phone — tapping opens the Call/Text sheet -->
+      <div class="contact-link" id="phoneBtn" role="button" tabindex="0">
         <span class="cl-icon"><i class="fa-solid fa-phone"></i></span>
         <div class="cl-text">
           <span>(443) 928-3011</span>
           <span class="cl-sub">Tap to call or text</span>
         </div>
-      </a>
-      <a href="/cdn-cgi/l/email-protection#6704080913060413270d060c02050e1313540317150e0913144904080a" class="contact-link">
+        <span class="cl-chevron"><i class="fa-solid fa-chevron-up"></i></span>
+      </div>
+
+      <!-- Email — written out plainly so Cloudflare can't mangle it -->
+      <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#106;&#97;&#107;&#101;&#98;&#105;&#116;&#116;&#51;&#100;&#112;&#114;&#105;&#110;&#116;&#115;&#46;&#99;&#111;&#109;" class="contact-link">
         <span class="cl-icon"><i class="fa-solid fa-envelope"></i></span>
         <div class="cl-text">
-          <span><span class="__cf_email__" data-cfemail="7d1e1213091c1e093d171c16181f1409094e190d0f1413090e531e1210">[email&#160;protected]</span></span>
+          <span>contact@jakebitt3dprints.com</span>
           <span class="cl-sub">Email us anytime</span>
         </div>
       </a>
+
     </div>
   </div>
 
@@ -445,41 +486,94 @@
   <!-- FOOTER -->
   <p class="foot-note animate d6">
     <a href="/"><i class="fa-solid fa-arrow-left" style="font-size:0.65rem;"></i> Main site</a>
-    &nbsp;·&nbsp; © 2025 JakeBitt3DPrints
+    &nbsp;·&nbsp; &copy; 2025 JakeBitt3DPrints
   </p>
 
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<!-- PHONE CALL/TEXT BOTTOM SHEET -->
+<div class="phone-overlay" id="phoneOverlay">
+  <div class="phone-sheet">
+    <div class="phone-sheet-title">(443) 928-3011</div>
+    <a href="tel:+14439283011" class="phone-action call">
+      <span class="pa-icon"><i class="fa-solid fa-phone"></i></span>
+      <div class="pa-text">
+        <span>Call</span>
+        <span class="pa-sub">Open phone dialer</span>
+      </div>
+    </a>
+    <a href="sms:+14439283011" class="phone-action text">
+      <span class="pa-icon"><i class="fa-solid fa-comment"></i></span>
+      <div class="pa-text">
+        <span>Text</span>
+        <span class="pa-sub">Open messages app</span>
+      </div>
+    </a>
+    <button class="phone-cancel" id="phoneCancel">Cancel</button>
+  </div>
+</div>
+
+<script data-cfasync="false">
   /* THEME TOGGLE */
   (function() {
-    const root   = document.documentElement;
-    const toggle = document.getElementById('themeToggle');
-    const icon   = document.getElementById('themeIcon');
-    const label  = document.getElementById('themeLabel');
-    const meta   = document.getElementById('themeColorMeta');
+    var root   = document.documentElement;
+    var toggle = document.getElementById('themeToggle');
+    var icon   = document.getElementById('themeIcon');
+    var label  = document.getElementById('themeLabel');
+    var meta   = document.getElementById('themeColorMeta');
+
     function sync() {
-      const dark = root.getAttribute('data-theme') === 'dark';
+      var dark = root.getAttribute('data-theme') === 'dark';
       icon.textContent  = dark ? '☀️' : '🌙';
       label.textContent = dark ? 'Light' : 'Dark';
       if (meta) meta.setAttribute('content', dark ? '#0f0f1a' : '#ffffff');
     }
-    sync();
-    toggle.addEventListener('click', () => {
-      const dark = root.getAttribute('data-theme') === 'dark';
-      if (dark) { root.removeAttribute('data-theme'); localStorage.setItem('theme','light'); }
-      else      { root.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); }
+
+    sync(); /* set correct icon on load */
+
+    toggle.addEventListener('click', function() {
+      var dark = root.getAttribute('data-theme') === 'dark';
+      if (dark) {
+        root.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        root.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
       sync();
     });
   })();
 
-  /* NATIVE SHARE API — only shows on iOS/Android that support it */
+  /* PHONE SHEET */
   (function() {
-    const banner = document.getElementById('shareBanner');
-    const btn    = document.getElementById('shareBtn');
+    var btn     = document.getElementById('phoneBtn');
+    var overlay = document.getElementById('phoneOverlay');
+    var cancel  = document.getElementById('phoneCancel');
+
+    function open()  { overlay.classList.add('open');    document.body.style.overflow = 'hidden'; }
+    function close() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+    btn.addEventListener('click', open);
+    btn.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') open(); });
+    cancel.addEventListener('click', close);
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) close(); });
+  })();
+
+  /* NATIVE SHARE API — only shows on iOS/Android */
+  (function() {
+    var banner = document.getElementById('shareBanner');
+    var btn    = document.getElementById('shareBtn');
     if (navigator.share) {
       banner.style.display = 'flex';
-      btn.addEventListener('click', async () => {
-        try {
-          await navigator.share({
-            title: 'JakeBitt3DPrints – Event',
+      btn.addEventListener('click', function() {
+        navigator.share({
+          title: 'JakeBitt3DPrints – Event',
+          text:  'Check out this 3D printing pop-up at the hotel! Custom diecast displays, organizers & more.',
+          url:   window.location.href
+        }).catch(function() {});
+      });
+    }
+  })();
+</script>
+</body>
+</html>
