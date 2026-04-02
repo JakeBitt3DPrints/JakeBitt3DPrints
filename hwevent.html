@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="theme-color" content="#ffffff" id="themeColorMeta" />
+  <meta name="format-detection" content="telephone=no" />
 
   <!--
     data-cfasync="false" tells Cloudflare NOT to defer this script.
@@ -253,45 +253,57 @@
     }
     .phone-overlay.open { display: flex; }
     .phone-sheet {
-      background: var(--bg-alt); border-radius: 20px 20px 16px 16px;
+      background: var(--pill-bg);
+      color: var(--pill-text);
+      border-radius: 20px 20px 16px 16px;
       width: 100%; max-width: 480px; padding: 20px 16px 16px;
-      box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.3);
       display: flex; flex-direction: column; gap: 10px;
-      animation: sheetUp 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    .phone-overlay.open .phone-sheet {
+      animation: sheetUp 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+    .phone-overlay.closing .phone-sheet {
+      animation: sheetDown 0.22s cubic-bezier(0.4,0,0.2,1) forwards;
     }
     @keyframes sheetUp {
       from { transform: translateY(60px); opacity: 0; }
       to   { transform: translateY(0);    opacity: 1; }
     }
+    @keyframes sheetDown {
+      from { transform: translateY(0);    opacity: 1; }
+      to   { transform: translateY(60px); opacity: 0; }
+    }
     .phone-sheet-title {
       font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.12em; color: var(--muted); text-align: center; margin-bottom: 2px;
+      letter-spacing: 0.12em; color: var(--pill-text); opacity: 0.5;
+      text-align: center; margin-bottom: 2px;
     }
     .phone-action {
       display: flex; align-items: center; gap: 14px;
-      text-decoration: none; color: var(--text);
-      background: var(--bg); border: 1px solid var(--border);
+      text-decoration: none; color: var(--pill-text);
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 13px; padding: 14px 16px;
       font-size: 0.92rem; font-weight: 600; transition: background 0.12s;
     }
-    .phone-action:active { background: var(--border); }
+    .phone-action:active { background: rgba(255,255,255,0.2); }
     .phone-action .pa-icon {
       width: 34px; height: 34px; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       font-size: 1rem; flex-shrink: 0;
     }
-    .phone-action.call .pa-icon { background: #dcfce7; color: #16a34a; }
-    .phone-action.text .pa-icon { background: #dbeafe; color: #2563eb; }
-    :root[data-theme="dark"] .phone-action.call .pa-icon { background: #14532d; color: #4ade80; }
-    :root[data-theme="dark"] .phone-action.text .pa-icon { background: #1e3a5f; color: #7c9fff; }
+    .phone-action.call .pa-icon { background: rgba(74,222,128,0.2); color: #4ade80; }
+    .phone-action.text .pa-icon { background: rgba(124,159,255,0.2); color: #7c9fff; }
     .phone-action .pa-text { display: flex; flex-direction: column; gap: 2px; }
-    .phone-action .pa-sub { font-size: 0.74rem; font-weight: 400; color: var(--muted); }
+    .phone-action .pa-sub { font-size: 0.74rem; font-weight: 400; opacity: 0.55; }
     .phone-cancel {
-      background: none; border: 1px solid var(--border); border-radius: 13px;
-      padding: 12px; font-size: 0.88rem; font-weight: 600; color: var(--muted);
-      cursor: pointer; font-family: var(--font-body); transition: background 0.12s;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 13px; padding: 12px; font-size: 0.88rem; font-weight: 600;
+      color: var(--pill-text); cursor: pointer; font-family: var(--font-body);
+      transition: background 0.12s;
     }
-    .phone-cancel:active { background: var(--border); }
+    .phone-cancel:active { background: rgba(255,255,255,0.18); }
 
     /* SOCIAL ROW */
     .social-row { display: flex; align-items: center; justify-content: center; gap: 9px; flex-wrap: wrap; }
@@ -466,7 +478,7 @@
       <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#106;&#97;&#107;&#101;&#98;&#105;&#116;&#116;&#51;&#100;&#112;&#114;&#105;&#110;&#116;&#115;&#46;&#99;&#111;&#109;" class="contact-link">
         <span class="cl-icon"><i class="fa-solid fa-envelope"></i></span>
         <div class="cl-text">
-          <span>contact@jakebitt3dprints.com</span>
+          <span><span class="__cf_email__" data-cfemail="64070b0a10050710240e050f01060d1010570014160d0a10174a070b09">[email&#160;protected]</span></span>
           <span class="cl-sub">Email us anytime</span>
         </div>
       </a>
@@ -513,7 +525,7 @@
   </div>
 </div>
 
-<script data-cfasync="false">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false">
   /* THEME TOGGLE */
   (function() {
     var root   = document.documentElement;
@@ -546,14 +558,30 @@
 
   /* PHONE SHEET */
   (function() {
-    var btn     = document.getElementById('phoneBtn');
-    var overlay = document.getElementById('phoneOverlay');
-    var cancel  = document.getElementById('phoneCancel');
+    var btn      = document.getElementById('phoneBtn');
+    var overlay  = document.getElementById('phoneOverlay');
+    var cancel   = document.getElementById('phoneCancel');
+    var chevron  = btn.querySelector('.cl-chevron i');
 
-    function open()  { overlay.classList.add('open');    document.body.style.overflow = 'hidden'; }
-    function close() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+    function open() {
+      overlay.classList.remove('closing');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      chevron.className = 'fa-solid fa-chevron-down';
+    }
 
-    btn.addEventListener('click', open);
+    function close() {
+      overlay.classList.add('closing');
+      chevron.className = 'fa-solid fa-chevron-up';
+      setTimeout(function() {
+        overlay.classList.remove('open', 'closing');
+        document.body.style.overflow = '';
+      }, 220);
+    }
+
+    btn.addEventListener('click', function() {
+      overlay.classList.contains('open') ? close() : open();
+    });
     btn.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') open(); });
     cancel.addEventListener('click', close);
     overlay.addEventListener('click', function(e) { if (e.target === overlay) close(); });
@@ -568,12 +596,4 @@
       btn.addEventListener('click', function() {
         navigator.share({
           title: 'JakeBitt3DPrints – Event',
-          text:  'Check out this 3D printing pop-up at the hotel! Custom diecast displays, organizers & more.',
-          url:   window.location.href
-        }).catch(function() {});
-      });
-    }
-  })();
-</script>
-</body>
-</html>
+          text:  'Check
