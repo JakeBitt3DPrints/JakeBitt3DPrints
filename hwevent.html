@@ -324,6 +324,33 @@
     .foot-note { text-align: center; font-size: 0.75rem; color: var(--muted); padding-bottom: 4px; }
     .foot-note a { color: var(--accent); text-decoration: none; }
 
+    /* SCROLL HINT */
+    .scroll-hint {
+      position: fixed;
+      bottom: calc(24px + var(--safe-b));
+      left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      pointer-events: none; z-index: 90;
+      transition: opacity 0.4s ease;
+    }
+    .scroll-hint.hidden { opacity: 0; }
+    .scroll-hint-text {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.10em;
+      text-transform: uppercase; color: var(--text);
+      background: var(--bg-alt); border: 1px solid var(--border);
+      padding: 5px 12px; border-radius: 999px;
+      box-shadow: var(--shadow);
+      white-space: nowrap;
+    }
+    .scroll-hint-arrow {
+      font-size: 0.75rem; color: var(--muted);
+      animation: hintBounce 1.4s ease infinite;
+    }
+    @keyframes hintBounce {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50%       { transform: translateY(5px); opacity: 0.5; }
+    }
+
     @media (max-width: 380px) {
       .hero h1 { font-size: 1.42rem; }
       .pay-badge { font-size: 0.75rem; padding: 6px 10px; }
@@ -342,10 +369,6 @@
       </div>
       <span class="brand-name">JakeBitt3DPrints</span>
     </a>
-    <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-      <span id="themeIcon">🌙</span>
-      <span id="themeLabel">Dark</span>
-    </button>
   </div>
 
   <!-- HERO -->
@@ -501,6 +524,20 @@
     &nbsp;·&nbsp; &copy; 2025 JakeBitt3DPrints
   </p>
 
+  <!-- THEME TOGGLE AT BOTTOM -->
+  <div style="display:flex; justify-content:center; padding-bottom: 8px;">
+    <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+      <span id="themeIcon">🌙</span>
+      <span id="themeLabel">Dark mode</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- SCROLL HINT -->
+<div class="scroll-hint" id="scrollHint">
+  <div class="scroll-hint-text">Scroll for more</div>
+  <div class="scroll-hint-arrow"><i class="fa-solid fa-chevron-down"></i></div>
 </div>
 
 <!-- PHONE CALL/TEXT BOTTOM SHEET -->
@@ -526,6 +563,18 @@
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false">
+  /* SCROLL HINT — hides once user scrolls */
+  (function() {
+    var hint = document.getElementById('scrollHint');
+    var gone = false;
+    window.addEventListener('scroll', function() {
+      if (!gone && window.scrollY > 40) {
+        gone = true;
+        hint.classList.add('hidden');
+      }
+    }, { passive: true });
+  })();
+
   /* THEME TOGGLE */
   (function() {
     var root   = document.documentElement;
