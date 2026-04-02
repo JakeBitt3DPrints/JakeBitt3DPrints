@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>JakeBitt3DPrints</title>
+  <title>JakeBitt3DPrints - Event</title>
   <meta name="description" content="JakeBitt3DPrints event. Custom 3D printed diecast displays, stands, organizers and more!" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -343,7 +343,11 @@
       white-space: nowrap;
     }
     .scroll-hint-arrow {
-      font-size: 0.75rem; color: var(--muted);
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      border-radius: 50%; box-shadow: var(--shadow);
+      font-size: 0.72rem; color: var(--orange);
       animation: hintBounce 1.4s ease infinite;
     }
     @keyframes hintBounce {
