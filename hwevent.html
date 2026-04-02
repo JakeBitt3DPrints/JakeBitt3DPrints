@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>JakeBitt3DPrints</title>
-  <meta name="description" content="JakeBitt3DPrints event. Custom 3D printed diecast displays, stands, organizers and more!" />
+  <title>JakeBitt3DPrints – Pop-Up Event</title>
+  <meta name="description" content="JakeBitt3DPrints pop-up event. Custom 3D printed diecast displays, stands, organizers and more!" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -167,7 +167,7 @@
       letter-spacing: 0.14em; color: var(--muted); padding: 0 2px;
       display: flex; align-items: center; gap: 7px; margin-bottom: 8px;
     }
-    .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .photo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
     .photo-grid .photo:first-child { grid-column: 1 / -1; height: 175px; }
     .photo {
       border-radius: 14px; overflow: hidden;
@@ -250,6 +250,13 @@
     .contact-link .cl-text { display: flex; flex-direction: column; gap: 2px; }
     .contact-link .cl-sub { font-size: 0.72rem; opacity: 0.55; }
 
+    /* CALL + TEXT SPLIT */
+    .phone-row { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .contact-link.small { padding: 11px 12px; min-height: 48px; justify-content: center; flex-direction: column; align-items: center; text-align: center; gap: 5px; }
+    .contact-link.small .cl-icon { width: 26px; height: 26px; border-radius: 8px; }
+    .contact-link.small .cl-label { font-size: 0.82rem; font-weight: 600; }
+    .contact-link.small .cl-sub { font-size: 0.70rem; }
+
     /* SOCIAL ROW */
     .social-row { display: flex; align-items: center; justify-content: center; gap: 9px; flex-wrap: wrap; }
     .social-row a {
@@ -296,7 +303,7 @@
   <!-- HERO -->
   <div class="hero animate d2">
     <h1>Come check out our <em>diecast</em> displays &amp; stands</h1>
-    <p>3D printed displays, organizers, custom stands, fidgets, and other cool things. Stop by and take a look!</p>
+    <p>3D printed displays, organizers, custom stands, fidgets, and other cool things — all handmade by me. Stop by and take a look!</p>
   </div>
 
   <!-- ROOM + FLOOR -->
@@ -304,13 +311,13 @@
     <div class="info-chip">
       <div class="ic-icon"><i class="fa-solid fa-door-open"></i></div>
       <div class="ic-label">Room</div>
-      <!-- Update when you know your room number -->
+      <!-- ✏️ Update when you know your room number -->
       <div class="ic-value">TBA</div>
     </div>
     <div class="info-chip">
       <div class="ic-icon"><i class="fa-solid fa-building"></i></div>
       <div class="ic-label">Floor</div>
-      <!-- Update when you know your floor -->
+      <!-- ✏️ Update when you know your floor -->
       <div class="ic-value">TBA</div>
     </div>
   </div>
@@ -333,16 +340,16 @@
     </div>
     <div class="photo-grid">
       <div class="photo">
-        <div class="photo-placeholder">
-          <i class="fa-regular fa-image"></i>
-          Image Placeholder
-        </div>
+        <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/image1.jpeg" alt="Diecast display stand">
       </div>
       <div class="photo">
-        <div class="photo-placeholder">
-          <i class="fa-regular fa-image"></i>
-          Image Placeholder
-        </div>
+        <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/image2.JPG" alt="3D printed organizer">
+      </div>
+      <div class="photo">
+        <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/image3.JPG" alt="3D printed display">
+      </div>
+      <div class="photo">
+        <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/image4.JPG" alt="3D printed fidget">
       </div>
       <div class="photo">
         <div class="photo-placeholder">
@@ -416,13 +423,13 @@
         <span class="cl-icon"><i class="fa-solid fa-phone"></i></span>
         <div class="cl-text">
           <span>(443) 928-3011</span>
-          <span class="cl-sub">Call or text anytime</span>
+          <span class="cl-sub">Tap to call or text</span>
         </div>
       </a>
-      <a href="mailto:contact@jakebitt3dprints.com" class="contact-link">
+      <a href="/cdn-cgi/l/email-protection#6704080913060413270d060c02050e1313540317150e0913144904080a" class="contact-link">
         <span class="cl-icon"><i class="fa-solid fa-envelope"></i></span>
         <div class="cl-text">
-          <span>contact@jakebitt3dprints.com</span>
+          <span><span class="__cf_email__" data-cfemail="7d1e1213091c1e093d171c16181f1409094e190d0f1413090e531e1210">[email&#160;protected]</span></span>
           <span class="cl-sub">Email us anytime</span>
         </div>
       </a>
@@ -446,7 +453,7 @@
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   /* THEME TOGGLE */
   (function() {
     const root   = document.documentElement;
@@ -479,13 +486,3 @@
         try {
           await navigator.share({
             title: 'JakeBitt3DPrints – Event',
-            text:  'Check out this 3D Printing room at the hotel! Room#TBA. They have custom Diecast displays, organizers & more.',
-            url:   window.location.href,
-          });
-        } catch(e) { /* user cancelled */ }
-      });
-    }
-  })();
-</script>
-</body>
-</html>
