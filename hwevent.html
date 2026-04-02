@@ -596,4 +596,12 @@
       btn.addEventListener('click', function() {
         navigator.share({
           title: 'JakeBitt3DPrints – Event',
-          text:  'Check
+          text:  'Check out this 3D printing pop-up at the hotel! Custom diecast displays, organizers & more.',
+          url:   window.location.href
+        }).catch(function() {});
+      });
+    }
+  })();
+</script>
+</body>
+</html>
