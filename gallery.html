@@ -19,7 +19,8 @@
   <!-- View Transitions API for smooth page fades -->
   <meta name="view-transition" content="same-origin">
 
-  <!-- THEME: applied before first paint, no flash -->
+  <!-- THEME: inline bg on html before any paint — eliminates white flash -->
+  <style>html { background: #f5f5f5; } html[data-theme="dark"] { background: #111827; }</style>
   <script>
     (function() {
       try {
