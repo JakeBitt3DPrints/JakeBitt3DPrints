@@ -16,391 +16,369 @@
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-  <!-- Early theme application to prevent light→dark flash -->
-  <script>
-    (function () {
-      try {
-        var stored = window.localStorage.getItem('theme');
-        var prefersDark = window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches;
+  <!-- View Transitions API for smooth page fades -->
+  <meta name="view-transition" content="same-origin">
 
+  <!-- THEME: inline bg on html before any paint — eliminates white flash -->
+  <style>html { background: #f5f5f5; } html[data-theme="dark"] { background: #111827; }</style>
+  <script>
+    (function() {
+      try {
+        var stored = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (stored === 'dark' || (!stored && prefersDark)) {
           document.documentElement.setAttribute('data-theme', 'dark');
         }
-        // If stored === 'light', leave default (no data-theme)
-      } catch (e) {
-        // Fail silently; page remains default light
-      }
+      } catch(e) {}
     })();
   </script>
 
-  <!-- Font Awesome for Social Icons -->
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- CommonNinja Calendar Script -->
+  <!-- CommonNinja Calendar -->
   <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
-  
-  <!-- Flourish Map Script -->
+
+  <!-- Flourish Map -->
   <script src="https://public.flourish.studio/resources/embed.js"></script>
 
   <style>
+    /* ── TOKENS ── */
     :root {
-      /* Light mode */
-      --bg: #f5f5f5;
-      --bg-alt: #ffffff;
-      --text: #111111;
-      --muted: #4b5563;
-      --accent: #2563eb;
-      --border: #e5e7eb;
-      --nav-bg: #ffffff;
-      --nav-text: #111111;
-      --nav-active-bg: #111111;
+      --bg:          #f5f5f5;
+      --bg-alt:      #ffffff;
+      --text:        #111111;
+      --muted:       #4b5563;
+      --accent:      #2563eb;
+      --border:      #e5e7eb;
+      --nav-bg:      #ffffff;
+      --nav-text:    #111111;
+      --nav-active-bg:   #111111;
       --nav-active-text: #ffffff;
-      --footer-bg: #ffffff;
-      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+      --footer-bg:   #ffffff;
+      --shadow:      0 10px 25px rgba(15,23,42,0.08);
+      --shadow-lg:   0 14px 44px rgba(15,23,42,0.13);
+      --radius:      20px;
+      --font-head:   'DM Serif Display', Georgia, serif;
+      --font-body:   'DM Sans', system-ui, sans-serif;
+      --safe-b: env(safe-area-inset-bottom, 0px);
+      --safe-l: env(safe-area-inset-left,   0px);
+      --safe-r: env(safe-area-inset-right,  0px);
     }
-
     :root[data-theme="dark"] {
-      /* Dark mode */
-      --bg: #111827;
-      --bg-alt: #020617;
-      --text: #f9fafb;
-      --muted: #d1d5db;
-      --accent: #9ca3af;
-      --border: #1f2937;
-      --nav-bg: #020617;
-      --nav-text: #e5e7eb;
-      --nav-active-bg: #e5e7eb;
+      --bg:          #111827;
+      --bg-alt:      #020617;
+      --text:        #f9fafb;
+      --muted:       #d1d5db;
+      --accent:      #9ca3af;
+      --border:      #1f2937;
+      --nav-bg:      #020617;
+      --nav-text:    #e5e7eb;
+      --nav-active-bg:   #e5e7eb;
       --nav-active-text: #020617;
-      --footer-bg: #020617;
-      --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.75);
+      --footer-bg:   #020617;
+      --shadow:      0 10px 25px rgba(0,0,0,0.45);
+      --shadow-lg:   0 14px 44px rgba(0,0,0,0.60);
     }
 
-    * {
-      box-sizing: border-box;
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      overflow-x: hidden;
+      max-width: 100%;
     }
 
     body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--font-body);
       background: var(--bg);
       color: var(--text);
-      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
-      transition: background-color 0.25s ease, color 0.25s ease;
+      overflow-x: hidden;
+      max-width: 100%;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    .site-shell,
-    .card,
-    nav,
-    footer,
-    .commonninja_component,
-    .flourish-embed {
-      transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-    }
+    button, a, [role="button"] { touch-action: manipulation; }
 
+    /* ── PAGE FADE TRANSITION ── */
+    @keyframes vt-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
+    ::view-transition-old(root) { animation: vt-fade-out 0.22s ease forwards; }
+    ::view-transition-new(root) { animation: vt-fade-in  0.28s ease forwards; }
+
+    @keyframes pageFadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .site-shell { animation: pageFadeIn 0.45s cubic-bezier(0.4,0,0.2,1) both; }
+
+    /* ── ENTRANCE ANIMATIONS ── */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate { animation: slideUp 0.45s cubic-bezier(0.4,0,0.2,1) both; }
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.19s; }
+
+    /* ── LAYOUT SHELL ── */
     .site-shell {
-      max-width: 1400px;
+      max-width: 960px;
+      width: 100%;
       margin: 0 auto;
-      padding: 24px 20px 32px;
+      padding: 24px calc(20px + var(--safe-r)) 32px calc(20px + var(--safe-l));
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
     }
 
-    /* HEADER / BRAND BAR */
+    /* ── BRAND BAR ── */
     .brand-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 18px;
+      gap: 14px;
+      flex-wrap: wrap;
     }
-
     .brand-left {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
+      flex-shrink: 0;
     }
-
     .brand-logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
+      width: 44px; height: 44px;
+      border-radius: 50%;
       border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       background: var(--bg-alt);
-      overflow: hidden;
-      padding: 4px;
+      overflow: hidden; padding: 4px; flex-shrink: 0;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-
     .brand-logo img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center;
-      filter: invert(0);
-      transition: filter 0.25s ease;
+      width: 100%; height: 100%; object-fit: contain;
+      filter: invert(0); transition: filter 0.3s ease;
     }
+    :root[data-theme="dark"] .brand-logo img { filter: invert(1); }
+    .brand-text { display: flex; flex-direction: column; gap: 2px; }
+    .brand-name { font-weight: 700; font-size: 1.05rem; letter-spacing: 0.01em; color: var(--text); }
+    .brand-tagline { font-size: 0.82rem; color: var(--muted); line-height: 1.3; }
 
-    :root[data-theme="dark"] .brand-logo img {
-      filter: invert(1);
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .brand-name {
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      font-size: 1.05rem;
-    }
-
-    .brand-tagline {
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    /* NAV */
+    /* ── NAV ── */
+    .nav-wrap { flex-shrink: 0; }
     nav {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 10px;
+      gap: 4px;
+      padding: 5px 8px;
       border-radius: 999px;
       background: var(--nav-bg);
       border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+      overflow-y: visible;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      max-width: 100%;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-
+    nav::-webkit-scrollbar { display: none; }
     nav a {
       text-decoration: none;
-      font-size: 0.9rem;
-      padding: 6px 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 7px 14px;
       border-radius: 999px;
       color: var(--nav-text);
-      font-weight: 500;
-      transition: background-color 0.15s ease, color 0.15s ease;
       white-space: nowrap;
+      flex-shrink: 0;
+      transition: background-color 0.22s ease, color 0.22s ease, transform 0.12s ease;
     }
-
-    nav a:hover {
-      background-color: rgba(148, 163, 184, 0.16);
-    }
-
+    nav a:hover:not(.active) { background-color: rgba(148,163,184,0.16); }
+    nav a:active { transform: scale(0.95); }
     nav a.active {
       background-color: var(--nav-active-bg);
       color: var(--nav-active-text);
     }
 
-    /* MAIN CONTENT */
+    /* ── CARD ── */
     .card {
-      border-radius: 24px;
+      border-radius: var(--radius);
       background: var(--bg-alt);
       border: 1px solid var(--border);
-      padding: 32px;
-      box-shadow: var(--shadow-soft);
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .eyebrow {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--muted);
       font-weight: 600;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .page-title {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin: 0 0 28px 0;
-      line-height: 1.3;
+      font-family: var(--font-head);
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 24px;
     }
 
-    /* CONTENT GRID */
+    /* ── CONTENT GRID ── */
     .content-grid {
       display: grid;
       grid-template-columns: 2fr 1.9fr;
       gap: 24px;
-      margin-top: 24px;
       align-items: start;
     }
 
+    /* ── CALENDAR ── */
     .calendar-container {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .calendar-hint {
-      background: rgba(37, 99, 235, 0.1);
+      background: rgba(37,99,235,0.08);
       color: var(--accent);
-      padding: 12px 16px;
+      padding: 11px 15px;
       border-radius: 12px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       display: flex;
       align-items: center;
       gap: 8px;
-      border: 1px solid rgba(37, 99, 235, 0.2);
+      border: 1px solid rgba(37,99,235,0.18);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-
     :root[data-theme="dark"] .calendar-hint {
-      background: rgba(59, 130, 246, 0.18);
+      background: rgba(59,130,246,0.12);
       color: #93c5fd;
-      border-color: rgba(59, 130, 246, 0.35);
-    }
-
-    .calendar-hint i {
-      font-size: 1.1em;
+      border-color: rgba(59,130,246,0.25);
     }
 
     .commonninja_component {
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
       border: 1px solid var(--border);
       min-height: 600px;
       height: 600px;
       background: var(--bg-alt);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
     }
-
+    .commonninja_component.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
     :root[data-theme="dark"] .commonninja_component {
       background: #0f172a;
       border-color: #334155;
     }
-
     :root[data-theme="dark"] .commonninja_component iframe {
       color-scheme: dark;
       filter: invert(1) hue-rotate(180deg) contrast(1.05) brightness(1.02);
     }
 
+    /* ── MAP SECTION ── */
     .map-section {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .map-toggle-btn {
       background: var(--accent);
       color: #ffffff;
       border: 1px solid var(--accent);
-      padding: 12px 20px;
-      font-size: 0.95rem;
-      font-weight: 500;
+      padding: 10px 20px;
+      font-size: 0.88rem;
+      font-weight: 600;
       border-radius: 999px;
       cursor: pointer;
-      transition: background-color 0.15s ease, border-color 0.15s ease;
+      font-family: var(--font-body);
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      align-self: flex-start;
+      transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.12s ease, opacity 0.18s ease;
     }
-
-    .map-toggle-btn:hover {
-      background: #1d4ed8;
-      border-color: #1d4ed8;
-    }
-
+    .map-toggle-btn:hover { opacity: 0.88; }
+    .map-toggle-btn:active { transform: scale(0.96); }
     :root[data-theme="dark"] .map-toggle-btn {
       background: #4b5563;
       border-color: #4b5563;
     }
+    :root[data-theme="dark"] .map-toggle-btn:hover { opacity: 0.88; }
 
-    :root[data-theme="dark"] .map-toggle-btn:hover {
-      background: #6b7280;
-      border-color: #6b7280;
-    }
-
-    .map-toggle-btn i {
-      transition: transform 0.35s ease;
-    }
-
-    .map-toggle-btn.active i {
-      transform: rotate(180deg);
-    }
-
-    .map-toggle-btn .btn-text {
-      transition: opacity 0.2s ease;
-    }
+    .map-toggle-btn i { transition: transform 0.35s ease; }
+    .map-toggle-btn.active i { transform: rotate(180deg); }
+    .map-toggle-btn .btn-text { transition: opacity 0.2s ease; }
 
     .map-container {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.5s ease;
-      position: relative;
-      z-index: 1;
     }
-
-    .map-container.visible {
-      max-height: 400px;
-    }
+    .map-container.visible { max-height: 420px; }
 
     .flourish-wrapper {
       height: 400px;
-      max-height: 400px;
-      overflow: hidden;
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1px solid var(--border);
-      transition: border-color 0.25s ease;
-    }
-
-    .flourish-embed {
-      border-radius: 16px;
       overflow: hidden;
-      height: 400px !important;
-      max-height: 400px !important;
-      min-height: 0;
-      transition: border-color 0.25s ease;
-    }
-
-    .flourish-embed iframe {
-      display: block;
-      margin: 0;
-    }
-
-    /* Hide Flourish attribution - clip bottom and hide any links */
-    .flourish-wrapper .flourish-embed a,
-    .flourish-wrapper .flourish-embed [class*="attribution"],
-    .flourish-wrapper .flourish-embed [class*="credit"],
-    .flourish-wrapper .flourish-embed [class*="flourish-studio"] {
-      display: none !important;
-    }
-
-    :root[data-theme="dark"] .flourish-wrapper {
-      border-color: #334155;
-    }
-
-    /* Smooth fade-in for calendar and map */
-    .commonninja_component,
-    .flourish-wrapper {
       opacity: 0;
       transform: translateY(4px);
-      transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+      transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
     }
-
-    .commonninja_component.loaded,
     .flourish-wrapper.loaded {
       opacity: 1;
       transform: translateY(0);
     }
+    :root[data-theme="dark"] .flourish-wrapper { border-color: #334155; }
 
-    /* FOOTER */
+    .flourish-embed {
+      border-radius: 14px;
+      overflow: hidden;
+      height: 400px !important;
+      max-height: 400px !important;
+    }
+    .flourish-embed iframe { display: block; margin: 0; }
+
+    /* ── FOOTER ── */
     footer {
-      padding: 16px 20px 22px;
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
       background-color: var(--footer-bg);
       border-top: 1px solid var(--border);
-      margin-top: 16px;
+      padding: 16px calc(20px + var(--safe-r)) calc(16px + var(--safe-b)) calc(20px + var(--safe-l));
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-
     .footer-inner {
-      max-width: 1400px;
+      max-width: 960px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
@@ -408,121 +386,67 @@
       gap: 14px;
       justify-content: space-between;
     }
+    .footer-left { font-size: 0.82rem; color: var(--muted); }
+    .footer-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-    .footer-left {
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-
-    .social-links {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.3rem;
-    }
-
+    .social-links { display: flex; align-items: center; gap: 6px; }
     .social-links a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      color: inherit;
-      text-decoration: none;
-      transition: all 0.15s ease;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border);
+      text-decoration: none; font-size: 1rem; color: var(--muted);
+      transition: background-color 0.15s ease, transform 0.12s ease, border-color 0.15s ease;
     }
-
-    .social-links a:hover {
-      transform: translateY(-1px);
-      background-color: rgba(148, 163, 184, 0.25);
-    }
-
+    .social-links a:hover { background-color: rgba(148,163,184,0.18); transform: translateY(-1px); }
+    .social-links a:active { transform: scale(0.92); }
     .social-links a.facebook { color: #1877f2; }
-    .social-links a.youtube { color: #ff0000; }
-    .social-links a.instagram {
-      background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .social-links a.youtube  { color: #ff0000; }
+    .social-links a.instagram i {
+      background: linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .social-links a.tiktok {
-      background: linear-gradient(45deg, #25f4ee, #fe2c55);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .social-links a.tiktok i {
+      background: linear-gradient(45deg,#25f4ee,#fe2c55);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .social-links a.snapchat {
-      background-color: #fffc00;
-      color: #000000;
-    }
+    .social-links a.snapchat { background-color: #fffc00; border-color: #fffc00; color: #000; }
     .social-links a.snapchat:hover { background-color: #facc15; }
 
-    /* THEME TOGGLE */
-    .theme-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      padding: 5px 10px;
-      font-size: 0.78rem;
-      color: var(--muted);
-      cursor: pointer;
-      background: transparent;
-      transition: all 0.15s ease;
+    .theme-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 999px; border: 1px solid var(--border);
+      padding: 6px 13px; font-size: 0.8rem; color: var(--muted);
+      cursor: pointer; background: transparent;
+      font-family: var(--font-body); min-height: 36px;
+      transition: background-color 0.15s ease, transform 0.12s ease, border-color 0.3s ease;
     }
+    .theme-btn:hover { background-color: rgba(148,163,184,0.18); transform: translateY(-1px); }
+    .theme-btn:active { transform: scale(0.95); }
 
-    .theme-toggle:hover {
-      background-color: rgba(148, 163, 184, 0.18);
-      transform: translateY(-1px);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .site-shell { 
-        padding: 18px 16px 24px; 
-        gap: 20px; 
-        max-width: 960px;
-      }
-      .brand-bar { 
-        flex-direction: column; 
-        align-items: flex-start; 
-        gap: 16px;
-      }
-      nav { 
-        width: 100%; 
-        justify-content: center; 
-        overflow-x: auto; 
-        gap: 12px;
-      }
-      .card { 
-        padding: 24px 20px; 
-        border-radius: 20px; 
-      }
-      .content-grid { 
-        grid-template-columns: 1fr; 
-        gap: 20px; 
-      }
-      .commonninja_component {
-        min-height: 520px;
-        height: 520px;
-      }
-      .flourish-embed {
-        height: 400px;
-      }
-    }
-
-    @media (max-width: 420px) {
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .brand-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .nav-wrap { width: 100%; }
+      nav { width: 100%; justify-content: space-between; }
+      nav a { padding: 7px 10px; font-size: 0.82rem; }
       .card { padding: 20px 16px; }
-      nav { padding: 6px 8px; gap: 4px; }
-      .brand-name { font-size: 1rem; }
+      .page-title { font-size: 1.45rem; }
+      .content-grid { grid-template-columns: 1fr; gap: 20px; }
+      .commonninja_component { min-height: 520px; height: 520px; }
+      .map-toggle-btn { align-self: stretch; justify-content: center; }
+    }
+    @media (max-width: 400px) {
+      nav a { padding: 6px 8px; font-size: 0.78rem; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
   </style>
 </head>
 
 <body>
   <div class="site-shell">
-    <!-- HEADER -->
-    <header class="brand-bar">
+
+    <!-- BRAND BAR -->
+    <header class="brand-bar animate d1">
       <div class="brand-left">
         <div class="brand-logo">
           <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="JakeBitt3DPrints logo">
@@ -532,35 +456,39 @@
           <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
         </div>
       </div>
-      <nav aria-label="Main navigation">
-        <a href="/">Home</a>
-        <a href="gallery">Gallery</a>
-        <a href="shop">Shop</a>
-        <a href="calendar" class="active">Calendar</a>
-        <a href="contact">Contact</a>
-      </nav>
+      <div class="nav-wrap">
+        <nav aria-label="Main navigation">
+          <a href="/">Home</a>
+          <a href="gallery">Gallery</a>
+          <a href="shop">Shop</a>
+          <a href="calendar" class="active">Calendar</a>
+          <a href="contact">Contact</a>
+        </nav>
+      </div>
     </header>
 
-    <!-- MAIN CONTENT -->
-    <main class="card">
+    <!-- MAIN -->
+    <main class="card animate d2">
       <div class="eyebrow">Events & Locations</div>
       <h1 class="page-title">Calendar & Location</h1>
-      
+
       <div class="content-grid">
+        <!-- CALENDAR -->
         <div class="calendar-container">
           <div class="calendar-hint">
-            <i class="fas fa-info-circle"></i>
+            <i class="fas fa-circle-info"></i>
             Click on an event for more details
           </div>
           <div class="commonninja_component pid-5c6d132c-b8cb-4500-b668-e25a31e3d5e7"></div>
         </div>
 
+        <!-- MAP -->
         <div class="map-section">
           <button class="map-toggle-btn" id="mapToggle">
             <i class="fas fa-map-marked-alt"></i>
             <span class="btn-text">View Location Map</span>
           </button>
-          
+
           <div class="map-container" id="mapContainer">
             <div class="flourish-wrapper">
               <div class="flourish-embed flourish-map" data-src="visualisation/25948838">
@@ -573,22 +501,23 @@
         </div>
       </div>
     </main>
-  </div>
 
-  <!-- FOOTER -->
+  </div><!-- /site-shell -->
+
+  <!-- FOOTER — full width -->
   <footer>
-    <div class="footer-inner">
-      <div class="footer-left">
-        &copy; 2025 JakeBitt3DPrints. All rights reserved.
-      </div>
-      <div class="social-links" aria-label="Social media links">
-        <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-        <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-        <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
-        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
-          <span class="icon" id="themeIcon">🌙</span>
+    <div class="footer-inner animate d3">
+      <div class="footer-left">&copy; 2025 JakeBitt3DPrints. All rights reserved.</div>
+      <div class="footer-right">
+        <div class="social-links" aria-label="Social media links">
+          <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+          <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
+        </div>
+        <button type="button" class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+          <span id="themeIcon">🌙</span>
           <span id="themeLabel">Dark mode</span>
         </button>
       </div>
@@ -596,70 +525,95 @@
   </footer>
 
   <script>
-    // Map toggle functionality
-    const mapToggle = document.getElementById('mapToggle');
-    const mapContainer = document.getElementById('mapContainer');
-    const toggleText = mapToggle.querySelector('.btn-text');
+  (function() {
+
+    /* ── THEME TOGGLE ── */
+    var root   = document.documentElement;
+    var toggle = document.getElementById('themeToggle');
+    var tIcon  = document.getElementById('themeIcon');
+    var tLabel = document.getElementById('themeLabel');
+
+    function syncTheme() {
+      var dark = root.getAttribute('data-theme') === 'dark';
+      tIcon.textContent  = dark ? '☀️' : '🌙';
+      tLabel.textContent = dark ? 'Light mode' : 'Dark mode';
+    }
+    syncTheme();
+
+    toggle.addEventListener('click', function() {
+      var dark = root.getAttribute('data-theme') === 'dark';
+      if (dark) {
+        root.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        root.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      syncTheme();
+    });
+
+    /* ── MAP TOGGLE ── */
+    var mapToggle    = document.getElementById('mapToggle');
+    var mapContainer = document.getElementById('mapContainer');
+    var toggleText   = mapToggle.querySelector('.btn-text');
 
     mapToggle.addEventListener('click', function() {
       mapContainer.classList.toggle('visible');
       mapToggle.classList.toggle('active');
-
       toggleText.style.opacity = '0';
       setTimeout(function() {
-        if (mapContainer.classList.contains('visible')) {
-          toggleText.textContent = 'Hide Location Map';
-        } else {
-          toggleText.textContent = 'View Location Map';
-        }
+        toggleText.textContent = mapContainer.classList.contains('visible')
+          ? 'Hide Location Map'
+          : 'View Location Map';
         toggleText.style.opacity = '1';
       }, 200);
     });
 
-    // Theme toggle – reads theme from <html> and updates icon/label
-    (function () {
-      const root = document.documentElement;
-      const toggle = document.getElementById('themeToggle');
-      const icon = document.getElementById('themeIcon');
-      const label = document.getElementById('themeLabel');
+    /* ── SMOOTH PAGE TRANSITIONS ── */
+    var links = document.querySelectorAll('nav a');
 
-      function applyThemeFromRoot() {
-        const isDark = root.getAttribute('data-theme') === 'dark';
-        if (isDark) {
-          icon.textContent = '☀️';
-          label.textContent = 'Light mode';
-        } else {
-          icon.textContent = '🌙';
-          label.textContent = 'Dark mode';
+    links.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+        if (link.target === '_blank') return;
+
+        var url;
+        try { url = new URL(href, window.location.href); } catch(err) { return; }
+        if (url.origin !== window.location.origin) return;
+
+        if (document.startViewTransition) {
+          e.preventDefault();
+          document.startViewTransition(function() {
+            window.location.href = href;
+          });
+          return;
         }
-      }
 
-      // Initial sync with current theme
-      applyThemeFromRoot();
-
-      toggle.addEventListener('click', () => {
-        const isDark = root.getAttribute('data-theme') === 'dark';
-        if (isDark) {
-          root.removeAttribute('data-theme');
-          window.localStorage.setItem('theme', 'light');
-        } else {
-          root.setAttribute('data-theme', 'dark');
-          window.localStorage.setItem('theme', 'dark');
+        e.preventDefault();
+        var shell = document.querySelector('.site-shell');
+        if (shell) {
+          shell.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+          shell.style.opacity    = '0';
+          shell.style.transform  = 'translateY(-8px)';
         }
-        applyThemeFromRoot();
+        document.querySelector('footer').style.transition = 'opacity 0.22s ease';
+        document.querySelector('footer').style.opacity    = '0';
+        setTimeout(function() { window.location.href = href; }, 230);
       });
-    })();
+    });
 
-    // Smooth fade-in for calendar and map after load
-    window.addEventListener('load', function () {
-      const calendar = document.querySelector('.commonninja_component');
-      const mapWrapper = document.querySelector('.flourish-wrapper');
-
-      setTimeout(() => {
-        if (calendar) calendar.classList.add('loaded');
+    /* ── FADE IN CALENDAR + MAP AFTER LOAD ── */
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var calendar   = document.querySelector('.commonninja_component');
+        var mapWrapper = document.querySelector('.flourish-wrapper');
+        if (calendar)   calendar.classList.add('loaded');
         if (mapWrapper) mapWrapper.classList.add('loaded');
       }, 300);
     });
+
+  })();
   </script>
 </body>
 </html>
