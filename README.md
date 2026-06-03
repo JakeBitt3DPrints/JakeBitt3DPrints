@@ -1,8 +1,8 @@
-# Hi there 👋 I'm Jake Bitt
+# Hi there, I'm Jake!
 
 Welcome to my 3D printing portfolio! I'm a passionate 3D printing enthusiast who creates innovative designs, custom products, and engaging digital experiences.
 
-## 🎨 About Me
+##  About Me
 
 I'm **JakeBitt3DPrints** — a 3D printing creator dedicated to:
 - **Designing & Manufacturing** high-quality 3D printed products
@@ -10,7 +10,7 @@ I'm **JakeBitt3DPrints** — a 3D printing creator dedicated to:
 - **Sharing Knowledge** through tutorials, design tips, and inspiration for everyone from beginners to experts
 - **Building a Community** across social media and online platforms
 
-## 🌐 My Website
+##  My Website
 
 My portfolio is a fully-featured HTML website built with:
 - **Modern, responsive design** with light/dark theme support
@@ -18,7 +18,7 @@ My portfolio is a fully-featured HTML website built with:
 - **Smooth page transitions** with CSS animations and View Transitions API
 - **Google Analytics integration** for tracking engagement
 
-### 📄 Site Pages:
+###  Site Pages:
 - **Home** (`index.html`) – Introduction, about section, and social links
 - **Gallery** (`gallery.html`) – Showcase of 3D printing projects using nanoGallery2
 - **Custom Catalogue** (`CustomCatalogue.html`) – Interactive product catalog with customizer and cart system
@@ -28,7 +28,7 @@ My portfolio is a fully-featured HTML website built with:
 - **Links** (`links.html`) – Resource and social media directory
 - **Hardware Event** (`hwevent.html`) – Specialty event page
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 - **Libraries & Tools:**
@@ -40,7 +40,7 @@ My portfolio is a fully-featured HTML website built with:
 - **Design:** Responsive web design with CSS Grid & Flexbox
 - **Features:** Dark/light theme toggle, smooth animations, form handling
 
-## 🎯 Featured Products & Services
+##  Featured Products & Services
 
 ### Custom Merchandise Available:
 - **Custom Name Keychains** – Personalized with your chosen font and colors
@@ -52,7 +52,7 @@ My portfolio is a fully-featured HTML website built with:
 - **Hardware Event Merchandise** – Special Hot Wheels collections
 - And much more!
 
-## 📸 Gallery Highlights
+##  Gallery Highlights
 
 The website features a curated gallery of projects including:
 - Custom keychains and tags
@@ -62,7 +62,7 @@ The website features a curated gallery of projects including:
 - Emergency contact products
 - Specialty event merchandise
 
-## 🤝 Connect With Me
+##  Connect With Me
 
 Follow my work and stay updated across social platforms:
 
@@ -72,13 +72,13 @@ Follow my work and stay updated across social platforms:
 - **TikTok** – [@jakebitt3dprints](https://www.tiktok.com/@jakebitt3dprints)
 - **Snapchat** – [@jakebitt3dprint](https://www.snapchat.com/@jakebitt3dprint)
 
-## 📬 Get in Touch
+##  Get in Touch
 
 **Email:** [contact@jakebitt3dprints.com](mailto:contact@jakebitt3dprints.com)
 
 Have a custom project in mind? Want to collaborate? I'd love to hear from you!
 
-## 🚀 What's Coming
+##  What's Coming
 
 The shop is currently under development with exciting new features:
 - Expanded product catalog
@@ -90,4 +90,4 @@ Stay tuned for updates!
 
 ---
 
-© 2025 **JakeBitt3DPrints**. All rights reserved. | Bringing your imagination to life, one layer at a time. 🖨️✨
+© 2025 **JakeBitt3DPrints**. All rights reserved. | Bringing your imagination to life, one layer at a time.
