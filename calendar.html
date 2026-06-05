@@ -48,7 +48,6 @@
   <script src="https://public.flourish.studio/resources/embed.js"></script>
 
   <style>
-    /* ── TOKENS ── */
     :root {
       --bg:          #f5f5f5;
       --bg-alt:      #ffffff;
@@ -62,7 +61,6 @@
       --nav-active-text: #ffffff;
       --footer-bg:   #ffffff;
       --shadow:      0 10px 25px rgba(15,23,42,0.08);
-      --shadow-lg:   0 14px 44px rgba(15,23,42,0.13);
       --radius:      20px;
       --font-head:   'DM Serif Display', Georgia, serif;
       --font-body:   'DM Sans', system-ui, sans-serif;
@@ -83,16 +81,11 @@
       --nav-active-text: #020617;
       --footer-bg:   #020617;
       --shadow:      0 10px 25px rgba(0,0,0,0.45);
-      --shadow-lg:   0 14px 44px rgba(0,0,0,0.60);
     }
 
-    /* ── RESET ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html {
-      overflow-x: hidden;
-      max-width: 100%;
-    }
+    html { overflow-x: hidden; max-width: 100%; }
 
     body {
       font-family: var(--font-body);
@@ -111,7 +104,6 @@
 
     button, a, [role="button"] { touch-action: manipulation; }
 
-    /* ── PAGE FADE TRANSITION ── */
     @keyframes vt-fade-in  { from { opacity: 0; } to { opacity: 1; } }
     @keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
     ::view-transition-old(root) { animation: vt-fade-out 0.22s ease forwards; }
@@ -123,7 +115,6 @@
     }
     .site-shell { animation: pageFadeIn 0.45s cubic-bezier(0.4,0,0.2,1) both; }
 
-    /* ── ENTRANCE ANIMATIONS ── */
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -133,7 +124,6 @@
     .d2 { animation-delay: 0.12s; }
     .d3 { animation-delay: 0.19s; }
 
-    /* ── LAYOUT SHELL ── */
     .site-shell {
       max-width: 960px;
       width: 100%;
@@ -145,7 +135,6 @@
       gap: 20px;
     }
 
-    /* ── BRAND BAR ── */
     .brand-bar {
       display: flex;
       align-items: center;
@@ -153,19 +142,12 @@
       gap: 14px;
       flex-wrap: wrap;
     }
-    .brand-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
+    .brand-left { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
     .brand-logo {
-      width: 44px; height: 44px;
-      border-radius: 50%;
+      width: 44px; height: 44px; border-radius: 50%;
       border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center;
-      background: var(--bg-alt);
-      overflow: hidden; padding: 4px; flex-shrink: 0;
+      background: var(--bg-alt); overflow: hidden; padding: 4px; flex-shrink: 0;
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     .brand-logo img {
@@ -177,72 +159,47 @@
     .brand-name { font-weight: 700; font-size: 1.05rem; letter-spacing: 0.01em; color: var(--text); }
     .brand-tagline { font-size: 0.82rem; color: var(--muted); line-height: 1.3; }
 
-    /* ── NAV ── */
     .nav-wrap { flex-shrink: 0; }
     nav {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding: 5px 8px;
-      border-radius: 999px;
-      background: var(--nav-bg);
-      border: 1px solid var(--border);
+      display: flex; align-items: center; gap: 4px;
+      padding: 5px 8px; border-radius: 999px;
+      background: var(--nav-bg); border: 1px solid var(--border);
       box-shadow: var(--shadow);
-      overflow-x: auto;
-      overflow-y: visible;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
+      overflow-x: auto; overflow-y: visible;
+      scrollbar-width: none; -ms-overflow-style: none;
       max-width: 100%;
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     nav::-webkit-scrollbar { display: none; }
     nav a {
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 600;
-      padding: 7px 14px;
-      border-radius: 999px;
-      color: var(--nav-text);
-      white-space: nowrap;
-      flex-shrink: 0;
+      text-decoration: none; font-size: 0.88rem; font-weight: 600;
+      padding: 7px 14px; border-radius: 999px; color: var(--nav-text);
+      white-space: nowrap; flex-shrink: 0;
       transition: background-color 0.22s ease, color 0.22s ease, transform 0.12s ease;
     }
     nav a:hover:not(.active) { background-color: rgba(148,163,184,0.16); }
     nav a:active { transform: scale(0.95); }
-    nav a.active {
-      background-color: var(--nav-active-bg);
-      color: var(--nav-active-text);
-    }
+    nav a.active { background-color: var(--nav-active-bg); color: var(--nav-active-text); }
 
-    /* ── CARD ── */
     .card {
-      border-radius: var(--radius);
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      padding: 28px 24px;
+      border-radius: var(--radius); background: var(--bg-alt);
+      border: 1px solid var(--border); padding: 28px 24px;
       box-shadow: var(--shadow);
       transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .eyebrow {
-      font-size: 0.74rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 600;
-      margin-bottom: 10px;
+      font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 10px;
     }
 
     .page-title {
       font-family: var(--font-head);
       font-size: clamp(1.5rem, 5vw, 2rem);
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      color: var(--text);
-      margin-bottom: 24px;
+      line-height: 1.2; letter-spacing: -0.01em;
+      color: var(--text); margin-bottom: 24px;
     }
 
-    /* ── CONTENT GRID ── */
     .content-grid {
       display: grid;
       grid-template-columns: 2fr 1.9fr;
@@ -250,141 +207,87 @@
       align-items: start;
     }
 
-    /* ── CALENDAR ── */
-    .calendar-container {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
+    .calendar-container { display: flex; flex-direction: column; gap: 14px; }
 
     .calendar-hint {
-      background: rgba(37,99,235,0.08);
-      color: var(--accent);
-      padding: 11px 15px;
-      border-radius: 12px;
-      font-size: 0.88rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      background: rgba(37,99,235,0.08); color: var(--accent);
+      padding: 11px 15px; border-radius: 12px; font-size: 0.88rem;
+      display: flex; align-items: center; gap: 8px;
       border: 1px solid rgba(37,99,235,0.18);
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     :root[data-theme="dark"] .calendar-hint {
-      background: rgba(59,130,246,0.12);
-      color: #93c5fd;
+      background: rgba(59,130,246,0.12); color: #93c5fd;
       border-color: rgba(59,130,246,0.25);
     }
 
     .commonninja_component {
-      border-radius: 14px;
-      overflow: hidden;
+      border-radius: 14px; overflow: hidden;
       border: 1px solid var(--border);
-      min-height: 600px;
-      height: 600px;
+      min-height: 600px; height: 600px;
       background: var(--bg-alt);
-      opacity: 0;
-      transform: translateY(4px);
-      transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
     }
-    .commonninja_component.loaded {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    :root[data-theme="dark"] .commonninja_component {
-      background: #0f172a;
-      border-color: #334155;
-    }
+    .commonninja_component.loaded { opacity: 1; transform: translateY(0); }
+    :root[data-theme="dark"] .commonninja_component { background: #0f172a; border-color: #334155; }
     :root[data-theme="dark"] .commonninja_component iframe {
       color-scheme: dark;
       filter: invert(1) hue-rotate(180deg) contrast(1.05) brightness(1.02);
     }
 
-    /* ── MAP SECTION ── */
-    .map-section {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
+    .map-section { display: flex; flex-direction: column; gap: 14px; }
 
     .map-toggle-btn {
-      background: var(--accent);
-      color: #ffffff;
+      background: var(--accent); color: #ffffff;
       border: 1px solid var(--accent);
-      padding: 10px 20px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      border-radius: 999px;
-      cursor: pointer;
-      font-family: var(--font-body);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      align-self: flex-start;
-      transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.12s ease, opacity 0.18s ease;
+      padding: 10px 20px; font-size: 0.88rem; font-weight: 600;
+      border-radius: 999px; cursor: pointer; font-family: var(--font-body);
+      display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
+      transition: opacity 0.18s ease, transform 0.12s ease;
     }
     .map-toggle-btn:hover { opacity: 0.88; }
     .map-toggle-btn:active { transform: scale(0.96); }
-    :root[data-theme="dark"] .map-toggle-btn {
-      background: #4b5563;
-      border-color: #4b5563;
-    }
-    :root[data-theme="dark"] .map-toggle-btn:hover { opacity: 0.88; }
-
-    .map-toggle-btn i { transition: transform 0.35s ease; }
+    :root[data-theme="dark"] .map-toggle-btn { background: #4b5563; border-color: #4b5563; }
+    .map-toggle-btn i { transition: transform 0.3s ease; }
     .map-toggle-btn.active i { transform: rotate(180deg); }
     .map-toggle-btn .btn-text { transition: opacity 0.2s ease; }
 
-    .map-container {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease;
-    }
+    .map-container { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
     .map-container.visible { max-height: 420px; }
 
     .flourish-wrapper {
-      height: 400px;
-      border-radius: 14px;
+      height: 400px; border-radius: 14px; overflow: hidden;
       border: 1px solid var(--border);
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(4px);
+      opacity: 0; transform: translateY(4px);
       transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
     }
-    .flourish-wrapper.loaded {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .flourish-wrapper.loaded { opacity: 1; transform: translateY(0); }
     :root[data-theme="dark"] .flourish-wrapper { border-color: #334155; }
 
     .flourish-embed {
-      border-radius: 14px;
-      overflow: hidden;
-      height: 400px !important;
-      max-height: 400px !important;
+      border-radius: 14px; overflow: hidden;
+      height: 400px !important; max-height: 400px !important;
     }
     .flourish-embed iframe { display: block; margin: 0; }
+    .flourish-wrapper .flourish-embed a,
+    .flourish-wrapper .flourish-embed [class*="attribution"],
+    .flourish-wrapper .flourish-embed [class*="credit"],
+    .flourish-wrapper .flourish-embed [class*="flourish-studio"] { display: none !important; }
 
-    /* ── FOOTER ── */
     footer {
-      width: 100vw;
-      position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
+      width: 100vw; position: relative;
+      left: 50%; right: 50%;
+      margin-left: -50vw; margin-right: -50vw;
       background-color: var(--footer-bg);
       border-top: 1px solid var(--border);
       padding: 16px calc(20px + var(--safe-r)) calc(16px + var(--safe-b)) calc(20px + var(--safe-l));
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     .footer-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 14px;
-      justify-content: space-between;
+      max-width: 960px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; align-items: center;
+      gap: 14px; justify-content: space-between;
     }
     .footer-left { font-size: 0.82rem; color: var(--muted); }
     .footer-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -423,7 +326,6 @@
     .theme-btn:hover { background-color: rgba(148,163,184,0.18); transform: translateY(-1px); }
     .theme-btn:active { transform: scale(0.95); }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 680px) {
       .brand-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
       .nav-wrap { width: 100%; }
@@ -445,7 +347,6 @@
 <body>
   <div class="site-shell">
 
-    <!-- BRAND BAR -->
     <header class="brand-bar animate d1">
       <div class="brand-left">
         <div class="brand-logo">
@@ -467,13 +368,11 @@
       </div>
     </header>
 
-    <!-- MAIN -->
     <main class="card animate d2">
       <div class="eyebrow">Events & Locations</div>
       <h1 class="page-title">Calendar & Location</h1>
 
       <div class="content-grid">
-        <!-- CALENDAR -->
         <div class="calendar-container">
           <div class="calendar-hint">
             <i class="fas fa-circle-info"></i>
@@ -482,13 +381,11 @@
           <div class="commonninja_component pid-5c6d132c-b8cb-4500-b668-e25a31e3d5e7"></div>
         </div>
 
-        <!-- MAP -->
         <div class="map-section">
           <button class="map-toggle-btn" id="mapToggle">
-            <i class="fas fa-map-marked-alt"></i>
+            <i class="fas fa-map-location-dot"></i>
             <span class="btn-text">View Location Map</span>
           </button>
-
           <div class="map-container" id="mapContainer">
             <div class="flourish-wrapper">
               <div class="flourish-embed flourish-map" data-src="visualisation/25948838">
@@ -502,9 +399,8 @@
       </div>
     </main>
 
-  </div><!-- /site-shell -->
+  </div>
 
-  <!-- FOOTER — full width -->
   <footer>
     <div class="footer-inner animate d3">
       <div class="footer-left">&copy; 2025 JakeBitt3DPrints. All rights reserved.</div>
@@ -527,7 +423,21 @@
   <script>
   (function() {
 
-    /* ── THEME TOGGLE ── */
+    var mapToggle    = document.getElementById('mapToggle');
+    var mapContainer = document.getElementById('mapContainer');
+    var toggleText   = mapToggle.querySelector('.btn-text');
+
+    mapToggle.addEventListener('click', function() {
+      mapContainer.classList.toggle('visible');
+      mapToggle.classList.toggle('active');
+      toggleText.style.opacity = '0';
+      setTimeout(function() {
+        toggleText.textContent = mapContainer.classList.contains('visible')
+          ? 'Hide Location Map' : 'View Location Map';
+        toggleText.style.opacity = '1';
+      }, 200);
+    });
+
     var root   = document.documentElement;
     var toggle = document.getElementById('themeToggle');
     var tIcon  = document.getElementById('themeIcon');
@@ -552,41 +462,19 @@
       syncTheme();
     });
 
-    /* ── MAP TOGGLE ── */
-    var mapToggle    = document.getElementById('mapToggle');
-    var mapContainer = document.getElementById('mapContainer');
-    var toggleText   = mapToggle.querySelector('.btn-text');
-
-    mapToggle.addEventListener('click', function() {
-      mapContainer.classList.toggle('visible');
-      mapToggle.classList.toggle('active');
-      toggleText.style.opacity = '0';
-      setTimeout(function() {
-        toggleText.textContent = mapContainer.classList.contains('visible')
-          ? 'Hide Location Map'
-          : 'View Location Map';
-        toggleText.style.opacity = '1';
-      }, 200);
-    });
-
-    /* ── SMOOTH PAGE TRANSITIONS ── */
     var links = document.querySelectorAll('nav a');
-
     links.forEach(function(link) {
       link.addEventListener('click', function(e) {
         var href = link.getAttribute('href');
         if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
         if (link.target === '_blank') return;
-
         var url;
         try { url = new URL(href, window.location.href); } catch(err) { return; }
         if (url.origin !== window.location.origin) return;
 
         if (document.startViewTransition) {
           e.preventDefault();
-          document.startViewTransition(function() {
-            window.location.href = href;
-          });
+          document.startViewTransition(function() { window.location.href = href; });
           return;
         }
 
@@ -603,11 +491,10 @@
       });
     });
 
-    /* ── FADE IN CALENDAR + MAP AFTER LOAD ── */
     window.addEventListener('load', function() {
+      var calendar   = document.querySelector('.commonninja_component');
+      var mapWrapper = document.querySelector('.flourish-wrapper');
       setTimeout(function() {
-        var calendar   = document.querySelector('.commonninja_component');
-        var mapWrapper = document.querySelector('.flourish-wrapper');
         if (calendar)   calendar.classList.add('loaded');
         if (mapWrapper) mapWrapper.classList.add('loaded');
       }, 300);
