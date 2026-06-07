@@ -12,14 +12,11 @@
 
   <meta charset="UTF-8" />
   <title>Gallery | JakeBitt3DPrints</title>
-  <meta name="description" content="Explore our 3D printing gallery - coming soon with even more amazing projects!" />
+  <meta name="description" content="Explore our 3D printing gallery of toys, fidgets, custom displays, stands, organizers and more!" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-
-  <!-- View Transitions API for smooth page fades -->
   <meta name="view-transition" content="same-origin">
 
-  <!-- THEME: inline bg on html before any paint — eliminates white flash -->
   <style>html { background: #f5f5f5; } html[data-theme="dark"] { background: #111827; }</style>
   <script>
     (function() {
@@ -33,84 +30,63 @@
     })();
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- nanogallery2 -->
-  <link href="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css" />
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/jquery.nanogallery2.min.js"></script>
-
   <style>
-    /* ── TOKENS ── */
     :root {
-      --bg:          #f5f5f5;
-      --bg-alt:      #ffffff;
-      --text:        #111111;
-      --muted:       #4b5563;
-      --accent:      #2563eb;
-      --border:      #e5e7eb;
-      --nav-bg:      #ffffff;
-      --nav-text:    #111111;
+      --bg:              #f5f5f5;
+      --bg-alt:          #ffffff;
+      --text:            #111111;
+      --muted:           #4b5563;
+      --accent:          #2563eb;
+      --border:          #e5e7eb;
+      --nav-bg:          #ffffff;
+      --nav-text:        #111111;
       --nav-active-bg:   #111111;
       --nav-active-text: #ffffff;
-      --footer-bg:   #ffffff;
-      --shadow:      0 10px 25px rgba(15,23,42,0.08);
-      --shadow-lg:   0 14px 44px rgba(15,23,42,0.13);
-      --radius:      20px;
-      --font-head:   'DM Serif Display', Georgia, serif;
-      --font-body:   'DM Sans', system-ui, sans-serif;
+      --footer-bg:       #ffffff;
+      --shadow:          0 10px 25px rgba(15,23,42,0.08);
+      --shadow-lg:       0 20px 50px rgba(15,23,42,0.16);
+      --radius:          20px;
+      --font-head:       'DM Serif Display', Georgia, serif;
+      --font-body:       'DM Sans', system-ui, sans-serif;
       --safe-b: env(safe-area-inset-bottom, 0px);
       --safe-l: env(safe-area-inset-left,   0px);
       --safe-r: env(safe-area-inset-right,  0px);
     }
     :root[data-theme="dark"] {
-      --bg:          #111827;
-      --bg-alt:      #020617;
-      --text:        #f9fafb;
-      --muted:       #d1d5db;
-      --accent:      #9ca3af;
-      --border:      #1f2937;
-      --nav-bg:      #020617;
-      --nav-text:    #e5e7eb;
+      --bg:              #111827;
+      --bg-alt:          #020617;
+      --text:            #f9fafb;
+      --muted:           #d1d5db;
+      --accent:          #9ca3af;
+      --border:          #1f2937;
+      --nav-bg:          #020617;
+      --nav-text:        #e5e7eb;
       --nav-active-bg:   #e5e7eb;
       --nav-active-text: #020617;
-      --footer-bg:   #020617;
-      --shadow:      0 10px 25px rgba(0,0,0,0.45);
-      --shadow-lg:   0 14px 44px rgba(0,0,0,0.60);
+      --footer-bg:       #020617;
+      --shadow:          0 10px 25px rgba(0,0,0,0.45);
+      --shadow-lg:       0 20px 50px rgba(0,0,0,0.65);
     }
 
-    /* ── RESET ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html {
-      overflow-x: hidden;
-      max-width: 100%;
-    }
-
+    html { overflow-x: hidden; max-width: 100%; }
     body {
       font-family: var(--font-body);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
+      background: var(--bg); color: var(--text);
+      min-height: 100dvh; display: flex; flex-direction: column;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      max-width: 100%;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden; max-width: 100%;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
-
     button, a, [role="button"] { touch-action: manipulation; }
 
-    /* ── PAGE FADE TRANSITION ── */
+    /* ── PAGE TRANSITIONS ── */
     @keyframes vt-fade-in  { from { opacity: 0; } to { opacity: 1; } }
     @keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
     ::view-transition-old(root) { animation: vt-fade-out 0.22s ease forwards; }
@@ -122,56 +98,53 @@
     }
     .site-shell { animation: pageFadeIn 0.45s cubic-bezier(0.4,0,0.2,1) both; }
 
-    /* ── ENTRANCE ANIMATIONS ── */
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     .animate { animation: slideUp 0.45s cubic-bezier(0.4,0,0.2,1) both; }
-    .d1 { animation-delay: 0.05s; }
-    .d2 { animation-delay: 0.12s; }
-    .d3 { animation-delay: 0.19s; }
-    .d4 { animation-delay: 0.26s; }
+    .d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.19s; } .d4 { animation-delay: 0.26s; }
 
-    /* ── LAYOUT SHELL ── */
+    /* ── OVERLAY ANIMATIONS ── */
+    @keyframes overlayIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes overlayOut {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+    @keyframes sheetUp {
+      from { opacity: 0; transform: translateY(24px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)   scale(1);    }
+    }
+    @keyframes sheetDown {
+      from { opacity: 1; transform: translateY(0)   scale(1);    }
+      to   { opacity: 0; transform: translateY(24px) scale(0.97); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ── LAYOUT ── */
     .site-shell {
-      max-width: 960px;
-      width: 100%;
-      margin: 0 auto;
+      max-width: 960px; width: 100%; margin: 0 auto;
       padding: 24px calc(20px + var(--safe-r)) 32px calc(20px + var(--safe-l));
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      flex: 1; display: flex; flex-direction: column; gap: 20px;
     }
 
     /* ── BRAND BAR ── */
-    .brand-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-    .brand-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
+    .brand-bar { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+    .brand-left { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
     .brand-logo {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      background: var(--bg-alt);
+      width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; background: var(--bg-alt);
       overflow: hidden; padding: 4px; flex-shrink: 0;
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-    .brand-logo img {
-      width: 100%; height: 100%; object-fit: contain;
-      filter: invert(0); transition: filter 0.3s ease;
-    }
+    .brand-logo img { width: 100%; height: 100%; object-fit: contain; filter: invert(0); transition: filter 0.3s ease; }
     :root[data-theme="dark"] .brand-logo img { filter: invert(1); }
     .brand-text { display: flex; flex-direction: column; gap: 2px; }
     .brand-name { font-weight: 700; font-size: 1.05rem; letter-spacing: 0.01em; color: var(--text); }
@@ -180,165 +153,518 @@
     /* ── NAV ── */
     .nav-wrap { flex-shrink: 0; }
     nav {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding: 5px 8px;
-      border-radius: 999px;
-      background: var(--nav-bg);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      overflow-x: auto;
-      overflow-y: visible;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      max-width: 100%;
+      display: flex; align-items: center; gap: 4px; padding: 5px 8px;
+      border-radius: 999px; background: var(--nav-bg); border: 1px solid var(--border);
+      box-shadow: var(--shadow); overflow-x: auto; overflow-y: visible;
+      scrollbar-width: none; -ms-overflow-style: none; max-width: 100%;
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     nav::-webkit-scrollbar { display: none; }
     nav a {
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 600;
-      padding: 7px 14px;
-      border-radius: 999px;
-      color: var(--nav-text);
-      white-space: nowrap;
-      flex-shrink: 0;
+      text-decoration: none; font-size: 0.88rem; font-weight: 600;
+      padding: 7px 14px; border-radius: 999px; color: var(--nav-text);
+      white-space: nowrap; flex-shrink: 0;
       transition: background-color 0.22s ease, color 0.22s ease, transform 0.12s ease;
     }
     nav a:hover:not(.active) { background-color: rgba(148,163,184,0.16); }
     nav a:active { transform: scale(0.95); }
-    nav a.active {
-      background-color: var(--nav-active-bg);
-      color: var(--nav-active-text);
-    }
+    nav a.active { background-color: var(--nav-active-bg); color: var(--nav-active-text); }
 
     /* ── CARD ── */
     .card {
-      border-radius: var(--radius);
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      padding: 28px 24px;
-      box-shadow: var(--shadow);
+      border-radius: var(--radius); background: var(--bg-alt); border: 1px solid var(--border);
+      padding: 28px 24px; box-shadow: var(--shadow);
       transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
-
     .eyebrow {
-      font-size: 0.74rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 600;
-      margin-bottom: 10px;
+      font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600; margin-bottom: 10px;
     }
-
     .page-title {
-      font-family: var(--font-head);
-      font-size: clamp(1.5rem, 5vw, 2rem);
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      color: var(--text);
-      margin-bottom: 24px;
+      font-family: var(--font-head); font-size: clamp(1.5rem, 5vw, 2rem);
+      line-height: 1.2; letter-spacing: -0.01em; color: var(--text); margin-bottom: 20px;
     }
 
-    /* ── COMING SOON BANNER ── */
-    .coming-soon {
-      background: rgba(37,99,235,0.08);
-      border: 1px solid rgba(37,99,235,0.18);
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 28px;
-      text-align: center;
+    /* ── WIP BANNER ── */
+    .wip-banner {
+      background: rgba(37,99,235,0.07); border: 1px solid rgba(37,99,235,0.15);
+      border-radius: 14px; padding: 14px 16px; margin-bottom: 22px;
+      display: flex; align-items: flex-start; gap: 11px;
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-    :root[data-theme="dark"] .coming-soon {
-      background: rgba(156,163,175,0.08);
-      border-color: rgba(156,163,175,0.18);
+    :root[data-theme="dark"] .wip-banner {
+      background: rgba(156,163,175,0.07); border-color: rgba(156,163,175,0.15);
     }
-    .coming-soon h3 {
-      font-family: var(--font-head);
-      font-size: 1.2rem;
-      color: var(--accent);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+    .wip-banner i { color: var(--accent); margin-top: 2px; flex-shrink: 0; font-size: 0.9rem; }
+    .wip-banner-title { font-weight: 700; font-size: 0.88rem; color: var(--text); margin-bottom: 2px; }
+    .wip-banner-body  { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── FILTER ── */
+    .filter-toggle-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--bg-alt);
+      color: var(--text); font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body); margin-bottom: 12px;
+      transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
     }
-    .coming-soon p {
-      color: var(--muted);
-      font-size: 0.93rem;
-      line-height: 1.6;
+    .filter-toggle-btn:hover { background-color: rgba(148,163,184,0.12); }
+    .filter-toggle-btn:active { transform: scale(0.96); }
+    .filter-toggle-btn .chevron { transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); font-size: 0.75rem; }
+    .filter-toggle-btn.open .chevron { transform: rotate(180deg); }
+
+    .filter-panel {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .filter-panel.open { grid-template-rows: 1fr; }
+    .filter-panel-inner-wrap { overflow: hidden; }
+
+    .filter-panel-inner {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px; margin-bottom: 16px;
+      display: flex; flex-direction: column; gap: 14px;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    .filter-group { display: flex; flex-direction: column; gap: 8px; }
+    .filter-group-label {
+      font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--muted);
+    }
+    .filter-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--bg-alt);
+      color: var(--muted); font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body);
+      transition: background-color 0.18s ease, color 0.18s ease,
+                  border-color 0.18s ease, transform 0.12s ease;
+    }
+    .filter-pill:hover { background-color: rgba(148,163,184,0.12); color: var(--text); }
+    .filter-pill:active { transform: scale(0.95); }
+    .filter-pill.active {
+      background-color: var(--nav-active-bg); color: var(--nav-active-text);
+      border-color: var(--nav-active-bg);
     }
 
-    /* ── GALLERY CONTAINER ── */
-    .gallery-container {
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: var(--bg-alt);
+    /* Holiday sub-group slide */
+    .holiday-sub-wrap {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .holiday-sub-wrap.open { grid-template-rows: 1fr; }
+    .holiday-sub-inner { overflow: hidden; }
+
+    /* ── GALLERY GRID ── */
+    .gallery-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+    @keyframes gridItemIn {
+      from { opacity: 0; transform: translateY(10px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)    scale(1);    }
+    }
+    .gallery-item {
+      border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+      background: var(--border); cursor: pointer; position: relative;
+      aspect-ratio: 1;
+      animation: gridItemIn 0.32s cubic-bezier(0.4,0,0.2,1) both;
+      transition: transform 0.2s cubic-bezier(0.4,0,0.2,1),
+                  box-shadow 0.2s ease, border-color 0.3s ease;
+    }
+    .gallery-item:hover { transform: scale(1.025); box-shadow: var(--shadow-lg); }
+    .gallery-item:active { transform: scale(0.97); }
+    .gallery-item.landscape { aspect-ratio: 4/3; }
+    .gallery-item.portrait  { aspect-ratio: 3/4; }
+    .gallery-item.original  { aspect-ratio: unset; min-height: 120px; }
+    .gallery-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: opacity 0.35s ease;
+    }
+    .gallery-item img.img-loading { opacity: 0; }
+    .gallery-item img.img-loaded  { opacity: 1; }
+    .gallery-item-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 24px 10px 8px;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+      color: #fff; font-size: 0.75rem; font-weight: 600;
+      opacity: 0; transition: opacity 0.22s ease; pointer-events: none;
+    }
+    .gallery-item:hover .gallery-item-label { opacity: 1; }
+
+    /* Skeletons */
+    .gallery-skeleton {
+      border-radius: 12px; aspect-ratio: 1;
+      background: linear-gradient(90deg, var(--border) 25%, var(--bg) 50%, var(--border) 75%);
+      background-size: 200% 100%; animation: shimmer 1.4s infinite;
+    }
+
+    /* Empty state */
+    .gallery-empty {
+      grid-column: 1 / -1; text-align: center; padding: 52px 24px; color: var(--muted);
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .gallery-empty i { font-size: 2.5rem; opacity: 0.35; }
+    .gallery-empty p { font-size: 0.92rem; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 900;
+      background: rgba(0,0,0,0.9);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      /* Hidden by default via opacity + pointer-events, not display:none,
+         so CSS transitions work cleanly */
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    .lightbox.open {
+      opacity: 1; pointer-events: auto;
+    }
+
+    .lb-close {
+      position: absolute; top: calc(16px + env(safe-area-inset-top, 0px)); right: 16px;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+      color: #fff; font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background-color 0.15s ease, transform 0.12s ease;
+      z-index: 10;
+    }
+    .lb-close:hover  { background: rgba(255,255,255,0.22); }
+    .lb-close:active { transform: scale(0.9); }
+
+    .lb-img-wrap {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      width: 100%; padding: 60px 20px 10px; cursor: pointer;
+    }
+    .lb-img {
+      max-width: 100%; max-height: 100%; border-radius: 12px;
+      object-fit: contain; box-shadow: 0 12px 50px rgba(0,0,0,0.6);
+      pointer-events: none; user-select: none;
+      transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.4,0,0.2,1);
+    }
+    .lb-img.switching { opacity: 0; transform: scale(0.95); }
+
+    .lb-title {
+      color: rgba(255,255,255,0.75); font-size: 0.88rem; font-weight: 600;
+      text-align: center; padding: 4px 20px 6px;
+      transition: opacity 0.2s ease;
+    }
+
+    .lb-dots { display: flex; gap: 6px; align-items: center; justify-content: center; padding-bottom: 4px; }
+    .lb-dot {
+      width: 6px; height: 6px; border-radius: 3px;
+      background: rgba(255,255,255,0.3);
+      transition: width 0.22s ease, background-color 0.22s ease;
+    }
+    .lb-dot.active { background: #fff; width: 18px; }
+
+    .lb-controls {
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      padding: 0 16px calc(max(24px, env(safe-area-inset-bottom, 0px)) + 8px);
+      width: 100%;
+    }
+    .lb-arrow {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.16);
+      color: #fff; font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: background-color 0.15s ease, transform 0.12s ease;
+    }
+    .lb-arrow:hover  { background: rgba(255,255,255,0.2); }
+    .lb-arrow:active { transform: scale(0.92); }
+    .lb-arrow:disabled { opacity: 0.2; pointer-events: none; }
+    .lb-counter { flex: 1; text-align: center; font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.55); }
+
+    /* ── OVERLAY BASE ── */
+    .overlay {
+      position: fixed; inset: 0; z-index: 950;
+      background: rgba(0,0,0,0.45);
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+
+    .overlay-box {
+      background: var(--bg-alt); border: 1px solid var(--border);
+      border-radius: 22px; width: 100%; max-width: 400px;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(20px) scale(0.97);
+      transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1),
+                  opacity 0.28s ease, background-color 0.3s ease;
+      opacity: 0;
+    }
+    .overlay.open .overlay-box { transform: translateY(0) scale(1); opacity: 1; }
+
+    /* ── ADMIN LOGIN ── */
+    .admin-login-box {
+      padding: 28px 24px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .admin-login-title { font-family: var(--font-head); font-size: 1.3rem; color: var(--text); }
+    .admin-login-sub   { font-size: 0.84rem; color: var(--muted); margin-top: -6px; line-height: 1.5; }
+
+    .admin-input {
+      width: 100%; padding: 11px 14px; border: 1px solid var(--border);
+      border-radius: 11px; font-size: 0.93rem; font-family: var(--font-body);
+      background: var(--bg); color: var(--text); outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+    }
+    .admin-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+
+    .admin-login-error {
+      font-size: 0.82rem; color: #ef4444; padding: 8px 12px;
+      background: rgba(239,68,68,0.08); border-radius: 8px; border: 1px solid rgba(239,68,68,0.2);
+      display: none;
+    }
+    .admin-login-error.visible { display: block; animation: slideUp 0.2s ease both; }
+
+    .admin-login-btns { display: flex; gap: 10px; }
+    .btn-primary-sm {
+      flex: 1; padding: 10px; border-radius: 999px;
+      background: var(--nav-active-bg); color: var(--nav-active-text);
+      border: none; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body);
+      transition: opacity 0.15s ease, transform 0.12s ease;
+    }
+    .btn-primary-sm:hover  { opacity: 0.85; }
+    .btn-primary-sm:active { transform: scale(0.97); }
+    .btn-primary-sm:disabled { opacity: 0.5; pointer-events: none; }
+    .btn-ghost-sm {
+      padding: 10px 18px; border-radius: 999px;
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body);
+      transition: background-color 0.15s ease, transform 0.12s ease;
+    }
+    .btn-ghost-sm:hover  { background-color: rgba(148,163,184,0.12); }
+    .btn-ghost-sm:active { transform: scale(0.97); }
+
+    /* ── ADMIN PANEL ── */
+    .admin-panel {
+      border-radius: var(--radius); background: var(--bg-alt); border: 1px solid var(--border);
+      padding: 24px; box-shadow: var(--shadow);
+      /* slide reveal */
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.38s cubic-bezier(0.4,0,0.2,1),
+                  opacity 0.28s ease, border-color 0.3s ease, background-color 0.3s ease;
+      opacity: 0;
+    }
+    .admin-panel.open {
+      grid-template-rows: 1fr; opacity: 1;
+      border-color: var(--accent);
+    }
+    .admin-panel-inner { overflow: hidden; }
+    .admin-panel-inner-pad { padding-bottom: 4px; }
+
+    .admin-panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px; flex-wrap: wrap; gap: 10px;
+    }
+    .admin-panel-title { font-family: var(--font-head); font-size: 1.2rem; color: var(--text); }
+
+    .admin-tabs { display: flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; }
+    .admin-tab {
+      padding: 7px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+      border: 1px solid var(--border); background: transparent; color: var(--muted);
+      cursor: pointer; font-family: var(--font-body);
+      transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    }
+    .admin-tab.active {
+      background: var(--nav-active-bg); color: var(--nav-active-text);
+      border-color: var(--nav-active-bg);
+    }
+    .admin-tab-content { display: none; }
+    .admin-tab-content.active { display: block; animation: slideUp 0.28s ease both; }
+
+    /* Upload form */
+    .upload-form { display: flex; flex-direction: column; gap: 14px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-label { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .form-input, .form-select {
+      padding: 9px 12px; border: 1px solid var(--border); border-radius: 10px;
+      font-size: 0.9rem; font-family: var(--font-body);
+      background: var(--bg); color: var(--text); outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+
+    .drop-zone {
+      border: 2px dashed var(--border); border-radius: 12px;
+      padding: 28px; text-align: center; cursor: pointer; position: relative;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--accent); background-color: rgba(37,99,235,0.04);
+    }
+    .drop-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .drop-zone-icon { font-size: 1.8rem; color: var(--muted); margin-bottom: 8px; }
+    .drop-zone-text { font-size: 0.86rem; color: var(--muted); line-height: 1.5; }
+    .drop-zone-text strong { color: var(--accent); }
+
+    .upload-preview {
+      border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+      position: relative;
+      /* slide reveal */
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.32s cubic-bezier(0.4,0,0.2,1);
+    }
+    .upload-preview.visible { grid-template-rows: 1fr; }
+    .upload-preview-inner { overflow: hidden; }
+    .upload-preview img { width: 100%; max-height: 200px; object-fit: cover; display: block; }
+    .upload-preview-clear {
+      position: absolute; top: 8px; right: 8px; width: 28px; height: 28px;
+      border-radius: 50%; background: rgba(0,0,0,0.55); color: #fff;
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; transition: background-color 0.15s ease;
+    }
+    .upload-preview-clear:hover { background: rgba(0,0,0,0.8); }
+
+    .crop-options { display: flex; gap: 8px; flex-wrap: wrap; }
+    .crop-option {
+      flex: 1; min-width: 72px; padding: 8px 6px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--bg-alt); cursor: pointer;
+      text-align: center; font-size: 0.76rem; font-weight: 600; color: var(--muted);
+      font-family: var(--font-body);
+      transition: border-color 0.18s ease, background-color 0.18s ease,
+                  color 0.18s ease, transform 0.12s ease;
+    }
+    .crop-option:hover  { border-color: var(--accent); color: var(--text); }
+    .crop-option:active { transform: scale(0.96); }
+    .crop-option.active {
+      border-color: var(--accent); background: rgba(37,99,235,0.07); color: var(--accent);
+    }
+    .crop-option .crop-icon { font-size: 1.1rem; margin-bottom: 3px; display: block; }
+
+    /* Holiday subcat slide */
+    .subcat-wrap {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+    .subcat-wrap.open { grid-template-rows: 1fr; }
+    .subcat-wrap-inner { overflow: hidden; padding-top: 0; }
+    .subcat-wrap.open .subcat-wrap-inner { padding-top: 2px; }
+
+    .btn-upload {
+      display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+      padding: 11px 24px; border-radius: 999px;
+      background: var(--nav-active-bg); color: var(--nav-active-text);
+      border: none; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body);
+      transition: opacity 0.15s ease, transform 0.12s ease;
+    }
+    .btn-upload:hover  { opacity: 0.85; }
+    .btn-upload:active { transform: scale(0.97); }
+    .btn-upload:disabled { opacity: 0.45; pointer-events: none; }
+
+    .upload-status {
+      font-size: 0.84rem; padding: 10px 14px; border-radius: 10px;
+      /* slide reveal */
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.28s ease;
+    }
+    .upload-status-inner { overflow: hidden; }
+    .upload-status.visible { grid-template-rows: 1fr; }
+    .upload-status.success .upload-status-inner {
+      background: rgba(34,197,94,0.09); color: #15803d;
+      border: 1px solid rgba(34,197,94,0.2); border-radius: 10px; padding: 10px 14px;
+    }
+    .upload-status.error .upload-status-inner {
+      background: rgba(239,68,68,0.09); color: #dc2626;
+      border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 10px 14px;
+    }
+
+    /* Manage list */
+    .manage-list { display: flex; flex-direction: column; gap: 9px; max-height: 440px; overflow-y: auto; }
+    .manage-item {
+      display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+      border: 1px solid var(--border); border-radius: 12px; background: var(--bg);
+      transition: border-color 0.2s ease, background-color 0.3s ease;
+      animation: slideUp 0.25s ease both;
+    }
+    .manage-item:hover { border-color: var(--accent); }
+    .manage-item-thumb {
+      width: 50px; height: 50px; border-radius: 8px; object-fit: cover;
+      flex-shrink: 0; border: 1px solid var(--border);
       transition: border-color 0.3s ease;
     }
+    .manage-item-info { flex: 1; min-width: 0; }
+    .manage-item-title {
+      font-weight: 600; font-size: 0.87rem; color: var(--text);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .manage-item-meta { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
+    .manage-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
+    .manage-btn {
+      width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--bg-alt); color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
+      transition: border-color 0.15s ease, color 0.15s ease,
+                  background-color 0.15s ease, transform 0.12s ease;
+      font-family: var(--font-body);
+    }
+    .manage-btn:hover  { border-color: var(--accent); color: var(--accent); }
+    .manage-btn:active { transform: scale(0.9); }
+    .manage-btn.vis-on  { color: #16a34a; border-color: rgba(22,163,74,0.4); }
+    .manage-btn.danger:hover { border-color: #ef4444; color: #ef4444; }
+    .manage-empty { text-align: center; padding: 32px; color: var(--muted); font-size: 0.88rem; }
 
     /* ── FOOTER ── */
     footer {
-      width: 100vw;
-      position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
-      background-color: var(--footer-bg);
-      border-top: 1px solid var(--border);
+      width: 100vw; position: relative; left: 50%; right: 50%;
+      margin-left: -50vw; margin-right: -50vw;
+      background-color: var(--footer-bg); border-top: 1px solid var(--border);
       padding: 16px calc(20px + var(--safe-r)) calc(16px + var(--safe-b)) calc(20px + var(--safe-l));
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     .footer-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 14px;
-      justify-content: space-between;
+      max-width: 960px; margin: 0 auto; display: flex; flex-wrap: wrap;
+      align-items: center; gap: 14px; justify-content: space-between;
     }
     .footer-left { font-size: 0.82rem; color: var(--muted); }
-    .footer-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
+    .footer-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .social-links { display: flex; align-items: center; gap: 6px; }
     .social-links a {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 1px solid var(--border);
+      width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
       text-decoration: none; font-size: 1rem; color: var(--muted);
       transition: background-color 0.15s ease, transform 0.12s ease, border-color 0.15s ease;
     }
-    .social-links a:hover { background-color: rgba(148,163,184,0.18); transform: translateY(-1px); }
+    .social-links a:hover  { background-color: rgba(148,163,184,0.18); transform: translateY(-1px); }
     .social-links a:active { transform: scale(0.92); }
     .social-links a.facebook { color: #1877f2; }
     .social-links a.youtube  { color: #ff0000; }
-    .social-links a.instagram i {
-      background: linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .social-links a.tiktok i {
-      background: linear-gradient(45deg,#25f4ee,#fe2c55);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .social-links a.instagram i { background: linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .social-links a.tiktok i   { background: linear-gradient(45deg,#25f4ee,#fe2c55); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .social-links a.snapchat { background-color: #fffc00; border-color: #fffc00; color: #000; }
     .social-links a.snapchat:hover { background-color: #facc15; }
 
     .theme-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      border-radius: 999px; border: 1px solid var(--border);
-      padding: 6px 13px; font-size: 0.8rem; color: var(--muted);
-      cursor: pointer; background: transparent;
-      font-family: var(--font-body); min-height: 36px;
+      display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
+      border: 1px solid var(--border); padding: 6px 13px; font-size: 0.8rem; color: var(--muted);
+      cursor: pointer; background: transparent; font-family: var(--font-body); min-height: 36px;
       transition: background-color 0.15s ease, transform 0.12s ease, border-color 0.3s ease;
     }
-    .theme-btn:hover { background-color: rgba(148,163,184,0.18); transform: translateY(-1px); }
+    .theme-btn:hover  { background-color: rgba(148,163,184,0.18); transform: translateY(-1px); }
     .theme-btn:active { transform: scale(0.95); }
+
+    /* Admin trigger in footer */
+    .admin-footer-btn {
+      display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
+      border: 1px solid var(--border); padding: 6px 13px; font-size: 0.8rem; color: var(--muted);
+      cursor: pointer; background: transparent; font-family: var(--font-body); min-height: 36px;
+      transition: background-color 0.15s ease, color 0.15s ease,
+                  border-color 0.15s ease, transform 0.12s ease;
+    }
+    .admin-footer-btn:hover  { background-color: rgba(148,163,184,0.18); color: var(--text); transform: translateY(-1px); }
+    .admin-footer-btn:active { transform: scale(0.95); }
+    .admin-footer-btn.unlocked { color: var(--accent); border-color: var(--accent); }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 680px) {
@@ -347,202 +673,865 @@
       nav { width: 100%; justify-content: space-between; }
       nav a { padding: 7px 10px; font-size: 0.82rem; }
       .card { padding: 20px 16px; }
-      .page-title { font-size: 1.45rem; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 9px; }
+      .form-row { grid-template-columns: 1fr; }
     }
     @media (max-width: 400px) {
       nav a { padding: 6px 8px; font-size: 0.78rem; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="site-shell">
+<div class="site-shell">
 
-    <!-- BRAND BAR -->
-    <header class="brand-bar animate d1">
-      <div class="brand-left">
-        <div class="brand-logo">
-          <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="JakeBitt3DPrints logo">
-        </div>
-        <div class="brand-text">
-          <div class="brand-name">JakeBitt3DPrints</div>
-          <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
-        </div>
+  <!-- BRAND BAR -->
+  <header class="brand-bar animate d1">
+    <div class="brand-left">
+      <div class="brand-logo">
+        <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="JakeBitt3DPrints logo">
       </div>
-      <div class="nav-wrap">
-        <nav aria-label="Main navigation">
-          <a href="/">Home</a>
-          <a href="gallery" class="active">Gallery</a>
-          <a href="shop">Shop</a>
-          <a href="calendar">Calendar</a>
-          <a href="contact">Contact</a>
-        </nav>
+      <div class="brand-text">
+        <div class="brand-name">JakeBitt3DPrints</div>
+        <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
       </div>
-    </header>
+    </div>
+    <div class="nav-wrap">
+      <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="gallery" class="active">Gallery</a>
+        <a href="shop">Shop</a>
+        <a href="calendar">Calendar</a>
+        <a href="contact">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- MAIN -->
-    <main class="card animate d2">
-      <div class="eyebrow">3D Print Showcase</div>
-      <h1 class="page-title">Gallery</h1>
+  <!-- MAIN CARD -->
+  <main class="card animate d2">
+    <div class="eyebrow">3D Print Showcase</div>
+    <h1 class="page-title">Gallery</h1>
 
-      <!-- COMING SOON BANNER -->
-      <div class="coming-soon">
-        <h3>
-          <i class="fas fa-star"></i>
-          Gallery Upgrades Coming Soon!
-        </h3>
-        <p>
-          We're working on an amazing new gallery experience with improved layouts,
-          filters, and even more of our incredible 3D prints. Stay tuned!
-        </p>
+    <!-- WIP BANNER -->
+    <div class="wip-banner">
+      <i class="fas fa-wrench"></i>
+      <div>
+        <div class="wip-banner-title">Still a work in progress</div>
+        <div class="wip-banner-body">We're continually adding new prints and improving the gallery. Check back soon for more!</div>
       </div>
+    </div>
 
-      <!-- EXISTING GALLERY (untouched) -->
-      <div class="gallery-container">
-        <div id="JakeBitt3DPrints" data-nanogallery2='{
-            "itemsBaseURL": "https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/",
-            "thumbnailWidth": 200,
-            "thumbnailHeight": 150,
-            "thumbnailLabel": { "position": "onBottom" },
-            "thumbnailAlignment": "center",
-            "galleryDisplayMode": "pagination",
-            "galleryMaxRows": 3,
-            "galleryMaxItems": 30,
-            "thumbnailGutterWidth": 10,
-            "thumbnailGutterHeight": 10,
-            "thumbnailOpenImage": true,
-            "viewerToolbar": { "standard": true }
-          }'>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9986.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9986.jpg" data-ngdesc="">Worlds Greatest Farter</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0142.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0142.jpg" data-ngdesc="">Flexi Snake</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_5024.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_5024.jpg" data-ngdesc="">Crochet Duck</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0186.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0186.jpg" data-ngdesc="">Fidgets-colored</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0187.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0187.jpg" data-ngdesc="">Orange Fidget-Front</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0188.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0188.jpg" data-ngdesc="">Orange Fidget-Back</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4830.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4830.jpg" data-ngdesc="">Emergency Contact NFC Backpack-Front</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4831.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4831.jpg" data-ngdesc="">Emergency Contact NFC Backpack-Back</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9767.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9767.jpg" data-ngdesc="">Charm City Keychain</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0185.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0185.jpg" data-ngdesc="">HW Garages</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0191.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0191.jpg" data-ngdesc="">HW-Carded Stands</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9440.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9440.jpg" data-ngdesc="">HW-Double Carded Stand</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4905.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_4905.jpg" data-ngdesc="">HW-Stands</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0192.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0192.jpg" data-ngdesc="">HW-Slim Carded Stands</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9442.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9442.jpg" data-ngdesc="">HW-Singe Carded Stand</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0190.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0190.jpg" data-ngdesc="">HW-Four Carded Stand</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9446.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9446.jpg" data-ngdesc="">HW-Slim Ramp Stand</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9443.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9443.jpg" data-ngdesc="">HW-Trophy Stand</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0184.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0184.jpg" data-ngdesc="">Me at Charm City HW Club</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0081.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0081.jpg" data-ngdesc="">HW Logo/Tire Lightbox</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0086.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0086.jpg" data-ngdesc="">HW Logo/Tire Lightbox</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0193.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0193.jpg" data-ngdesc="">HW-Floating Shelf</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0087.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0087.jpg" data-ngdesc="">Mustang Lightbox</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0080.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0080.jpg" data-ngdesc="">Mustang Lightbox</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0082.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0082.jpg" data-ngdesc="">HW-Logo Lightbox Black</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0085.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0085.jpg" data-ngdesc="">HW-Logo Lightbox</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0083.jpg" data-ngdesc="">HW-Logo Lightbox-Blue</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0189.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0189.jpg" data-ngdesc="">HW-Stands/Holders</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0088.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0088.jpg" data-ngdesc="">Ford Logo Lightbox</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0079.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0079.jpg" data-ngdesc="">Ford Logo Lightbox</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0053.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_0053.jpg" data-ngdesc="">HW-Red Line Club Lightbox</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9805.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9805.jpg" data-ngdesc="">Minecraft Creeper Lightbox</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9426.jpg" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/IMG_9426.jpg" data-ngdesc="">Owl</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/JB-logo" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/JB-logo" data-ngdesc="">JB-Logo</a>
-          <a href="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/Jakebitt3dprints-logo.png" data-ngthumb="https://file.garden/aNdDaJ8WZVBne2Il/GalleryImages/Jakebitt3dprints-logo.png" data-ngdesc="">JakeBitt3DPrints-Logo</a>
+    <!-- FILTER TOGGLE -->
+    <button class="filter-toggle-btn" id="filterToggleBtn">
+      <i class="fas fa-sliders"></i>
+      <span id="filterBtnLabel">Filter</span>
+      <i class="fas fa-chevron-down chevron"></i>
+    </button>
+
+    <!-- FILTER PANEL -->
+    <div class="filter-panel" id="filterPanel">
+      <div class="filter-panel-inner-wrap">
+        <div class="filter-panel-inner">
+          <div class="filter-group">
+            <div class="filter-group-label">Category</div>
+            <div class="filter-pills" id="categoryPills">
+              <button class="filter-pill active" data-filter="all">All</button>
+              <button class="filter-pill" data-filter="product">Products</button>
+              <button class="filter-pill" data-filter="event">Events</button>
+              <button class="filter-pill" data-filter="holiday">Holidays</button>
+            </div>
+          </div>
+          <!-- Holiday sub-filters -->
+          <div class="holiday-sub-wrap" id="holidaySubWrap">
+            <div class="holiday-sub-inner">
+              <div class="filter-group" style="padding-top:2px;">
+                <div class="filter-group-label">Holiday</div>
+                <div class="filter-pills" id="holidayPills">
+                  <button class="filter-pill active" data-sub="all">All Holidays</button>
+                  <button class="filter-pill" data-sub="christmas">Christmas</button>
+                  <button class="filter-pill" data-sub="halloween">Halloween</button>
+                  <button class="filter-pill" data-sub="easter">Easter</button>
+                  <button class="filter-pill" data-sub="valentines">Valentine's</button>
+                  <button class="filter-pill" data-sub="4th of july">4th of July</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </main>
+    </div>
 
-  </div><!-- /site-shell -->
+    <!-- GALLERY GRID -->
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div>
+    </div>
+  </main>
 
-  <!-- FOOTER — full width -->
-  <footer>
-    <div class="footer-inner animate d3">
-      <div class="footer-left">&copy; 2025 JakeBitt3DPrints. All rights reserved.</div>
-      <div class="footer-right">
-        <div class="social-links" aria-label="Social media links">
-          <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-          <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-          <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-          <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
+  <!-- ADMIN PANEL (below main card, slide reveal) -->
+  <div class="admin-panel animate d3" id="adminPanel">
+    <div class="admin-panel-inner">
+      <div class="admin-panel-inner-pad">
+        <div class="admin-panel-header">
+          <div class="admin-panel-title">Gallery Admin</div>
+          <button class="btn-ghost-sm" id="adminPanelClose">
+            <i class="fas fa-xmark"></i> Close
+          </button>
         </div>
-        <button type="button" class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-          <span id="themeIcon">🌙</span>
-          <span id="themeLabel">Dark mode</span>
+        <div class="admin-tabs">
+          <button class="admin-tab active" data-tab="upload">Upload Image</button>
+          <button class="admin-tab" data-tab="manage">Manage Images</button>
+        </div>
+
+        <!-- UPLOAD TAB -->
+        <div class="admin-tab-content active" id="tab-upload">
+          <div class="upload-form">
+            <div class="drop-zone" id="dropZone">
+              <input type="file" id="fileInput" accept="image/*">
+              <div class="drop-zone-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+              <div class="drop-zone-text">
+                <strong>Click to upload</strong> or drag and drop<br>
+                <span style="font-size:0.78rem;">JPG, PNG, WEBP, GIF, transparent PNG supported</span>
+              </div>
+            </div>
+
+            <div class="upload-preview" id="uploadPreview">
+              <div class="upload-preview-inner">
+                <img id="previewImg" src="" alt="Preview">
+                <button class="upload-preview-clear" id="previewClear"><i class="fas fa-xmark"></i></button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-label">Crop / Aspect Ratio</div>
+              <div class="crop-options">
+                <button class="crop-option active" data-crop="square"><span class="crop-icon">⬛</span>Square</button>
+                <button class="crop-option" data-crop="landscape"><span class="crop-icon">▬</span>Landscape</button>
+                <button class="crop-option" data-crop="portrait"><span class="crop-icon">▮</span>Portrait</button>
+                <button class="crop-option" data-crop="original"><span class="crop-icon">🖼</span>Original</button>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="uploadTitle">Title</label>
+                <input type="text" class="form-input" id="uploadTitle" placeholder="e.g. HW Display Stand">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="uploadCategory">Category</label>
+                <select class="form-select" id="uploadCategory">
+                  <option value="product">Product</option>
+                  <option value="event">Event</option>
+                  <option value="holiday">Holiday</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="subcat-wrap" id="subcatWrap">
+              <div class="subcat-wrap-inner">
+                <div class="form-group">
+                  <label class="form-label" for="uploadSubcat">Holiday Type</label>
+                  <select class="form-select" id="uploadSubcat">
+                    <option value="christmas">Christmas</option>
+                    <option value="halloween">Halloween</option>
+                    <option value="easter">Easter</option>
+                    <option value="valentines">Valentine's</option>
+                    <option value="4th of july">4th of July</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="upload-status" id="uploadStatus">
+              <div class="upload-status-inner" id="uploadStatusText"></div>
+            </div>
+
+            <button class="btn-upload" id="uploadBtn">
+              <i class="fas fa-cloud-arrow-up"></i>
+              <span id="uploadBtnText">Upload Image</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- MANAGE TAB -->
+        <div class="admin-tab-content" id="tab-manage">
+          <div class="manage-list" id="manageList">
+            <div class="manage-empty">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /site-shell -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner animate d4">
+    <div class="footer-left">&copy; 2025 JakeBitt3DPrints. All rights reserved.</div>
+    <div class="footer-right">
+      <div class="social-links" aria-label="Social media links">
+        <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
+      </div>
+      <button type="button" class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+        <span id="themeIcon">🌙</span>
+        <span id="themeLabel">Dark mode</span>
+      </button>
+      <!-- ADMIN BUTTON — lives here in footer right -->
+      <button type="button" class="admin-footer-btn" id="adminTriggerBtn" aria-label="Admin panel">
+        <i class="fas fa-lock" id="adminLockIcon"></i>
+        <span>Admin</span>
+      </button>
+    </div>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="lb-close" id="lbClose" aria-label="Close"><i class="fas fa-xmark"></i></button>
+  <div class="lb-img-wrap" id="lbImgWrap">
+    <img class="lb-img" id="lbImg" src="" alt="">
+  </div>
+  <div class="lb-title" id="lbTitle"></div>
+  <div class="lb-dots" id="lbDots"></div>
+  <div class="lb-controls">
+    <button class="lb-arrow" id="lbPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+    <div class="lb-counter" id="lbCounter"></div>
+    <button class="lb-arrow" id="lbNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN OVERLAY -->
+<div class="overlay" id="adminLoginOverlay" role="dialog" aria-modal="true">
+  <div class="overlay-box">
+    <div class="admin-login-box">
+      <div class="admin-login-title">Admin Access</div>
+      <div class="admin-login-sub">Sign in with your PocketBase admin credentials.</div>
+      <input type="email"    class="admin-input" id="adminEmail"    placeholder="Admin email"    autocomplete="email">
+      <input type="password" class="admin-input" id="adminPassword" placeholder="Admin password" autocomplete="current-password">
+      <div class="admin-login-error" id="adminLoginError">Incorrect credentials. Please try again.</div>
+      <div class="admin-login-btns">
+        <button class="btn-ghost-sm"   id="adminLoginCancel">Cancel</button>
+        <button class="btn-primary-sm" id="adminLoginSubmit">
+          <span id="adminLoginBtnText">Sign In</span>
         </button>
       </div>
     </div>
-  </footer>
+  </div>
+</div>
 
-  <script>
-  (function() {
+<script>
+(function() {
 
-    /* ── NANOGALLERY2 INIT ── */
-    jQuery(document).ready(function() {
-      jQuery("#JakeBitt3DPrints").nanogallery2();
-    });
+  /* ── CONFIG ── */
+  var PB_URL     = 'https://pb.jakebitt3dprints.com';
+  var COLLECTION = 'gallery_images';
 
-    /* ── THEME TOGGLE ── */
-    var root   = document.documentElement;
-    var toggle = document.getElementById('themeToggle');
-    var tIcon  = document.getElementById('themeIcon');
-    var tLabel = document.getElementById('themeLabel');
+  /* ── STATE ── */
+  var allImages      = [];
+  var filtered       = [];
+  var activeCategory = 'all';
+  var activeSubcat   = 'all';
+  var authToken      = null;   // PocketBase superuser token
+  var adminOpen      = false;
+  var selectedFile   = null;
+  var selectedCrop   = 'square';
+  var lbCurrent      = 0;
 
-    function syncTheme() {
-      var dark = root.getAttribute('data-theme') === 'dark';
-      tIcon.textContent  = dark ? '☀️' : '🌙';
-      tLabel.textContent = dark ? 'Light mode' : 'Dark mode';
-    }
+  /* ── HELPERS ── */
+  function imageUrl(record) {
+    return PB_URL + '/api/files/' + COLLECTION + '/' + record.id + '/' + record.image;
+  }
+  function thumbUrl(record) {
+    return imageUrl(record) + '?thumb=400x400';
+  }
+  function authHeaders() {
+    return { 'Authorization': authToken, 'Content-Type': 'application/json' };
+  }
+
+  /* ── THEME TOGGLE ── */
+  var root   = document.documentElement;
+  var toggle = document.getElementById('themeToggle');
+  var tIcon  = document.getElementById('themeIcon');
+  var tLabel = document.getElementById('themeLabel');
+  function syncTheme() {
+    var dark = root.getAttribute('data-theme') === 'dark';
+    tIcon.textContent  = dark ? '☀️' : '🌙';
+    tLabel.textContent = dark ? 'Light mode' : 'Dark mode';
+  }
+  syncTheme();
+  toggle.addEventListener('click', function() {
+    var dark = root.getAttribute('data-theme') === 'dark';
+    if (dark) { root.removeAttribute('data-theme'); localStorage.setItem('theme','light'); }
+    else       { root.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); }
     syncTheme();
+  });
 
-    toggle.addEventListener('click', function() {
-      var dark = root.getAttribute('data-theme') === 'dark';
-      if (dark) {
-        root.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
-      } else {
-        root.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-      }
-      syncTheme();
-    });
-
-    /* ── SMOOTH PAGE TRANSITIONS ── */
-    var links = document.querySelectorAll('nav a');
-
-    links.forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        var href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
-        if (link.target === '_blank') return;
-
-        var url;
-        try { url = new URL(href, window.location.href); } catch(err) { return; }
-        if (url.origin !== window.location.origin) return;
-
-        if (document.startViewTransition) {
-          e.preventDefault();
-          document.startViewTransition(function() {
-            window.location.href = href;
-          });
-          return;
-        }
-
+  /* ── PAGE TRANSITIONS ── */
+  document.querySelectorAll('nav a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('mailto:')) return;
+      if (link.target === '_blank') return;
+      var url; try { url = new URL(href, location.href); } catch(x) { return; }
+      if (url.origin !== location.origin) return;
+      if (document.startViewTransition) {
         e.preventDefault();
-        var shell = document.querySelector('.site-shell');
-        if (shell) {
-          shell.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
-          shell.style.opacity    = '0';
-          shell.style.transform  = 'translateY(-8px)';
-        }
-        document.querySelector('footer').style.transition = 'opacity 0.22s ease';
-        document.querySelector('footer').style.opacity    = '0';
-        setTimeout(function() { window.location.href = href; }, 230);
+        document.startViewTransition(function() { location.href = href; });
+        return;
+      }
+      e.preventDefault();
+      var shell = document.querySelector('.site-shell');
+      if (shell) { shell.style.transition='opacity 0.22s ease'; shell.style.opacity='0'; }
+      var ft = document.querySelector('footer');
+      if (ft) { ft.style.transition='opacity 0.22s ease'; ft.style.opacity='0'; }
+      setTimeout(function() { location.href = href; }, 230);
+    });
+  });
+
+  /* ── FETCH IMAGES ── */
+  function fetchImages() {
+    return fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=sort_order,created&perPage=200')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        allImages = (data.items || []).filter(function(r) { return r.visible !== false; });
+        return allImages;
       });
+  }
+
+  /* ── RENDER GRID ── */
+  function applyFilters() {
+    filtered = allImages.filter(function(r) {
+      if (activeCategory !== 'all' && r.category !== activeCategory) return false;
+      if (activeCategory === 'holiday' && activeSubcat !== 'all') {
+        if ((r.subcategory || '').toLowerCase() !== activeSubcat) return false;
+      }
+      return true;
+    });
+    renderGrid();
+  }
+
+  function renderGrid() {
+    var grid = document.getElementById('galleryGrid');
+    grid.innerHTML = '';
+    if (filtered.length === 0) {
+      var empty = document.createElement('div');
+      empty.className = 'gallery-empty';
+      empty.innerHTML = '<i class="fas fa-image"></i><p>No images in this category yet.</p>';
+      grid.appendChild(empty);
+      return;
+    }
+    filtered.forEach(function(record, idx) {
+      var item = document.createElement('div');
+      item.className = 'gallery-item ' + (record.crop_style || 'square');
+      item.style.animationDelay = (idx * 0.04) + 's';
+
+      var img = document.createElement('img');
+      img.className = 'img-loading';
+      img.alt = record.title || '';
+      img.src = thumbUrl(record);
+      img.onload  = function() { img.classList.replace('img-loading','img-loaded'); };
+      img.onerror = function() { img.classList.replace('img-loading','img-loaded'); };
+
+      var label = document.createElement('div');
+      label.className = 'gallery-item-label';
+      label.textContent = record.title || '';
+
+      item.appendChild(img);
+      item.appendChild(label);
+      item.addEventListener('click', function() { openLightbox(idx); });
+      grid.appendChild(item);
+    });
+  }
+
+  function showSkeletons() {
+    var grid = document.getElementById('galleryGrid');
+    grid.innerHTML = '';
+    for (var i = 0; i < 6; i++) {
+      var sk = document.createElement('div');
+      sk.className = 'gallery-skeleton';
+      grid.appendChild(sk);
+    }
+  }
+
+  /* ── FILTERS ── */
+  document.getElementById('filterToggleBtn').addEventListener('click', function() {
+    this.classList.toggle('open');
+    document.getElementById('filterPanel').classList.toggle('open');
+  });
+
+  document.getElementById('categoryPills').addEventListener('click', function(e) {
+    var pill = e.target.closest('.filter-pill');
+    if (!pill) return;
+    document.querySelectorAll('#categoryPills .filter-pill').forEach(function(p) { p.classList.remove('active'); });
+    pill.classList.add('active');
+    activeCategory = pill.dataset.filter;
+    activeSubcat   = 'all';
+    document.querySelectorAll('#holidayPills .filter-pill').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelector('#holidayPills [data-sub="all"]').classList.add('active');
+    document.getElementById('holidaySubWrap').classList.toggle('open', activeCategory === 'holiday');
+    applyFilters();
+  });
+
+  document.getElementById('holidayPills').addEventListener('click', function(e) {
+    var pill = e.target.closest('.filter-pill');
+    if (!pill) return;
+    document.querySelectorAll('#holidayPills .filter-pill').forEach(function(p) { p.classList.remove('active'); });
+    pill.classList.add('active');
+    activeSubcat = pill.dataset.sub;
+    applyFilters();
+  });
+
+  /* ── LIGHTBOX ── */
+  var lb        = document.getElementById('lightbox');
+  var lbImg     = document.getElementById('lbImg');
+  var lbTitle   = document.getElementById('lbTitle');
+  var lbImgWrap = document.getElementById('lbImgWrap');
+  var lbPrev    = document.getElementById('lbPrev');
+  var lbNext    = document.getElementById('lbNext');
+  var lbClose   = document.getElementById('lbClose');
+  var lbCount   = document.getElementById('lbCounter');
+  var lbDotsEl  = document.getElementById('lbDots');
+  var lbDots    = [];
+
+  function buildLbDots() {
+    lbDotsEl.innerHTML = ''; lbDots = [];
+    if (filtered.length <= 14) {
+      filtered.forEach(function(_, i) {
+        var d = document.createElement('div');
+        d.className = 'lb-dot';
+        lbDotsEl.appendChild(d);
+        lbDots.push(d);
+      });
+    }
+    syncDots();
+  }
+  function syncDots() {
+    lbDots.forEach(function(d,i) { d.classList.toggle('active', i === lbCurrent); });
+    lbCount.textContent = (lbCurrent + 1) + ' / ' + filtered.length;
+    lbTitle.textContent = filtered[lbCurrent] ? (filtered[lbCurrent].title || '') : '';
+  }
+  function updateLb(idx) {
+    lbCurrent = ((idx % filtered.length) + filtered.length) % filtered.length;
+    lbImg.classList.add('switching');
+    setTimeout(function() {
+      var rec = filtered[lbCurrent];
+      lbImg.src = imageUrl(rec);
+      lbImg.alt = rec.title || '';
+      lbImg.classList.remove('switching');
+      syncDots();
+    }, 200);
+  }
+  function openLightbox(idx) {
+    lbCurrent = idx;
+    var rec = filtered[lbCurrent];
+    lbImg.src = imageUrl(rec);
+    lbImg.alt = rec.title || '';
+    buildLbDots();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(function() { lbImg.src = ''; }, 300);
+  }
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbImgWrap.addEventListener('click', function(e) { if (e.target === lbImgWrap) closeLightbox(); });
+  lbPrev.addEventListener('click', function() { updateLb(lbCurrent - 1); });
+  lbNext.addEventListener('click', function() { updateLb(lbCurrent + 1); });
+  document.addEventListener('keydown', function(e) {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'ArrowLeft')  updateLb(lbCurrent - 1);
+    if (e.key === 'ArrowRight') updateLb(lbCurrent + 1);
+    if (e.key === 'Escape')     closeLightbox();
+  });
+  var lbTx = 0;
+  lb.addEventListener('touchstart', function(e) { lbTx = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend',   function(e) {
+    var diff = lbTx - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? updateLb(lbCurrent + 1) : updateLb(lbCurrent - 1);
+  }, { passive: true });
+
+  /* ── ADMIN LOGIN ── */
+  var loginOverlay = document.getElementById('adminLoginOverlay');
+  var adminPanel   = document.getElementById('adminPanel');
+  var lockIcon     = document.getElementById('adminLockIcon');
+  var triggerBtn   = document.getElementById('adminTriggerBtn');
+
+  function openLoginOverlay() {
+    loginOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function() { document.getElementById('adminEmail').focus(); }, 150);
+  }
+  function closeLoginOverlay() {
+    loginOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+    document.getElementById('adminEmail').value    = '';
+    document.getElementById('adminPassword').value = '';
+    document.getElementById('adminLoginError').classList.remove('visible');
+  }
+
+  triggerBtn.addEventListener('click', function() {
+    if (authToken) {
+      // toggle admin panel
+      adminOpen = !adminOpen;
+      adminPanel.classList.toggle('open', adminOpen);
+      if (adminOpen) {
+        loadManageList();
+        adminPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    } else {
+      openLoginOverlay();
+    }
+  });
+
+  document.getElementById('adminLoginCancel').addEventListener('click', closeLoginOverlay);
+
+  // Close overlay when clicking backdrop
+  loginOverlay.addEventListener('click', function(e) {
+    if (e.target === loginOverlay) closeLoginOverlay();
+  });
+
+  document.getElementById('adminLoginSubmit').addEventListener('click', function() {
+    var email    = document.getElementById('adminEmail').value.trim();
+    var password = document.getElementById('adminPassword').value;
+    var btn      = this;
+    var btnText  = document.getElementById('adminLoginBtnText');
+    var errEl    = document.getElementById('adminLoginError');
+
+    if (!email || !password) {
+      errEl.textContent = 'Please enter your email and password.';
+      errEl.classList.add('visible');
+      return;
+    }
+
+    btn.disabled    = true;
+    btnText.textContent = 'Signing in…';
+    errEl.classList.remove('visible');
+
+    // Try superusers auth endpoint (PocketBase v0.23+)
+    fetch(PB_URL + '/api/collections/_superusers/auth-with-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identity: email, password: password })
+    })
+    .then(function(r) {
+      if (!r.ok) throw new Error('auth_failed');
+      return r.json();
+    })
+    .then(function(data) {
+      authToken = data.token;
+      closeLoginOverlay();
+      adminOpen = true;
+      adminPanel.classList.add('open');
+      triggerBtn.classList.add('unlocked');
+      lockIcon.className = 'fas fa-unlock';
+      loadManageList();
+      setTimeout(function() {
+        adminPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    })
+    .catch(function() {
+      errEl.textContent = 'Incorrect credentials. Please try again.';
+      errEl.classList.add('visible');
+      document.getElementById('adminPassword').value = '';
+      document.getElementById('adminPassword').focus();
+    })
+    .finally(function() {
+      btn.disabled = false;
+      btnText.textContent = 'Sign In';
+    });
+  });
+
+  // Enter key on password field
+  document.getElementById('adminPassword').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('adminLoginSubmit').click();
+  });
+  document.getElementById('adminEmail').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('adminPassword').focus();
+  });
+
+  document.getElementById('adminPanelClose').addEventListener('click', function() {
+    adminOpen = false;
+    adminPanel.classList.remove('open');
+  });
+
+  /* ── ADMIN TABS ── */
+  document.querySelectorAll('.admin-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.admin-tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.admin-tab-content').forEach(function(c) { c.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+      if (tab.dataset.tab === 'manage') loadManageList();
+    });
+  });
+
+  /* ── UPLOAD ── */
+  var fileInput  = document.getElementById('fileInput');
+  var dropZone   = document.getElementById('dropZone');
+  var preview    = document.getElementById('uploadPreview');
+  var previewImg = document.getElementById('previewImg');
+
+  dropZone.addEventListener('dragover',  function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', function()  { dropZone.classList.remove('drag-over'); });
+  dropZone.addEventListener('drop', function(e) {
+    e.preventDefault(); dropZone.classList.remove('drag-over');
+    var file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) setFile(file);
+  });
+  fileInput.addEventListener('change', function() {
+    if (fileInput.files[0]) setFile(fileInput.files[0]);
+  });
+
+  function setFile(file) {
+    selectedFile = file;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      preview.classList.add('visible');
+      dropZone.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  document.getElementById('previewClear').addEventListener('click', clearFile);
+  function clearFile() {
+    selectedFile = null; previewImg.src = '';
+    preview.classList.remove('visible');
+    dropZone.style.display = '';
+    fileInput.value = '';
+  }
+
+  document.querySelectorAll('.crop-option').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.crop-option').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedCrop = btn.dataset.crop;
+    });
+  });
+
+  document.getElementById('uploadCategory').addEventListener('change', function() {
+    document.getElementById('subcatWrap').classList.toggle('open', this.value === 'holiday');
+  });
+
+  document.getElementById('uploadBtn').addEventListener('click', function() {
+    if (!selectedFile) { showUploadStatus('error', 'Please select an image first.'); return; }
+    if (!authToken)     { showUploadStatus('error', 'Not authenticated.'); return; }
+
+    var title    = document.getElementById('uploadTitle').value.trim();
+    var category = document.getElementById('uploadCategory').value;
+    var subcat   = category === 'holiday' ? document.getElementById('uploadSubcat').value : '';
+    var maxOrder = allImages.reduce(function(m,r) { return Math.max(m, r.sort_order || 0); }, 0);
+
+    var btn = document.getElementById('uploadBtn');
+    document.getElementById('uploadBtnText').textContent = 'Uploading…';
+    btn.disabled = true;
+
+    var fd = new FormData();
+    fd.append('image',       selectedFile);
+    fd.append('title',       title || selectedFile.name.replace(/\.[^.]+$/,''));
+    fd.append('category',    category);
+    fd.append('subcategory', subcat);
+    fd.append('crop_style',  selectedCrop);
+    fd.append('sort_order',  maxOrder + 1);
+    fd.append('visible',     'true');
+
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records', {
+      method: 'POST',
+      headers: { 'Authorization': authToken },
+      body: fd
+    })
+    .then(function(r) { if (!r.ok) throw new Error('Upload failed ' + r.status); return r.json(); })
+    .then(function() {
+      showUploadStatus('success', 'Image uploaded successfully!');
+      clearFile();
+      document.getElementById('uploadTitle').value = '';
+      document.querySelectorAll('.crop-option').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelector('.crop-option[data-crop="square"]').classList.add('active');
+      selectedCrop = 'square';
+      return fetchImages();
+    })
+    .then(function() { applyFilters(); })
+    .catch(function(err) { showUploadStatus('error', err.message); })
+    .finally(function() {
+      btn.disabled = false;
+      document.getElementById('uploadBtnText').textContent = 'Upload Image';
+    });
+  });
+
+  function showUploadStatus(type, msg) {
+    var el   = document.getElementById('uploadStatus');
+    var text = document.getElementById('uploadStatusText');
+    text.textContent = msg;
+    el.className = 'upload-status ' + type + ' visible';
+    setTimeout(function() {
+      el.className = 'upload-status';
+      setTimeout(function() { text.textContent = ''; }, 300);
+    }, 4000);
+  }
+
+  /* ── MANAGE LIST ── */
+  function loadManageList() {
+    var list = document.getElementById('manageList');
+    list.innerHTML = '<div class="manage-empty">Loading…</div>';
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=sort_order,created&perPage=200', {
+      headers: { 'Authorization': authToken }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var items = data.items || [];
+      if (!items.length) { list.innerHTML = '<div class="manage-empty">No images yet.</div>'; return; }
+      list.innerHTML = '';
+      items.forEach(function(record, idx) {
+        var row = document.createElement('div');
+        row.className = 'manage-item';
+        row.style.animationDelay = (idx * 0.03) + 's';
+        row.dataset.id = record.id;
+
+        var thumb = document.createElement('img');
+        thumb.className = 'manage-item-thumb';
+        thumb.src = thumbUrl(record);
+        thumb.alt = record.title || '';
+
+        var info = document.createElement('div');
+        info.className = 'manage-item-info';
+        info.innerHTML =
+          '<div class="manage-item-title">' + (record.title || 'Untitled') + '</div>' +
+          '<div class="manage-item-meta">' + record.category +
+          (record.subcategory ? ' · ' + record.subcategory : '') +
+          ' · ' + (record.visible !== false ? 'Visible' : 'Hidden') + '</div>';
+
+        var actions = document.createElement('div');
+        actions.className = 'manage-item-actions';
+
+        // Visibility toggle
+        var visBtn = document.createElement('button');
+        visBtn.className = 'manage-btn' + (record.visible !== false ? ' vis-on' : '');
+        visBtn.title = record.visible !== false ? 'Hide' : 'Show';
+        visBtn.innerHTML = '<i class="fas fa-' + (record.visible !== false ? 'eye' : 'eye-slash') + '"></i>';
+        visBtn.addEventListener('click', function() { toggleVisibility(record, info, visBtn); });
+
+        // Move up
+        var upBtn = document.createElement('button');
+        upBtn.className = 'manage-btn'; upBtn.title = 'Move up';
+        upBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        upBtn.addEventListener('click', function() { moveItem(record, -1); });
+
+        // Move down
+        var dnBtn = document.createElement('button');
+        dnBtn.className = 'manage-btn'; dnBtn.title = 'Move down';
+        dnBtn.innerHTML = '<i class="fas fa-arrow-down"></i>';
+        dnBtn.addEventListener('click', function() { moveItem(record, 1); });
+
+        // Delete
+        var delBtn = document.createElement('button');
+        delBtn.className = 'manage-btn danger'; delBtn.title = 'Delete';
+        delBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        delBtn.addEventListener('click', function() { deleteItem(record, row); });
+
+        actions.appendChild(visBtn);
+        actions.appendChild(upBtn);
+        actions.appendChild(dnBtn);
+        actions.appendChild(delBtn);
+
+        row.appendChild(thumb);
+        row.appendChild(info);
+        row.appendChild(actions);
+        list.appendChild(row);
+      });
+    })
+    .catch(function() { list.innerHTML = '<div class="manage-empty">Failed to load images.</div>'; });
+  }
+
+  function toggleVisibility(record, info, btn) {
+    var newVis = record.visible === false;
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + record.id, {
+      method: 'PATCH', headers: authHeaders(),
+      body: JSON.stringify({ visible: newVis })
+    })
+    .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
+    .then(function(updated) {
+      record.visible = updated.visible;
+      btn.className  = 'manage-btn' + (record.visible !== false ? ' vis-on' : '');
+      btn.title      = record.visible !== false ? 'Hide' : 'Show';
+      btn.innerHTML  = '<i class="fas fa-' + (record.visible !== false ? 'eye' : 'eye-slash') + '"></i>';
+      info.querySelector('.manage-item-meta').innerHTML =
+        record.category + (record.subcategory ? ' · ' + record.subcategory : '') +
+        ' · ' + (record.visible !== false ? 'Visible' : 'Hidden');
+      fetchImages().then(function() { applyFilters(); });
+    })
+    .catch(function() { alert('Failed to update visibility.'); });
+  }
+
+  function moveItem(record, dir) {
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=sort_order,created&perPage=200', {
+      headers: { 'Authorization': authToken }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var items   = data.items || [];
+      var idx     = items.findIndex(function(r) { return r.id === record.id; });
+      var swapIdx = idx + dir;
+      if (swapIdx < 0 || swapIdx >= items.length) return Promise.resolve();
+      var swap     = items[swapIdx];
+      var myOrder  = record.sort_order != null ? record.sort_order : idx;
+      var swOrder  = swap.sort_order   != null ? swap.sort_order   : swapIdx;
+      return Promise.all([
+        fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + record.id, {
+          method: 'PATCH', headers: authHeaders(),
+          body: JSON.stringify({ sort_order: swOrder })
+        }),
+        fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + swap.id, {
+          method: 'PATCH', headers: authHeaders(),
+          body: JSON.stringify({ sort_order: myOrder })
+        })
+      ]);
+    })
+    .then(function() { loadManageList(); return fetchImages(); })
+    .then(function() { applyFilters(); })
+    .catch(function() { alert('Failed to reorder.'); });
+  }
+
+  function deleteItem(record, row) {
+    if (!confirm('Delete "' + (record.title || 'this image') + '"? This cannot be undone.')) return;
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + record.id, {
+      method: 'DELETE', headers: { 'Authorization': authToken }
+    })
+    .then(function(r) { if (!r.ok) throw new Error(); })
+    .then(function() {
+      row.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+      row.style.opacity    = '0';
+      row.style.transform  = 'translateX(12px)';
+      setTimeout(function() { row.remove(); }, 230);
+      return fetchImages();
+    })
+    .then(function() { applyFilters(); })
+    .catch(function() { alert('Failed to delete.'); });
+  }
+
+  /* ── INIT ── */
+  showSkeletons();
+  fetchImages()
+    .then(function() { applyFilters(); })
+    .catch(function() {
+      document.getElementById('galleryGrid').innerHTML =
+        '<div class="gallery-empty"><i class="fas fa-triangle-exclamation"></i><p>Could not load gallery. Please try again later.</p></div>';
     });
 
-  })();
-  </script>
+})();
+</script>
 </body>
 </html>
