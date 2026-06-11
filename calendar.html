@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-34HRY5BP01"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -11,15 +10,12 @@
   </script>
 
   <meta charset="UTF-8" />
-  <title>Calendar & Location | JakeBitt3DPrints</title>
-  <meta name="description" content="Find out when and where I will be setup at!" />
+  <title>Calendar & Events | JakeBitt3DPrints</title>
+  <meta name="description" content="Find out when and where JakeBitt3DPrints will be set up next!" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-
-  <!-- View Transitions API for smooth page fades -->
   <meta name="view-transition" content="same-origin">
 
-  <!-- THEME: inline bg on html before any paint — eliminates white flash -->
   <style>html { background: #f5f5f5; } html[data-theme="dark"] { background: #111827; }</style>
   <script>
     (function() {
@@ -33,141 +29,112 @@
     })();
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- CommonNinja Calendar -->
-  <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+  <!-- FullCalendar -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
-  <!-- Flourish Map -->
-  <script src="https://public.flourish.studio/resources/embed.js"></script>
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
+    /* ── TOKENS ── */
     :root {
-      --bg:          #f5f5f5;
-      --bg-alt:      #ffffff;
-      --text:        #111111;
-      --muted:       #4b5563;
-      --accent:      #2563eb;
-      --border:      #e5e7eb;
-      --nav-bg:      #ffffff;
-      --nav-text:    #111111;
+      --bg:              #f5f5f5;
+      --bg-alt:          #ffffff;
+      --text:            #111111;
+      --muted:           #4b5563;
+      --accent:          #2563eb;
+      --border:          #e5e7eb;
+      --nav-bg:          #ffffff;
+      --nav-text:        #111111;
       --nav-active-bg:   #111111;
       --nav-active-text: #ffffff;
-      --footer-bg:   #ffffff;
-      --shadow:      0 10px 25px rgba(15,23,42,0.08);
-      --radius:      20px;
-      --font-head:   'DM Serif Display', Georgia, serif;
-      --font-body:   'DM Sans', system-ui, sans-serif;
+      --footer-bg:       #ffffff;
+      --shadow:          0 10px 25px rgba(15,23,42,0.08);
+      --shadow-lg:       0 20px 50px rgba(15,23,42,0.16);
+      --radius:          20px;
+      --font-head:       'DM Serif Display', Georgia, serif;
+      --font-body:       'DM Sans', system-ui, sans-serif;
       --safe-b: env(safe-area-inset-bottom, 0px);
       --safe-l: env(safe-area-inset-left,   0px);
       --safe-r: env(safe-area-inset-right,  0px);
     }
     :root[data-theme="dark"] {
-      --bg:          #111827;
-      --bg-alt:      #020617;
-      --text:        #f9fafb;
-      --muted:       #d1d5db;
-      --accent:      #9ca3af;
-      --border:      #1f2937;
-      --nav-bg:      #020617;
-      --nav-text:    #e5e7eb;
+      --bg:              #111827;
+      --bg-alt:          #020617;
+      --text:            #f9fafb;
+      --muted:           #d1d5db;
+      --accent:          #9ca3af;
+      --border:          #1f2937;
+      --nav-bg:          #020617;
+      --nav-text:        #e5e7eb;
       --nav-active-bg:   #e5e7eb;
       --nav-active-text: #020617;
-      --footer-bg:   #020617;
-      --shadow:      0 10px 25px rgba(0,0,0,0.45);
+      --footer-bg:       #020617;
+      --shadow:          0 10px 25px rgba(0,0,0,0.45);
+      --shadow-lg:       0 20px 50px rgba(0,0,0,0.65);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { overflow-x: hidden; max-width: 100%; }
-
     body {
       font-family: var(--font-body);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
+      background: var(--bg); color: var(--text);
+      min-height: 100dvh; display: flex; flex-direction: column;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      max-width: 100%;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden; max-width: 100%;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
-
     button, a, [role="button"] { touch-action: manipulation; }
 
+    /* ── ANIMATIONS ── */
     @keyframes vt-fade-in  { from { opacity: 0; } to { opacity: 1; } }
     @keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
     ::view-transition-old(root) { animation: vt-fade-out 0.22s ease forwards; }
     ::view-transition-new(root) { animation: vt-fade-in  0.28s ease forwards; }
-
-    @keyframes pageFadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes pageFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .site-shell { animation: pageFadeIn 0.45s cubic-bezier(0.4,0,0.2,1) both; }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     .animate { animation: slideUp 0.45s cubic-bezier(0.4,0,0.2,1) both; }
-    .d1 { animation-delay: 0.05s; }
-    .d2 { animation-delay: 0.12s; }
-    .d3 { animation-delay: 0.19s; }
+    .d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.19s; } .d4 { animation-delay: 0.26s; }
 
+    /* ── LAYOUT ── */
     .site-shell {
-      max-width: 960px;
-      width: 100%;
-      margin: 0 auto;
+      max-width: 960px; width: 100%; margin: 0 auto;
       padding: 24px calc(20px + var(--safe-r)) 32px calc(20px + var(--safe-l));
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      flex: 1; display: flex; flex-direction: column; gap: 20px;
     }
 
-    .brand-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
+    /* ── BRAND BAR ── */
+    .brand-bar { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
     .brand-left { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
     .brand-logo {
-      width: 44px; height: 44px; border-radius: 50%;
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      background: var(--bg-alt); overflow: hidden; padding: 4px; flex-shrink: 0;
+      width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; background: var(--bg-alt);
+      overflow: hidden; padding: 4px; flex-shrink: 0;
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-    .brand-logo img {
-      width: 100%; height: 100%; object-fit: contain;
-      filter: invert(0); transition: filter 0.3s ease;
-    }
+    .brand-logo img { width: 100%; height: 100%; object-fit: contain; filter: invert(0); transition: filter 0.3s ease; }
     :root[data-theme="dark"] .brand-logo img { filter: invert(1); }
     .brand-text { display: flex; flex-direction: column; gap: 2px; }
     .brand-name { font-weight: 700; font-size: 1.05rem; letter-spacing: 0.01em; color: var(--text); }
     .brand-tagline { font-size: 0.82rem; color: var(--muted); line-height: 1.3; }
 
+    /* ── NAV ── */
     .nav-wrap { flex-shrink: 0; }
     nav {
-      display: flex; align-items: center; gap: 4px;
-      padding: 5px 8px; border-radius: 999px;
-      background: var(--nav-bg); border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      overflow-x: auto; overflow-y: visible;
-      scrollbar-width: none; -ms-overflow-style: none;
-      max-width: 100%;
+      display: flex; align-items: center; gap: 4px; padding: 5px 8px;
+      border-radius: 999px; background: var(--nav-bg); border: 1px solid var(--border);
+      box-shadow: var(--shadow); overflow-x: auto; overflow-y: visible;
+      scrollbar-width: none; -ms-overflow-style: none; max-width: 100%;
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     nav::-webkit-scrollbar { display: none; }
@@ -181,161 +148,317 @@
     nav a:active { transform: scale(0.95); }
     nav a.active { background-color: var(--nav-active-bg); color: var(--nav-active-text); }
 
+    /* ── CARD ── */
     .card {
-      border-radius: var(--radius); background: var(--bg-alt);
-      border: 1px solid var(--border); padding: 28px 24px;
-      box-shadow: var(--shadow);
+      border-radius: var(--radius); background: var(--bg-alt); border: 1px solid var(--border);
+      padding: 28px 24px; box-shadow: var(--shadow);
       transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
+    .eyebrow { font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 10px; }
+    .page-title { font-family: var(--font-head); font-size: clamp(1.5rem,5vw,2rem); line-height: 1.2; letter-spacing: -0.01em; color: var(--text); margin-bottom: 20px; }
+    .section-title { font-family: var(--font-head); font-size: 1.3rem; color: var(--text); margin-bottom: 16px; }
 
-    .eyebrow {
-      font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--muted); font-weight: 600; margin-bottom: 10px;
+    /* ── SUBSCRIBE BUTTON ── */
+    .subscribe-row {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      margin-bottom: 22px;
     }
-
-    .page-title {
-      font-family: var(--font-head);
-      font-size: clamp(1.5rem, 5vw, 2rem);
-      line-height: 1.2; letter-spacing: -0.01em;
-      color: var(--text); margin-bottom: 24px;
-    }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: 2fr 1.9fr;
-      gap: 24px;
-      align-items: start;
-    }
-
-    .calendar-container { display: flex; flex-direction: column; gap: 14px; }
-
-    .calendar-hint {
-      background: rgba(37,99,235,0.08); color: var(--accent);
-      padding: 11px 15px; border-radius: 12px; font-size: 0.88rem;
-      display: flex; align-items: center; gap: 8px;
-      border: 1px solid rgba(37,99,235,0.18);
-      transition: background-color 0.3s ease, border-color 0.3s ease;
-    }
-    :root[data-theme="dark"] .calendar-hint {
-      background: rgba(59,130,246,0.12); color: #93c5fd;
-      border-color: rgba(59,130,246,0.25);
-    }
-
-    .commonninja_component {
-      border-radius: 14px; overflow: hidden;
-      border: 1px solid var(--border);
-      min-height: 600px; height: 600px;
-      background: var(--bg-alt);
-      opacity: 0; transform: translateY(4px);
-      transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
-    }
-    .commonninja_component.loaded { opacity: 1; transform: translateY(0); }
-    :root[data-theme="dark"] .commonninja_component { background: #0f172a; border-color: #334155; }
-    :root[data-theme="dark"] .commonninja_component iframe {
-      color-scheme: dark;
-      filter: invert(1) hue-rotate(180deg) contrast(1.05) brightness(1.02);
-    }
-
-    .map-section { display: flex; flex-direction: column; gap: 14px; }
-
-    .map-toggle-btn {
-      background: var(--accent); color: #ffffff;
-      border: 1px solid var(--accent);
-      padding: 10px 20px; font-size: 0.88rem; font-weight: 600;
-      border-radius: 999px; cursor: pointer; font-family: var(--font-body);
-      display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
+    .subscribe-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: 999px;
+      background: var(--nav-active-bg); color: var(--nav-active-text);
+      border: none; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body); text-decoration: none;
       transition: opacity 0.18s ease, transform 0.12s ease;
     }
-    .map-toggle-btn:hover { opacity: 0.88; }
-    .map-toggle-btn:active { transform: scale(0.96); }
-    :root[data-theme="dark"] .map-toggle-btn { background: #4b5563; border-color: #4b5563; }
-    .map-toggle-btn i { transition: transform 0.3s ease; }
-    .map-toggle-btn.active i { transform: rotate(180deg); }
-    .map-toggle-btn .btn-text { transition: opacity 0.2s ease; }
+    .subscribe-btn:hover  { opacity: 0.85; }
+    .subscribe-btn:active { transform: scale(0.96); }
+    .subscribe-hint { font-size: 0.82rem; color: var(--muted); }
 
-    .map-container { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
-    .map-container.visible { max-height: 420px; }
+    /* ── FULLCALENDAR OVERRIDES ── */
+    .fc-wrapper {
+      border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
+      background: var(--bg-alt);
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+    .fc { font-family: var(--font-body) !important; }
+    .fc .fc-toolbar-title { font-family: var(--font-head) !important; font-size: 1.2rem !important; color: var(--text) !important; }
+    .fc .fc-button {
+      background: var(--bg) !important; border-color: var(--border) !important;
+      color: var(--text) !important; font-family: var(--font-body) !important;
+      font-size: 0.82rem !important; font-weight: 600 !important;
+      border-radius: 8px !important; padding: 5px 10px !important;
+      transition: background-color 0.15s ease !important;
+    }
+    .fc .fc-button:hover { background: var(--border) !important; }
+    .fc .fc-button-primary:not(.fc-button-active):not(.fc-prev-button):not(.fc-next-button) { background: var(--bg) !important; }
+    .fc .fc-button-active { background: var(--nav-active-bg) !important; color: var(--nav-active-text) !important; border-color: var(--nav-active-bg) !important; }
+    .fc .fc-daygrid-day { background: var(--bg-alt) !important; transition: background-color 0.3s ease; }
+    .fc .fc-daygrid-day:hover { background: var(--bg) !important; }
+    .fc .fc-col-header-cell { background: var(--bg) !important; color: var(--muted) !important; font-size: 0.78rem !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase !important; }
+    .fc .fc-scrollgrid { border-color: var(--border) !important; }
+    .fc .fc-scrollgrid-section > td { border-color: var(--border) !important; }
+    .fc td, .fc th { border-color: var(--border) !important; }
+    .fc .fc-daygrid-day-number { color: var(--text) !important; font-size: 0.82rem !important; }
+    .fc .fc-day-today { background: rgba(37,99,235,0.05) !important; }
+    :root[data-theme="dark"] .fc .fc-day-today { background: rgba(156,163,175,0.08) !important; }
+    .fc .fc-daygrid-event { border-radius: 6px !important; font-size: 0.75rem !important; font-weight: 600 !important; padding: 2px 5px !important; border: none !important; cursor: pointer; }
+    .fc .fc-list-event { cursor: pointer; }
+    .fc .fc-list-event:hover td { background: var(--bg) !important; }
+    .fc .fc-list-day-cushion { background: var(--bg) !important; color: var(--muted) !important; font-size: 0.8rem !important; font-weight: 600 !important; }
+    .fc .fc-list-event-title { color: var(--text) !important; }
+    .fc .fc-list-empty { background: var(--bg-alt) !important; color: var(--muted) !important; }
+    .fc .fc-toolbar { padding: 14px 16px !important; flex-wrap: wrap !important; gap: 8px !important; }
+    .fc .fc-toolbar-chunk { display: flex !important; align-items: center !important; gap: 6px !important; }
 
-    .flourish-wrapper {
-      height: 400px; border-radius: 14px; overflow: hidden;
+    /* ── MAP ── */
+    .map-wrap {
+      border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
+      height: 380px; position: relative;
+      transition: border-color 0.3s ease;
+    }
+    #calMap { width: 100%; height: 100%; }
+    /* Fix Leaflet z-index issues */
+    .leaflet-pane { z-index: 1; }
+    .leaflet-top, .leaflet-bottom { z-index: 2; }
+
+    /* ── UPCOMING EVENTS ── */
+    .events-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .event-card {
+      border-radius: 14px; border: 1px solid var(--border); background: var(--bg-alt);
+      padding: 16px; display: flex; gap: 14px; align-items: flex-start;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+      cursor: default;
+    }
+    .event-card:hover { box-shadow: var(--shadow); }
+    .event-date-block {
+      flex-shrink: 0; width: 48px; height: 52px; border-radius: 10px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: var(--bg); border: 1px solid var(--border);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    .event-date-month { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+    .event-date-day   { font-size: 1.3rem; font-weight: 700; line-height: 1; color: var(--text); }
+    .event-info { flex: 1; min-width: 0; }
+    .event-title { font-weight: 700; font-size: 0.9rem; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .event-meta  { font-size: 0.77rem; color: var(--muted); display: flex; flex-direction: column; gap: 2px; }
+    .event-meta i { width: 13px; }
+    .event-color-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+    .events-empty { color: var(--muted); font-size: 0.9rem; text-align: center; padding: 24px; }
+
+    /* ── EVENT DETAIL OVERLAY ── */
+    .overlay {
+      position: fixed; inset: 0; z-index: 950;
+      background: rgba(0,0,0,0.45);
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+    .overlay-box {
+      background: var(--bg-alt); border: 1px solid var(--border);
+      border-radius: 22px; width: 100%; max-width: 460px;
+      box-shadow: var(--shadow-lg); max-height: 90dvh; overflow-y: auto;
+      transform: translateY(20px) scale(0.97); opacity: 0;
+      transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1), opacity 0.28s ease, background-color 0.3s ease;
+    }
+    .overlay.open .overlay-box { transform: translateY(0) scale(1); opacity: 1; }
+    .overlay-inner { padding: 26px 22px; display: flex; flex-direction: column; gap: 14px; }
+    .overlay-title { font-family: var(--font-head); font-size: 1.3rem; color: var(--text); }
+    .overlay-sub   { font-size: 0.84rem; color: var(--muted); margin-top: -6px; line-height: 1.5; }
+
+    .event-detail-img {
+      width: 100%; border-radius: 12px; max-height: 200px; object-fit: cover;
       border: 1px solid var(--border);
-      opacity: 0; transform: translateY(4px);
-      transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
     }
-    .flourish-wrapper.loaded { opacity: 1; transform: translateY(0); }
-    :root[data-theme="dark"] .flourish-wrapper { border-color: #334155; }
+    .event-detail-meta { display: flex; flex-direction: column; gap: 7px; }
+    .event-detail-row  { display: flex; align-items: flex-start; gap: 10px; font-size: 0.88rem; color: var(--muted); }
+    .event-detail-row i { color: var(--accent); width: 16px; margin-top: 2px; flex-shrink: 0; }
+    .event-detail-desc { font-size: 0.88rem; color: var(--text); line-height: 1.6; }
 
-    .flourish-embed {
-      border-radius: 14px; overflow: hidden;
-      height: 400px !important; max-height: 400px !important;
+    /* ── FORM ELEMENTS ── */
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-label { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 10px;
+      font-size: 0.9rem; font-family: var(--font-body); background: var(--bg); color: var(--text); outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
     }
-    .flourish-embed iframe { display: block; margin: 0; }
-    .flourish-wrapper .flourish-embed a,
-    .flourish-wrapper .flourish-embed [class*="attribution"],
-    .flourish-wrapper .flourish-embed [class*="credit"],
-    .flourish-wrapper .flourish-embed [class*="flourish-studio"] { display: none !important; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .form-textarea { min-height: 90px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 
+    /* Color picker row */
+    .color-row { display: flex; align-items: center; gap: 10px; }
+    .color-preview { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); flex-shrink: 0; }
+    input[type="color"] { width: 0; height: 0; opacity: 0; position: absolute; }
+
+    /* Buttons */
+    .btn-primary-sm {
+      flex: 1; padding: 10px; border-radius: 999px;
+      background: var(--nav-active-bg); color: var(--nav-active-text);
+      border: none; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body);
+      transition: opacity 0.15s ease, transform 0.12s ease;
+    }
+    .btn-primary-sm:hover  { opacity: 0.85; }
+    .btn-primary-sm:active { transform: scale(0.97); }
+    .btn-primary-sm:disabled { opacity: 0.45; pointer-events: none; }
+    .btn-ghost-sm {
+      padding: 10px 18px; border-radius: 999px;
+      background: transparent; color: var(--muted); border: 1px solid var(--border);
+      font-size: 0.9rem; font-weight: 600; cursor: pointer; font-family: var(--font-body);
+      transition: background-color 0.15s ease, transform 0.12s ease;
+    }
+    .btn-ghost-sm:hover  { background-color: rgba(148,163,184,0.12); }
+    .btn-ghost-sm:active { transform: scale(0.97); }
+    .btn-danger-sm {
+      padding: 10px 18px; border-radius: 999px;
+      background: transparent; color: #ef4444; border: 1px solid rgba(239,68,68,0.3);
+      font-size: 0.9rem; font-weight: 600; cursor: pointer; font-family: var(--font-body);
+      transition: background-color 0.15s ease, transform 0.12s ease;
+    }
+    .btn-danger-sm:hover  { background-color: rgba(239,68,68,0.08); }
+    .btn-danger-sm:active { transform: scale(0.97); }
+    .overlay-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .login-error {
+      font-size: 0.82rem; color: #ef4444; padding: 8px 12px;
+      background: rgba(239,68,68,0.08); border-radius: 8px; border: 1px solid rgba(239,68,68,0.2);
+      display: none;
+    }
+    .login-error.visible { display: block; animation: slideUp 0.2s ease both; }
+
+    /* Status messages */
+    .status-msg { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.28s ease; }
+    .status-msg-inner { overflow: hidden; }
+    .status-msg.open { grid-template-rows: 1fr; }
+    .status-msg-inner-pad { padding: 10px 14px; border-radius: 10px; font-size: 0.84rem; }
+    .status-msg.success .status-msg-inner-pad { background: rgba(34,197,94,0.09); color: #15803d; border: 1px solid rgba(34,197,94,0.2); }
+    .status-msg.error   .status-msg-inner-pad { background: rgba(239,68,68,0.09); color: #dc2626; border: 1px solid rgba(239,68,68,0.2); }
+
+    /* Drop zone */
+    .drop-zone {
+      border: 2px dashed var(--border); border-radius: 12px;
+      padding: 20px; text-align: center; cursor: pointer; position: relative;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background-color: rgba(37,99,235,0.04); }
+    .drop-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .drop-zone-text { font-size: 0.84rem; color: var(--muted); }
+    .drop-zone-text strong { color: var(--accent); }
+    .drop-zone-preview { display: none; width: 100%; max-height: 120px; object-fit: cover; border-radius: 8px; margin-top: 8px; }
+    .drop-zone-preview.visible { display: block; }
+
+    /* ── ADMIN PANEL ── */
+    .admin-panel {
+      border-radius: var(--radius); background: var(--bg-alt); border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.4s cubic-bezier(0.4,0,0.2,1),
+                  opacity 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+      opacity: 0; visibility: hidden;
+    }
+    .admin-panel.open { grid-template-rows: 1fr; opacity: 1; visibility: visible; border-color: var(--accent); }
+    .admin-panel-overflow { overflow: hidden; }
+    .admin-panel-pad { padding: 24px; }
+
+    .admin-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+    .admin-panel-title  { font-family: var(--font-head); font-size: 1.2rem; color: var(--text); }
+
+    .admin-tabs { display: flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; }
+    .admin-tab {
+      padding: 7px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+      border: 1px solid var(--border); background: transparent; color: var(--muted);
+      cursor: pointer; font-family: var(--font-body);
+      transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    }
+    .admin-tab.active { background: var(--nav-active-bg); color: var(--nav-active-text); border-color: var(--nav-active-bg); }
+    .admin-tab-content { display: none; }
+    .admin-tab-content.active { display: block; animation: slideUp 0.28s ease both; }
+
+    /* Manage events list */
+    .manage-list { display: flex; flex-direction: column; gap: 9px; max-height: 440px; overflow-y: auto; }
+    .manage-item {
+      display: flex; align-items: center; gap: 12px; padding: 11px 13px;
+      border: 1px solid var(--border); border-radius: 12px; background: var(--bg);
+      transition: border-color 0.2s ease, background-color 0.3s ease;
+      animation: slideUp 0.25s ease both;
+    }
+    .manage-item:hover { border-color: rgba(37,99,235,0.3); }
+    .manage-event-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .manage-item-info  { flex: 1; min-width: 0; }
+    .manage-item-title { font-weight: 600; font-size: 0.87rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .manage-item-meta  { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
+    .manage-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
+    .manage-btn {
+      width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--bg-alt); color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
+      transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease, transform 0.12s ease;
+      font-family: var(--font-body);
+    }
+    .manage-btn:hover  { border-color: var(--accent); color: var(--accent); }
+    .manage-btn:active { transform: scale(0.9); }
+    .manage-btn.vis-on  { color: #16a34a; border-color: rgba(22,163,74,0.35); }
+    .manage-btn.danger:hover { border-color: #ef4444; color: #ef4444; }
+    .manage-empty { text-align: center; padding: 32px; color: var(--muted); font-size: 0.88rem; }
+
+    /* ── FOOTER ── */
     footer {
-      width: 100vw; position: relative;
-      left: 50%; right: 50%;
+      width: 100vw; position: relative; left: 50%; right: 50%;
       margin-left: -50vw; margin-right: -50vw;
-      background-color: var(--footer-bg);
-      border-top: 1px solid var(--border);
+      background-color: var(--footer-bg); border-top: 1px solid var(--border);
       padding: 16px calc(20px + var(--safe-r)) calc(16px + var(--safe-b)) calc(20px + var(--safe-l));
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-    .footer-inner {
-      max-width: 960px; margin: 0 auto;
-      display: flex; flex-wrap: wrap; align-items: center;
-      gap: 14px; justify-content: space-between;
-    }
-    .footer-left { font-size: 0.82rem; color: var(--muted); }
-    .footer-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
+    .footer-inner { max-width: 960px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; justify-content: space-between; }
+    .footer-left  { font-size: 0.82rem; color: var(--muted); }
+    .footer-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .social-links { display: flex; align-items: center; gap: 6px; }
     .social-links a {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 1px solid var(--border);
+      width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
       text-decoration: none; font-size: 1rem; color: var(--muted);
       transition: background-color 0.15s ease, transform 0.12s ease, border-color 0.15s ease;
     }
-    .social-links a:hover { background-color: rgba(148,163,184,0.18); transform: translateY(-1px); }
+    .social-links a:hover  { background-color: rgba(148,163,184,0.18); transform: translateY(-1px); }
     .social-links a:active { transform: scale(0.92); }
     .social-links a.facebook { color: #1877f2; }
     .social-links a.youtube  { color: #ff0000; }
-    .social-links a.instagram i {
-      background: linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .social-links a.tiktok i {
-      background: linear-gradient(45deg,#25f4ee,#fe2c55);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .social-links a.instagram i { background: linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .social-links a.tiktok i   { background: linear-gradient(45deg,#25f4ee,#fe2c55); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .social-links a.snapchat { background-color: #fffc00; border-color: #fffc00; color: #000; }
     .social-links a.snapchat:hover { background-color: #facc15; }
-
     .theme-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      border-radius: 999px; border: 1px solid var(--border);
-      padding: 6px 13px; font-size: 0.8rem; color: var(--muted);
-      cursor: pointer; background: transparent;
-      font-family: var(--font-body); min-height: 36px;
+      display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
+      border: 1px solid var(--border); padding: 6px 13px; font-size: 0.8rem; color: var(--muted);
+      cursor: pointer; background: transparent; font-family: var(--font-body); min-height: 36px;
       transition: background-color 0.15s ease, transform 0.12s ease, border-color 0.3s ease;
     }
-    .theme-btn:hover { background-color: rgba(148,163,184,0.18); transform: translateY(-1px); }
+    .theme-btn:hover  { background-color: rgba(148,163,184,0.18); transform: translateY(-1px); }
     .theme-btn:active { transform: scale(0.95); }
+    .admin-footer-btn {
+      display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
+      border: 1px solid var(--border); padding: 6px 13px; font-size: 0.8rem; color: var(--muted);
+      cursor: pointer; background: transparent; font-family: var(--font-body); min-height: 36px;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+    }
+    .admin-footer-btn:hover  { background-color: rgba(148,163,184,0.18); color: var(--text); transform: translateY(-1px); }
+    .admin-footer-btn:active { transform: scale(0.95); }
+    .admin-footer-btn.unlocked { color: var(--accent); border-color: var(--accent); }
 
+    /* ── RESPONSIVE ── */
     @media (max-width: 680px) {
       .brand-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
       .nav-wrap { width: 100%; }
       nav { width: 100%; justify-content: space-between; }
       nav a { padding: 7px 10px; font-size: 0.82rem; }
       .card { padding: 20px 16px; }
-      .page-title { font-size: 1.45rem; }
-      .content-grid { grid-template-columns: 1fr; gap: 20px; }
-      .commonninja_component { min-height: 520px; height: 520px; }
-      .map-toggle-btn { align-self: stretch; justify-content: center; }
+      .events-grid { grid-template-columns: 1fr; }
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      .map-wrap { height: 280px; }
     }
     @media (max-width: 400px) {
       nav a { padding: 6px 8px; font-size: 0.78rem; }
@@ -343,164 +466,978 @@
     }
   </style>
 </head>
-
 <body>
-  <div class="site-shell">
+<div class="site-shell">
 
-    <header class="brand-bar animate d1">
-      <div class="brand-left">
-        <div class="brand-logo">
-          <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="JakeBitt3DPrints logo">
-        </div>
-        <div class="brand-text">
-          <div class="brand-name">JakeBitt3DPrints</div>
-          <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
-        </div>
+  <!-- BRAND BAR -->
+  <header class="brand-bar animate d1">
+    <div class="brand-left">
+      <div class="brand-logo">
+        <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="JakeBitt3DPrints logo">
       </div>
-      <div class="nav-wrap">
-        <nav aria-label="Main navigation">
-          <a href="/">Home</a>
-          <a href="gallery">Gallery</a>
-          <a href="shop">Shop</a>
-          <a href="calendar" class="active">Calendar</a>
-          <a href="contact">Contact</a>
-        </nav>
+      <div class="brand-text">
+        <div class="brand-name">JakeBitt3DPrints</div>
+        <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
       </div>
-    </header>
+    </div>
+    <div class="nav-wrap">
+      <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="gallery">Gallery</a>
+        <a href="shop">Shop</a>
+        <a href="calendar" class="active">Calendar</a>
+        <a href="contact">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-    <main class="card animate d2">
-      <div class="eyebrow">Events & Locations</div>
-      <h1 class="page-title">Calendar & Location</h1>
+  <!-- MAIN CARD: CALENDAR -->
+  <main class="card animate d2">
+    <div class="eyebrow">Events &amp; Shows</div>
+    <h1 class="page-title">Calendar &amp; Location</h1>
 
-      <div class="content-grid">
-        <div class="calendar-container">
-          <div class="calendar-hint">
-            <i class="fas fa-circle-info"></i>
-            Click on an event for more details
-          </div>
-          <div class="commonninja_component pid-5c6d132c-b8cb-4500-b668-e25a31e3d5e7"></div>
-        </div>
+    <!-- Subscribe -->
+    <div class="subscribe-row">
+      <a href="https://event.jakebitt3dprints.com/calendarsubscription" target="_blank" rel="noopener" class="subscribe-btn">
+        <i class="fas fa-calendar-plus"></i> Subscribe to Calendar
+      </a>
+      <span class="subscribe-hint">Get notified of new events automatically</span>
+    </div>
 
-        <div class="map-section">
-          <button class="map-toggle-btn" id="mapToggle">
-            <i class="fas fa-map-location-dot"></i>
-            <span class="btn-text">View Location Map</span>
-          </button>
-          <div class="map-container" id="mapContainer">
-            <div class="flourish-wrapper">
-              <div class="flourish-embed flourish-map" data-src="visualisation/25948838">
-                <noscript>
-                  <img src="https://public.flourish.studio/visualisation/25948838/thumbnail" width="100%" alt="map visualization" />
-                </noscript>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+    <!-- FullCalendar -->
+    <div class="fc-wrapper">
+      <div id="calendar"></div>
+    </div>
+  </main>
 
+  <!-- MAP CARD -->
+  <div class="card animate d3">
+    <div class="section-title">Event Locations</div>
+    <div class="map-wrap">
+      <div id="calMap"></div>
+    </div>
   </div>
 
-  <footer>
-    <div class="footer-inner animate d3">
-      <div class="footer-left">&copy; 2025 JakeBitt3DPrints. All rights reserved.</div>
-      <div class="footer-right">
-        <div class="social-links" aria-label="Social media links">
-          <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-          <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-          <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-          <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
+  <!-- UPCOMING EVENTS CARD -->
+  <div class="card animate d3">
+    <div class="section-title">Upcoming Events</div>
+    <div class="events-grid" id="upcomingGrid">
+      <!-- populated by JS -->
+      <div class="events-empty" style="grid-column:1/-1">Loading events…</div>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin-panel animate d4" id="adminPanel">
+    <div class="admin-panel-overflow">
+      <div class="admin-panel-pad">
+
+        <div class="admin-panel-header">
+          <div class="admin-panel-title">Events Admin</div>
+          <button class="btn-ghost-sm" id="adminPanelClose"><i class="fas fa-xmark"></i> Close</button>
         </div>
-        <button type="button" class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-          <span id="themeIcon">🌙</span>
-          <span id="themeLabel">Dark mode</span>
+
+        <div class="admin-tabs">
+          <button class="admin-tab active" data-tab="add">Add Event</button>
+          <button class="admin-tab" data-tab="manage">Manage Events</button>
+        </div>
+
+        <!-- ADD TAB -->
+        <div class="admin-tab-content active" id="tab-add">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+
+            <div class="form-group">
+              <label class="form-label" for="evTitle">Event Title *</label>
+              <input type="text" class="form-input" id="evTitle" placeholder="e.g. Hot Wheels Convention">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="evStart">Start Date &amp; Time *</label>
+                <input type="datetime-local" class="form-input" id="evStart">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="evEnd">End Date &amp; Time</label>
+                <input type="datetime-local" class="form-input" id="evEnd">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="evLocation">Location / Venue</label>
+              <input type="text" class="form-input" id="evLocation" placeholder="e.g. Marriott Hotel, Baltimore MD">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="evLat">Latitude (for map)</label>
+                <input type="number" class="form-input" id="evLat" placeholder="e.g. 39.2904" step="any">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="evLng">Longitude (for map)</label>
+                <input type="number" class="form-input" id="evLng" placeholder="e.g. -76.6122" step="any">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="evDesc">Description</label>
+              <textarea class="form-textarea" id="evDesc" placeholder="Tell people what to expect…"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Event Color</label>
+              <div class="color-row">
+                <div class="color-preview" id="addColorPreview" style="background:#2563eb;"></div>
+                <input type="color" id="addColorPicker" value="#2563eb">
+                <button class="btn-ghost-sm" id="addColorBtn" style="padding:6px 14px;font-size:0.82rem;">
+                  <i class="fas fa-palette"></i> Pick color
+                </button>
+                <span id="addColorHex" style="font-size:0.8rem;color:var(--muted);">#2563eb</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Event Image (optional)</label>
+              <div class="drop-zone" id="addDropZone">
+                <input type="file" id="addFileInput" accept="image/*">
+                <div class="drop-zone-text"><strong>Click to upload</strong> or drag &amp; drop</div>
+                <img class="drop-zone-preview" id="addPreviewImg" src="" alt="">
+              </div>
+            </div>
+
+            <div class="status-msg" id="addStatus">
+              <div class="status-msg-inner"><div class="status-msg-inner-pad" id="addStatusText"></div></div>
+            </div>
+
+            <button class="btn-primary-sm" id="addEventBtn" style="align-self:flex-start;flex:0;padding:10px 28px;">
+              <span id="addBtnText"><i class="fas fa-plus"></i> Add Event</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- MANAGE TAB -->
+        <div class="admin-tab-content" id="tab-manage">
+          <div class="manage-list" id="manageList">
+            <div class="manage-empty">Loading…</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- /site-shell -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner animate d4">
+    <div class="footer-left">&copy; 2025 JakeBitt3DPrints. All rights reserved.</div>
+    <div class="footer-right">
+      <div class="social-links">
+        <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
+      </div>
+      <button type="button" class="theme-btn" id="themeToggle">
+        <span id="themeIcon">🌙</span><span id="themeLabel">Dark mode</span>
+      </button>
+      <button type="button" class="admin-footer-btn" id="adminTriggerBtn">
+        <i class="fas fa-lock" id="adminLockIcon"></i><span>Admin</span>
+      </button>
+    </div>
+  </div>
+</footer>
+
+<!-- EVENT DETAIL OVERLAY -->
+<div class="overlay" id="detailOverlay" role="dialog" aria-modal="true">
+  <div class="overlay-box">
+    <div class="overlay-inner">
+      <img class="event-detail-img" id="detailImg" src="" alt="" style="display:none;">
+      <div class="overlay-title" id="detailTitle"></div>
+      <div class="event-detail-meta" id="detailMeta"></div>
+      <div class="event-detail-desc" id="detailDesc" style="display:none;"></div>
+      <div class="overlay-btns">
+        <button class="btn-ghost-sm" id="detailClose">Close</button>
+        <button class="btn-ghost-sm" id="detailDirections" style="display:none;">
+          <i class="fas fa-map-marker-alt"></i> Directions
         </button>
       </div>
     </div>
-  </footer>
+  </div>
+</div>
 
-  <script>
-  (function() {
+<!-- ADMIN LOGIN OVERLAY -->
+<div class="overlay" id="adminLoginOverlay" role="dialog" aria-modal="true">
+  <div class="overlay-box">
+    <div class="overlay-inner">
+      <div class="overlay-title">Admin Access</div>
+      <div class="overlay-sub">Sign in with your PocketBase admin credentials.</div>
+      <input type="email"    class="form-input" id="adminEmail"    placeholder="Admin email"    autocomplete="email">
+      <input type="password" class="form-input" id="adminPassword" placeholder="Admin password" autocomplete="current-password">
+      <div class="login-error" id="loginError">Incorrect credentials. Please try again.</div>
+      <div class="overlay-btns">
+        <button class="btn-ghost-sm"   id="loginCancel">Cancel</button>
+        <button class="btn-primary-sm" id="loginSubmit"><span id="loginBtnText">Sign In</span></button>
+      </div>
+    </div>
+  </div>
+</div>
 
-    var mapToggle    = document.getElementById('mapToggle');
-    var mapContainer = document.getElementById('mapContainer');
-    var toggleText   = mapToggle.querySelector('.btn-text');
+<!-- EDIT EVENT OVERLAY -->
+<div class="overlay" id="editOverlay" role="dialog" aria-modal="true">
+  <div class="overlay-box">
+    <div class="overlay-inner">
+      <div class="overlay-title">Edit Event</div>
 
-    mapToggle.addEventListener('click', function() {
-      mapContainer.classList.toggle('visible');
-      mapToggle.classList.toggle('active');
-      toggleText.style.opacity = '0';
-      setTimeout(function() {
-        toggleText.textContent = mapContainer.classList.contains('visible')
-          ? 'Hide Location Map' : 'View Location Map';
-        toggleText.style.opacity = '1';
-      }, 200);
-    });
+      <div class="form-group">
+        <label class="form-label" for="editTitle">Event Title *</label>
+        <input type="text" class="form-input" id="editTitle" placeholder="Event name">
+      </div>
 
-    var root   = document.documentElement;
-    var toggle = document.getElementById('themeToggle');
-    var tIcon  = document.getElementById('themeIcon');
-    var tLabel = document.getElementById('themeLabel');
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="editStart">Start *</label>
+          <input type="datetime-local" class="form-input" id="editStart">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editEnd">End</label>
+          <input type="datetime-local" class="form-input" id="editEnd">
+        </div>
+      </div>
 
-    function syncTheme() {
-      var dark = root.getAttribute('data-theme') === 'dark';
-      tIcon.textContent  = dark ? '☀️' : '🌙';
-      tLabel.textContent = dark ? 'Light mode' : 'Dark mode';
-    }
+      <div class="form-group">
+        <label class="form-label" for="editLocation">Location</label>
+        <input type="text" class="form-input" id="editLocation" placeholder="Venue / address">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="editLat">Latitude</label>
+          <input type="number" class="form-input" id="editLat" step="any">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editLng">Longitude</label>
+          <input type="number" class="form-input" id="editLng" step="any">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="editDesc">Description</label>
+        <textarea class="form-textarea" id="editDesc"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Event Color</label>
+        <div class="color-row">
+          <div class="color-preview" id="editColorPreview" style="background:#2563eb;"></div>
+          <input type="color" id="editColorPicker" value="#2563eb">
+          <button class="btn-ghost-sm" id="editColorBtn" style="padding:6px 14px;font-size:0.82rem;">
+            <i class="fas fa-palette"></i> Pick color
+          </button>
+          <span id="editColorHex" style="font-size:0.8rem;color:var(--muted);">#2563eb</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Replace Image <span style="font-size:0.74rem;color:var(--muted)">(optional)</span></label>
+        <div class="drop-zone" id="editDropZone" style="padding:14px;">
+          <input type="file" id="editFileInput" accept="image/*">
+          <div class="drop-zone-text"><strong>Click to choose</strong> a new image</div>
+          <div id="editFileName" style="font-size:0.78rem;color:var(--muted);margin-top:6px;display:none;"></div>
+        </div>
+      </div>
+
+      <div class="status-msg" id="editStatus">
+        <div class="status-msg-inner"><div class="status-msg-inner-pad" id="editStatusText"></div></div>
+      </div>
+
+      <div class="overlay-btns">
+        <button class="btn-danger-sm" id="editDeleteBtn">Delete</button>
+        <button class="btn-ghost-sm"  id="editCancel">Cancel</button>
+        <button class="btn-primary-sm" id="editSaveBtn"><span id="editSaveBtnText">Save</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+
+  /* ── CONFIG ── */
+  var PB_URL     = 'https://pb.jakebitt3dprints.com';
+  var COLLECTION = 'events';
+
+  /* ── STATE ── */
+  var allEvents   = [];
+  var authToken   = null;
+  var adminOpen   = false;
+  var editRecord  = null;
+  var editNewFile = null;
+  var addFile     = null;
+  var fcCalendar  = null;
+  var leafletMap  = null;
+  var markers     = [];
+  var addColor    = '#2563eb';
+  var editColor   = '#2563eb';
+
+  /* ── HELPERS ── */
+  function imageUrl(record) {
+    if (!record.image) return '';
+    return PB_URL + '/api/files/' + COLLECTION + '/' + record.id + '/' + record.image;
+  }
+  function authHeaders(json) {
+    var h = { 'Authorization': authToken };
+    if (json) h['Content-Type'] = 'application/json';
+    return h;
+  }
+  function fmtDate(str) {
+    if (!str) return '';
+    var d = new Date(str);
+    return d.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+  }
+  function fmtTime(str) {
+    if (!str) return '';
+    var d = new Date(str);
+    return d.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
+  }
+  // Convert PocketBase date to datetime-local value
+  function toLocalInput(str) {
+    if (!str) return '';
+    var d = new Date(str);
+    var pad = function(n) { return n < 10 ? '0' + n : n; };
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) +
+           'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  /* ── THEME ── */
+  var root   = document.documentElement;
+  var toggle = document.getElementById('themeToggle');
+  var tIcon  = document.getElementById('themeIcon');
+  var tLabel = document.getElementById('themeLabel');
+  function syncTheme() {
+    var dark = root.getAttribute('data-theme') === 'dark';
+    tIcon.textContent  = dark ? '☀️' : '🌙';
+    tLabel.textContent = dark ? 'Light mode' : 'Dark mode';
+  }
+  syncTheme();
+  toggle.addEventListener('click', function() {
+    var dark = root.getAttribute('data-theme') === 'dark';
+    if (dark) { root.removeAttribute('data-theme'); localStorage.setItem('theme','light'); }
+    else       { root.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); }
     syncTheme();
+  });
 
-    toggle.addEventListener('click', function() {
-      var dark = root.getAttribute('data-theme') === 'dark';
-      if (dark) {
-        root.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
-      } else {
-        root.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-      }
-      syncTheme();
-    });
-
-    var links = document.querySelectorAll('nav a');
-    links.forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        var href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
-        if (link.target === '_blank') return;
-        var url;
-        try { url = new URL(href, window.location.href); } catch(err) { return; }
-        if (url.origin !== window.location.origin) return;
-
-        if (document.startViewTransition) {
-          e.preventDefault();
-          document.startViewTransition(function() { window.location.href = href; });
-          return;
-        }
-
+  /* ── PAGE TRANSITIONS ── */
+  document.querySelectorAll('nav a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('mailto:')) return;
+      if (link.target === '_blank') return;
+      var url; try { url = new URL(href, location.href); } catch(x) { return; }
+      if (url.origin !== location.origin) return;
+      if (document.startViewTransition) {
         e.preventDefault();
-        var shell = document.querySelector('.site-shell');
-        if (shell) {
-          shell.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
-          shell.style.opacity    = '0';
-          shell.style.transform  = 'translateY(-8px)';
-        }
-        document.querySelector('footer').style.transition = 'opacity 0.22s ease';
-        document.querySelector('footer').style.opacity    = '0';
-        setTimeout(function() { window.location.href = href; }, 230);
+        document.startViewTransition(function() { location.href = href; });
+        return;
+      }
+      e.preventDefault();
+      var s = document.querySelector('.site-shell');
+      if (s) { s.style.transition='opacity 0.22s ease'; s.style.opacity='0'; }
+      var f = document.querySelector('footer');
+      if (f) { f.style.transition='opacity 0.22s ease'; f.style.opacity='0'; }
+      setTimeout(function() { location.href = href; }, 230);
+    });
+  });
+
+  /* ── FETCH EVENTS ── */
+  function fetchEvents() {
+    return fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=start&perPage=200')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        allEvents = (data.items || []).filter(function(e) { return e.visible !== false; });
+        return allEvents;
       });
+  }
+
+  /* ── FULLCALENDAR ── */
+  function initCalendar() {
+    var el = document.getElementById('calendar');
+    fcCalendar = new FullCalendar.Calendar(el, {
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left:   'prev,next today',
+        center: 'title',
+        right:  'dayGridMonth,timeGridWeek,listMonth'
+      },
+      height: 'auto',
+      events: buildFCEvents(),
+      eventClick: function(info) { openDetailOverlay(info.event.extendedProps.record); },
+      eventColor: '#2563eb'
+    });
+    fcCalendar.render();
+  }
+
+  function buildFCEvents() {
+    return allEvents.map(function(ev) {
+      return {
+        id:    ev.id,
+        title: ev.title,
+        start: ev.start,
+        end:   ev.end || undefined,
+        color: ev.color || '#2563eb',
+        extendedProps: { record: ev }
+      };
+    });
+  }
+
+  function refreshCalendar() {
+    if (!fcCalendar) return;
+    fcCalendar.removeAllEvents();
+    fcCalendar.addEventSource(buildFCEvents());
+  }
+
+  /* ── LEAFLET MAP ── */
+  function initMap() {
+    leafletMap = L.map('calMap', { zoomControl: true });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19
+    }).addTo(leafletMap);
+    refreshMap();
+  }
+
+  function refreshMap() {
+    if (!leafletMap) return;
+    // Clear old markers
+    markers.forEach(function(m) { leafletMap.removeLayer(m); });
+    markers = [];
+
+    var coords = [];
+    allEvents.forEach(function(ev) {
+      if (!ev.lat || !ev.lng) return;
+      var color = ev.color || '#2563eb';
+      var icon = L.divIcon({
+        className: '',
+        html: '<div style="width:14px;height:14px;border-radius:50%;background:' + color + ';border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>',
+        iconSize: [14,14], iconAnchor: [7,7]
+      });
+      var marker = L.marker([ev.lat, ev.lng], {icon: icon})
+        .addTo(leafletMap)
+        .bindPopup(
+          '<strong style="font-size:0.88rem;">' + (ev.title||'Event') + '</strong>' +
+          (ev.location ? '<br><span style="font-size:0.78rem;color:#6b7280;">' + ev.location + '</span>' : '') +
+          (ev.start    ? '<br><span style="font-size:0.78rem;color:#6b7280;">' + fmtDate(ev.start) + '</span>' : '')
+        );
+      marker.on('click', function() { openDetailOverlay(ev); });
+      markers.push(marker);
+      coords.push([ev.lat, ev.lng]);
     });
 
-    window.addEventListener('load', function() {
-      var calendar   = document.querySelector('.commonninja_component');
-      var mapWrapper = document.querySelector('.flourish-wrapper');
-      setTimeout(function() {
-        if (calendar)   calendar.classList.add('loaded');
-        if (mapWrapper) mapWrapper.classList.add('loaded');
-      }, 300);
+    if (coords.length === 0) {
+      // Default view if no events with coords
+      leafletMap.setView([39.5, -76.6], 8);
+    } else if (coords.length === 1) {
+      leafletMap.setView(coords[0], 12);
+    } else {
+      leafletMap.fitBounds(coords, { padding: [30, 30] });
+    }
+  }
+
+  /* ── UPCOMING EVENTS ── */
+  function renderUpcoming() {
+    var grid = document.getElementById('upcomingGrid');
+    var now  = new Date();
+    var upcoming = allEvents
+      .filter(function(ev) { return new Date(ev.start) >= now; })
+      .slice(0, 6);
+
+    if (!upcoming.length) {
+      grid.innerHTML = '<div class="events-empty" style="grid-column:1/-1">No upcoming events scheduled right now. Check back soon!</div>';
+      return;
+    }
+
+    grid.innerHTML = '';
+    upcoming.forEach(function(ev) {
+      var d     = new Date(ev.start);
+      var month = d.toLocaleDateString('en-US', { month:'short' }).toUpperCase();
+      var day   = d.getDate();
+      var color = ev.color || '#2563eb';
+
+      var card = document.createElement('div');
+      card.className = 'event-card';
+      card.style.cursor = 'pointer';
+      card.innerHTML =
+        '<div class="event-date-block">' +
+          '<div class="event-date-month">' + month + '</div>' +
+          '<div class="event-date-day">'   + day   + '</div>' +
+        '</div>' +
+        '<div class="event-info">' +
+          '<div class="event-title">' + (ev.title || 'Untitled') + '</div>' +
+          '<div class="event-meta">' +
+            (ev.location ? '<span><i class="fas fa-map-marker-alt"></i> ' + ev.location + '</span>' : '') +
+            '<span><i class="fas fa-clock"></i> ' + fmtTime(ev.start) + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="event-color-dot" style="background:' + color + ';"></div>';
+
+      card.addEventListener('click', function() { openDetailOverlay(ev); });
+      grid.appendChild(card);
+    });
+  }
+
+  /* ── EVENT DETAIL OVERLAY ── */
+  var detailOverlay = document.getElementById('detailOverlay');
+
+  function openDetailOverlay(ev) {
+    var img = document.getElementById('detailImg');
+    var url = imageUrl(ev);
+    if (url) { img.src = url; img.style.display = ''; }
+    else      { img.src = ''; img.style.display = 'none'; }
+
+    document.getElementById('detailTitle').textContent = ev.title || 'Event';
+
+    var meta = document.getElementById('detailMeta');
+    meta.innerHTML =
+      '<div class="event-detail-row"><i class="fas fa-calendar"></i><span>' + fmtDate(ev.start) +
+        (ev.end ? ' – ' + fmtDate(ev.end) : '') + '</span></div>' +
+      (ev.start ? '<div class="event-detail-row"><i class="fas fa-clock"></i><span>' + fmtTime(ev.start) +
+        (ev.end ? ' – ' + fmtTime(ev.end) : '') + '</span></div>' : '') +
+      (ev.location ? '<div class="event-detail-row"><i class="fas fa-map-marker-alt"></i><span>' + ev.location + '</span></div>' : '');
+
+    var desc = document.getElementById('detailDesc');
+    if (ev.description) { desc.textContent = ev.description; desc.style.display = ''; }
+    else                { desc.style.display = 'none'; }
+
+    var dirBtn = document.getElementById('detailDirections');
+    if (ev.location) {
+      dirBtn.style.display = '';
+      dirBtn.onclick = function() {
+        window.open('https://maps.google.com/?q=' + encodeURIComponent(ev.location), '_blank');
+      };
+    } else { dirBtn.style.display = 'none'; }
+
+    detailOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  document.getElementById('detailClose').addEventListener('click', function() {
+    detailOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+  detailOverlay.addEventListener('click', function(e) {
+    if (e.target === detailOverlay) { detailOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      [detailOverlay, document.getElementById('adminLoginOverlay'), document.getElementById('editOverlay')]
+        .forEach(function(o) { if (o.classList.contains('open')) { o.classList.remove('open'); document.body.style.overflow = ''; } });
+    }
+  });
+
+  /* ── ADMIN LOGIN ── */
+  var loginOverlay = document.getElementById('adminLoginOverlay');
+  var adminPanel   = document.getElementById('adminPanel');
+  var triggerBtn   = document.getElementById('adminTriggerBtn');
+  var lockIcon     = document.getElementById('adminLockIcon');
+
+  function openLogin() {
+    loginOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function() { document.getElementById('adminEmail').focus(); }, 150);
+  }
+  function closeLogin() {
+    loginOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+    document.getElementById('adminEmail').value = '';
+    document.getElementById('adminPassword').value = '';
+    document.getElementById('loginError').classList.remove('visible');
+  }
+
+  triggerBtn.addEventListener('click', function() {
+    if (authToken) {
+      adminOpen = !adminOpen;
+      adminPanel.classList.toggle('open', adminOpen);
+      if (adminOpen) {
+        loadManageList();
+        setTimeout(function() { adminPanel.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100);
+      }
+    } else {
+      openLogin();
+    }
+  });
+
+  document.getElementById('loginCancel').addEventListener('click', closeLogin);
+  loginOverlay.addEventListener('click', function(e) { if (e.target === loginOverlay) closeLogin(); });
+
+  document.getElementById('loginSubmit').addEventListener('click', function() {
+    var email = document.getElementById('adminEmail').value.trim();
+    var pass  = document.getElementById('adminPassword').value;
+    var btn   = this;
+    var errEl = document.getElementById('loginError');
+    if (!email || !pass) { errEl.textContent='Please enter email and password.'; errEl.classList.add('visible'); return; }
+    btn.disabled = true;
+    document.getElementById('loginBtnText').textContent = 'Signing in…';
+    errEl.classList.remove('visible');
+
+    fetch(PB_URL + '/api/collections/_superusers/auth-with-password', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({identity: email, password: pass})
+    })
+    .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
+    .then(function(data) {
+      authToken = data.token;
+      closeLogin();
+      adminOpen = true;
+      adminPanel.classList.add('open');
+      triggerBtn.classList.add('unlocked');
+      lockIcon.className = 'fas fa-unlock';
+      loadManageList();
+      setTimeout(function() { adminPanel.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 150);
+    })
+    .catch(function() {
+      errEl.textContent = 'Incorrect credentials. Please try again.';
+      errEl.classList.add('visible');
+      document.getElementById('adminPassword').value = '';
+      document.getElementById('adminPassword').focus();
+    })
+    .finally(function() {
+      btn.disabled = false;
+      document.getElementById('loginBtnText').textContent = 'Sign In';
+    });
+  });
+  document.getElementById('adminEmail').addEventListener('keydown', function(e) { if (e.key==='Enter') document.getElementById('adminPassword').focus(); });
+  document.getElementById('adminPassword').addEventListener('keydown', function(e) { if (e.key==='Enter') document.getElementById('loginSubmit').click(); });
+  document.getElementById('adminPanelClose').addEventListener('click', function() { adminOpen=false; adminPanel.classList.remove('open'); });
+
+  /* ── ADMIN TABS ── */
+  document.querySelectorAll('.admin-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.admin-tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.admin-tab-content').forEach(function(c) { c.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+      if (tab.dataset.tab === 'manage') loadManageList();
+    });
+  });
+
+  /* ── COLOR PICKERS ── */
+  function initColorPicker(pickerId, previewId, hexId, btnId, onchange) {
+    var picker  = document.getElementById(pickerId);
+    var preview = document.getElementById(previewId);
+    var hex     = document.getElementById(hexId);
+    var btn     = document.getElementById(btnId);
+    btn.addEventListener('click', function() { picker.click(); });
+    picker.addEventListener('input', function() {
+      preview.style.background = picker.value;
+      hex.textContent = picker.value;
+      onchange(picker.value);
+    });
+  }
+  initColorPicker('addColorPicker','addColorPreview','addColorHex','addColorBtn', function(v) { addColor = v; });
+  initColorPicker('editColorPicker','editColorPreview','editColorHex','editColorBtn', function(v) { editColor = v; });
+
+  /* ── ADD FILE ── */
+  function initDropZone(zoneId, inputId, previewId, onFile) {
+    var zone    = document.getElementById(zoneId);
+    var input   = document.getElementById(inputId);
+    var preview = previewId ? document.getElementById(previewId) : null;
+    zone.addEventListener('dragover',  function(e) { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', function()  { zone.classList.remove('drag-over'); });
+    zone.addEventListener('drop', function(e) {
+      e.preventDefault(); zone.classList.remove('drag-over');
+      var f = e.dataTransfer.files[0];
+      if (f && f.type.startsWith('image/')) { input.files; onFile(f, preview); }
+    });
+    input.addEventListener('change', function() {
+      if (input.files[0]) onFile(input.files[0], preview);
+    });
+  }
+
+  function handleAddFile(file, preview) {
+    addFile = file;
+    if (preview) {
+      var r = new FileReader();
+      r.onload = function(e) { preview.src = e.target.result; preview.classList.add('visible'); };
+      r.readAsDataURL(file);
+    }
+  }
+  function handleEditFile(file) {
+    editNewFile = file;
+    var nameEl = document.getElementById('editFileName');
+    nameEl.textContent = '✓ ' + file.name;
+    nameEl.style.display = 'block';
+  }
+
+  initDropZone('addDropZone',  'addFileInput',  'addPreviewImg', handleAddFile);
+  initDropZone('editDropZone', 'editFileInput', null,            handleEditFile);
+
+  /* ── ADD EVENT ── */
+  document.getElementById('addEventBtn').addEventListener('click', function() {
+    var title = document.getElementById('evTitle').value.trim();
+    var start = document.getElementById('evStart').value;
+    if (!title) { showStatus('addStatus','addStatusText','error','Title is required.'); return; }
+    if (!start) { showStatus('addStatus','addStatusText','error','Start date is required.'); return; }
+    if (!authToken) { showStatus('addStatus','addStatusText','error','Not authenticated.'); return; }
+
+    var btn = this;
+    btn.disabled = true;
+    document.getElementById('addBtnText').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
+
+    var fd = new FormData();
+    fd.append('title',       title);
+    fd.append('start',       new Date(start).toISOString());
+    var endVal = document.getElementById('evEnd').value;
+    if (endVal) fd.append('end', new Date(endVal).toISOString());
+    var loc = document.getElementById('evLocation').value.trim();
+    if (loc) fd.append('location', loc);
+    var lat = document.getElementById('evLat').value;
+    var lng = document.getElementById('evLng').value;
+    if (lat) fd.append('lat', lat);
+    if (lng) fd.append('lng', lng);
+    var desc = document.getElementById('evDesc').value.trim();
+    if (desc) fd.append('description', desc);
+    fd.append('color',   addColor);
+    fd.append('visible', 'true');
+    if (addFile) fd.append('image', addFile, addFile.name);
+
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records', {
+      method: 'POST',
+      headers: { 'Authorization': authToken },
+      body: fd
+    })
+    .then(function(r) { if (!r.ok) throw new Error('Failed ' + r.status); return r.json(); })
+    .then(function() {
+      showStatus('addStatus','addStatusText','success','Event added!');
+      // Reset form
+      document.getElementById('evTitle').value = '';
+      document.getElementById('evStart').value = '';
+      document.getElementById('evEnd').value   = '';
+      document.getElementById('evLocation').value = '';
+      document.getElementById('evLat').value = '';
+      document.getElementById('evLng').value = '';
+      document.getElementById('evDesc').value = '';
+      document.getElementById('addColorPicker').value = '#2563eb';
+      document.getElementById('addColorPreview').style.background = '#2563eb';
+      document.getElementById('addColorHex').textContent = '#2563eb';
+      addColor = '#2563eb'; addFile = null;
+      document.getElementById('addPreviewImg').classList.remove('visible');
+      document.getElementById('addFileInput').value = '';
+      return fetchEvents();
+    })
+    .then(function() { refreshCalendar(); refreshMap(); renderUpcoming(); })
+    .catch(function(err) { showStatus('addStatus','addStatusText','error', err.message); })
+    .finally(function() {
+      btn.disabled = false;
+      document.getElementById('addBtnText').innerHTML = '<i class="fas fa-plus"></i> Add Event';
+    });
+  });
+
+  /* ── STATUS ── */
+  function showStatus(wrapperId, textId, type, msg) {
+    var wrap = document.getElementById(wrapperId);
+    var text = document.getElementById(textId);
+    text.textContent = msg;
+    wrap.className = 'status-msg ' + type + ' open';
+    setTimeout(function() {
+      wrap.className = 'status-msg';
+      setTimeout(function() { text.textContent = ''; }, 300);
+    }, 4000);
+  }
+
+  /* ── MANAGE LIST ── */
+  function loadManageList() {
+    var list = document.getElementById('manageList');
+    list.innerHTML = '<div class="manage-empty">Loading…</div>';
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=start&perPage=200', {
+      headers: { 'Authorization': authToken }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var items = data.items || [];
+      if (!items.length) { list.innerHTML = '<div class="manage-empty">No events yet.</div>'; return; }
+      list.innerHTML = '';
+      items.forEach(function(ev, idx) {
+        var row = document.createElement('div');
+        row.className = 'manage-item';
+        row.style.animationDelay = Math.min(idx * 0.03, 0.3) + 's';
+        row.dataset.id = ev.id;
+
+        var dot = document.createElement('div');
+        dot.className = 'manage-event-dot';
+        dot.style.background = ev.color || '#2563eb';
+
+        var info = document.createElement('div');
+        info.className = 'manage-item-info';
+        info.innerHTML =
+          '<div class="manage-item-title">' + (ev.title || 'Untitled') + '</div>' +
+          '<div class="manage-item-meta">' + fmtDate(ev.start) +
+          (ev.location ? ' · ' + ev.location : '') +
+          ' · ' + (ev.visible !== false ? 'Visible' : 'Hidden') + '</div>';
+
+        var actions = document.createElement('div');
+        actions.className = 'manage-item-actions';
+
+        // Edit
+        var editBtn = document.createElement('button');
+        editBtn.className = 'manage-btn'; editBtn.title = 'Edit';
+        editBtn.innerHTML = '<i class="fas fa-pen"></i>';
+        editBtn.addEventListener('click', function() { openEditOverlay(ev); });
+
+        // Visibility
+        var visBtn = document.createElement('button');
+        visBtn.className = 'manage-btn' + (ev.visible !== false ? ' vis-on' : '');
+        visBtn.title = ev.visible !== false ? 'Hide' : 'Show';
+        visBtn.innerHTML = '<i class="fas fa-' + (ev.visible !== false ? 'eye' : 'eye-slash') + '"></i>';
+        visBtn.addEventListener('click', function() { toggleVis(ev, info, visBtn); });
+
+        actions.appendChild(editBtn);
+        actions.appendChild(visBtn);
+
+        row.appendChild(dot);
+        row.appendChild(info);
+        row.appendChild(actions);
+        list.appendChild(row);
+      });
+    })
+    .catch(function() { list.innerHTML = '<div class="manage-empty">Failed to load.</div>'; });
+  }
+
+  function toggleVis(ev, info, btn) {
+    var newVis = ev.visible === false;
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + ev.id, {
+      method: 'PATCH', headers: authHeaders(true),
+      body: JSON.stringify({ visible: newVis })
+    })
+    .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
+    .then(function(updated) {
+      ev.visible = updated.visible;
+      btn.className = 'manage-btn' + (ev.visible !== false ? ' vis-on' : '');
+      btn.title     = ev.visible !== false ? 'Hide' : 'Show';
+      btn.innerHTML = '<i class="fas fa-' + (ev.visible !== false ? 'eye' : 'eye-slash') + '"></i>';
+      info.querySelector('.manage-item-meta').textContent =
+        fmtDate(ev.start) + (ev.location ? ' · ' + ev.location : '') +
+        ' · ' + (ev.visible !== false ? 'Visible' : 'Hidden');
+      return fetchEvents();
+    })
+    .then(function() { refreshCalendar(); refreshMap(); renderUpcoming(); })
+    .catch(function() { alert('Failed to update.'); });
+  }
+
+  /* ── EDIT OVERLAY ── */
+  var editOverlay = document.getElementById('editOverlay');
+
+  function openEditOverlay(ev) {
+    editRecord  = ev;
+    editNewFile = null;
+    document.getElementById('editTitle').value    = ev.title    || '';
+    document.getElementById('editStart').value    = toLocalInput(ev.start);
+    document.getElementById('editEnd').value      = toLocalInput(ev.end);
+    document.getElementById('editLocation').value = ev.location || '';
+    document.getElementById('editLat').value      = ev.lat      || '';
+    document.getElementById('editLng').value      = ev.lng      || '';
+    document.getElementById('editDesc').value     = ev.description || '';
+    var col = ev.color || '#2563eb';
+    editColor = col;
+    document.getElementById('editColorPicker').value      = col;
+    document.getElementById('editColorPreview').style.background = col;
+    document.getElementById('editColorHex').textContent   = col;
+    document.getElementById('editFileName').style.display = 'none';
+    document.getElementById('editFileName').textContent   = '';
+    document.getElementById('editFileInput').value        = '';
+    document.getElementById('editStatus').className       = 'status-msg';
+    editOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeEditOverlay() {
+    editOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+    editRecord = null; editNewFile = null;
+  }
+
+  document.getElementById('editCancel').addEventListener('click', closeEditOverlay);
+  editOverlay.addEventListener('click', function(e) { if (e.target === editOverlay) closeEditOverlay(); });
+
+  document.getElementById('editDeleteBtn').addEventListener('click', function() {
+    if (!editRecord) return;
+    if (!confirm('Delete "' + (editRecord.title||'this event') + '"? Cannot be undone.')) return;
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + editRecord.id, {
+      method: 'DELETE', headers: { 'Authorization': authToken }
+    })
+    .then(function(r) { if (!r.ok) throw new Error(); })
+    .then(function() {
+      closeEditOverlay();
+      loadManageList();
+      return fetchEvents();
+    })
+    .then(function() { refreshCalendar(); refreshMap(); renderUpcoming(); })
+    .catch(function() { alert('Failed to delete.'); });
+  });
+
+  document.getElementById('editSaveBtn').addEventListener('click', function() {
+    if (!editRecord) return;
+    var btn = this;
+    btn.disabled = true;
+    document.getElementById('editSaveBtnText').textContent = 'Saving…';
+
+    var fd = new FormData();
+    fd.append('title',  document.getElementById('editTitle').value.trim()    || editRecord.title);
+    var startVal = document.getElementById('editStart').value;
+    if (startVal) fd.append('start', new Date(startVal).toISOString());
+    var endVal   = document.getElementById('editEnd').value;
+    fd.append('end', endVal ? new Date(endVal).toISOString() : '');
+    fd.append('location',    document.getElementById('editLocation').value.trim());
+    fd.append('lat',         document.getElementById('editLat').value  || '');
+    fd.append('lng',         document.getElementById('editLng').value  || '');
+    fd.append('description', document.getElementById('editDesc').value.trim());
+    fd.append('color',       editColor);
+    if (editNewFile) fd.append('image', editNewFile, editNewFile.name);
+
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + editRecord.id, {
+      method: 'PATCH',
+      headers: { 'Authorization': authToken },
+      body: fd
+    })
+    .then(function(r) { if (!r.ok) throw new Error('Save failed ' + r.status); return r.json(); })
+    .then(function(updated) {
+      Object.assign(editRecord, updated);
+      showStatus('editStatus','editStatusText','success','Saved!');
+      setTimeout(closeEditOverlay, 800);
+      loadManageList();
+      return fetchEvents();
+    })
+    .then(function() { refreshCalendar(); refreshMap(); renderUpcoming(); })
+    .catch(function(err) { showStatus('editStatus','editStatusText','error', err.message); })
+    .finally(function() { btn.disabled=false; document.getElementById('editSaveBtnText').textContent='Save'; });
+  });
+
+  /* ── EDIT FILE INPUT ── */
+  document.getElementById('editFileInput').addEventListener('change', function() {
+    if (this.files[0]) handleEditFile(this.files[0]);
+  });
+  document.getElementById('editDropZone').addEventListener('dragover',  function(e) { e.preventDefault(); this.classList.add('drag-over'); });
+  document.getElementById('editDropZone').addEventListener('dragleave', function()  { this.classList.remove('drag-over'); });
+  document.getElementById('editDropZone').addEventListener('drop', function(e) {
+    e.preventDefault(); this.classList.remove('drag-over');
+    var f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('image/')) handleEditFile(f);
+  });
+
+  /* ── INIT ── */
+  fetchEvents()
+    .then(function() {
+      initCalendar();
+      initMap();
+      renderUpcoming();
+    })
+    .catch(function() {
+      document.getElementById('upcomingGrid').innerHTML =
+        '<div class="events-empty" style="grid-column:1/-1">Could not load events. Please try again later.</div>';
     });
 
-  })();
-  </script>
+})();
+</script>
 </body>
 </html>
