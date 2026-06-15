@@ -157,12 +157,11 @@
     .eyebrow { font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 10px; }
     .page-title { font-family: var(--font-head); font-size: clamp(1.5rem,5vw,2rem); line-height: 1.2; letter-spacing: -0.01em; color: var(--text); margin-bottom: 20px; }
     .section-title { font-family: var(--font-head); font-size: 1.3rem; color: var(--text); margin-bottom: 16px; }
+    .section-title-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .section-title-row .section-title { margin-bottom: 0; }
 
     /* ── SUBSCRIBE BUTTON ── */
-    .subscribe-row {
-      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-      margin-bottom: 22px;
-    }
+    .subscribe-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
     .subscribe-btn {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 10px 20px; border-radius: 999px;
@@ -174,6 +173,40 @@
     .subscribe-btn:hover  { opacity: 0.85; }
     .subscribe-btn:active { transform: scale(0.96); }
     .subscribe-hint { font-size: 0.82rem; color: var(--muted); }
+
+    /* ── FILTER/SETTINGS BUTTON ── */
+    .filter-toggle-btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px;
+      border-radius: 999px; border: 1px solid var(--border); background: var(--bg-alt);
+      color: var(--text); font-size: 0.84rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body);
+      transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+    }
+    .filter-toggle-btn:hover { background-color: rgba(148,163,184,0.12); }
+    .filter-toggle-btn:active { transform: scale(0.96); }
+    .filter-toggle-btn .chevron { transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); font-size: 0.7rem; }
+    .filter-toggle-btn.open .chevron { transform: rotate(180deg); }
+
+    .filter-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s cubic-bezier(0.4,0,0.2,1); }
+    .filter-panel.open { grid-template-rows: 1fr; }
+    .filter-panel-overflow { overflow: hidden; }
+    .filter-panel-inner {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 14px;
+      padding: 14px 16px; margin: 12px 0 4px; display: flex; flex-direction: column; gap: 12px;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    .filter-section-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 6px; }
+    .filter-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter-pill {
+      display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px;
+      border-radius: 999px; border: 1px solid var(--border); background: var(--bg-alt);
+      color: var(--muted); font-size: 0.81rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body);
+      transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+    }
+    .filter-pill:hover { background-color: rgba(148,163,184,0.12); color: var(--text); }
+    .filter-pill:active { transform: scale(0.95); }
+    .filter-pill.active { background-color: var(--nav-active-bg); color: var(--nav-active-text); border-color: var(--nav-active-bg); }
 
     /* ── FULLCALENDAR OVERRIDES ── */
     .fc-wrapper {
@@ -202,47 +235,77 @@
     .fc .fc-daygrid-day-number { color: var(--text) !important; font-size: 0.82rem !important; }
     .fc .fc-day-today { background: rgba(37,99,235,0.05) !important; }
     :root[data-theme="dark"] .fc .fc-day-today { background: rgba(156,163,175,0.08) !important; }
-    .fc .fc-daygrid-event { border-radius: 6px !important; font-size: 0.75rem !important; font-weight: 600 !important; padding: 2px 5px !important; border: none !important; cursor: pointer; }
+
+    /* Event blocks — full title, no time prefix truncation */
+    .fc .fc-daygrid-event {
+      border-radius: 6px !important; font-weight: 600 !important;
+      border: none !important; cursor: pointer;
+      white-space: normal !important; align-items: flex-start !important;
+      padding: 3px 5px !important; margin: 1px 2px !important;
+    }
+    .fc .fc-daygrid-event .fc-event-time { display: none !important; }
+    .fc .fc-daygrid-event .fc-event-title {
+      white-space: normal !important; overflow: visible !important;
+      font-size: 0.72rem !important; line-height: 1.25 !important;
+    }
+    .fc-daygrid-day-events { min-height: 2.2em; }
+    .fc .fc-daygrid-day-frame { min-height: 70px; }
+
     .fc .fc-list-event { cursor: pointer; }
     .fc .fc-list-event:hover td { background: var(--bg) !important; }
     .fc .fc-list-day-cushion { background: var(--bg) !important; color: var(--muted) !important; font-size: 0.8rem !important; font-weight: 600 !important; }
     .fc .fc-list-event-title { color: var(--text) !important; }
+    .fc .fc-list-event-time { color: var(--muted) !important; }
     .fc .fc-list-empty { background: var(--bg-alt) !important; color: var(--muted) !important; }
     .fc .fc-toolbar { padding: 14px 16px !important; flex-wrap: wrap !important; gap: 8px !important; }
     .fc .fc-toolbar-chunk { display: flex !important; align-items: center !important; gap: 6px !important; }
 
-    /* ── MAP ── */
+    @media (max-width: 680px) {
+      .fc .fc-daygrid-day-frame { min-height: 56px; }
+      .fc .fc-daygrid-event .fc-event-title { font-size: 0.64rem !important; }
+    }
+
+    /* ── MAP + UPCOMING SPLIT LAYOUT ── */
+    .map-events-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
     .map-wrap {
       border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
       height: 380px; position: relative;
       transition: border-color 0.3s ease;
     }
     #calMap { width: 100%; height: 100%; }
-    /* Fix Leaflet z-index issues */
     .leaflet-pane { z-index: 1; }
     .leaflet-top, .leaflet-bottom { z-index: 2; }
 
-    /* ── UPCOMING EVENTS ── */
-    .events-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .upcoming-list-wrap { height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; }
+
+    @media (max-width: 768px) {
+      .map-events-grid { grid-template-columns: 1fr; }
+      .map-wrap { height: 240px; }
+      .upcoming-list-wrap { height: auto; max-height: 420px; }
+    }
+
+    /* ── EVENT CARDS ── */
     .event-card {
       border-radius: 14px; border: 1px solid var(--border); background: var(--bg-alt);
-      padding: 16px; display: flex; gap: 14px; align-items: flex-start;
+      padding: 14px; display: flex; gap: 12px; align-items: flex-start;
       transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
-      cursor: default;
+      cursor: pointer; flex-shrink: 0;
     }
-    .event-card:hover { box-shadow: var(--shadow); }
+    .event-card:hover { box-shadow: var(--shadow); border-color: rgba(37,99,235,0.25); }
     .event-date-block {
-      flex-shrink: 0; width: 48px; height: 52px; border-radius: 10px;
+      flex-shrink: 0; width: 46px; height: 50px; border-radius: 10px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       background: var(--bg); border: 1px solid var(--border);
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-    .event-date-month { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-    .event-date-day   { font-size: 1.3rem; font-weight: 700; line-height: 1; color: var(--text); }
+    .event-date-month { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+    .event-date-day   { font-size: 1.25rem; font-weight: 700; line-height: 1; color: var(--text); }
     .event-info { flex: 1; min-width: 0; }
-    .event-title { font-weight: 700; font-size: 0.9rem; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .event-meta  { font-size: 0.77rem; color: var(--muted); display: flex; flex-direction: column; gap: 2px; }
+    .event-title { font-weight: 700; font-size: 0.88rem; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .event-meta  { font-size: 0.76rem; color: var(--muted); display: flex; flex-direction: column; gap: 2px; }
     .event-meta i { width: 13px; }
+    .event-tags  { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
+    .event-tag-chip { font-size: 0.66rem; font-weight: 700; padding: 1px 7px; border-radius: 999px; color: #fff; }
     .event-color-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
     .events-empty { color: var(--muted); font-size: 0.9rem; text-align: center; padding: 24px; }
 
@@ -257,7 +320,7 @@
     .overlay.open { opacity: 1; pointer-events: auto; }
     .overlay-box {
       background: var(--bg-alt); border: 1px solid var(--border);
-      border-radius: 22px; width: 100%; max-width: 460px;
+      border-radius: 22px; width: 100%; max-width: 480px;
       box-shadow: var(--shadow-lg); max-height: 90dvh; overflow-y: auto;
       transform: translateY(20px) scale(0.97); opacity: 0;
       transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1), opacity 0.28s ease, background-color 0.3s ease;
@@ -267,14 +330,12 @@
     .overlay-title { font-family: var(--font-head); font-size: 1.3rem; color: var(--text); }
     .overlay-sub   { font-size: 0.84rem; color: var(--muted); margin-top: -6px; line-height: 1.5; }
 
-    .event-detail-img {
-      width: 100%; border-radius: 12px; max-height: 200px; object-fit: cover;
-      border: 1px solid var(--border);
-    }
+    .event-detail-img { width: 100%; border-radius: 12px; max-height: 200px; object-fit: cover; border: 1px solid var(--border); }
     .event-detail-meta { display: flex; flex-direction: column; gap: 7px; }
     .event-detail-row  { display: flex; align-items: flex-start; gap: 10px; font-size: 0.88rem; color: var(--muted); }
     .event-detail-row i { color: var(--accent); width: 16px; margin-top: 2px; flex-shrink: 0; }
     .event-detail-desc { font-size: 0.88rem; color: var(--text); line-height: 1.6; }
+    .event-detail-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 
     /* ── FORM ELEMENTS ── */
     .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -288,11 +349,50 @@
     .form-textarea { min-height: 90px; resize: vertical; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .form-hint { font-size: 0.74rem; color: var(--muted); }
+
+    /* All-day toggle */
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); transition: background-color 0.3s ease, border-color 0.3s ease; }
+    .toggle-label { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .toggle-sub   { font-size: 0.76rem; color: var(--muted); }
+    .toggle-switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; border-radius: 999px; cursor: pointer; background: var(--border); transition: background-color 0.22s ease; }
+    .toggle-slider::before { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: #fff; top: 3px; left: 3px; transition: transform 0.22s ease; }
+    .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
 
     /* Color picker row */
     .color-row { display: flex; align-items: center; gap: 10px; }
     .color-preview { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); flex-shrink: 0; }
     input[type="color"] { width: 0; height: 0; opacity: 0; position: absolute; }
+
+    /* Tag picker */
+    .tag-input-row { display: flex; gap: 8px; }
+    .tag-input-row .form-input { flex: 1; }
+    .tag-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag-chip {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px;
+      border-radius: 999px; font-size: 0.78rem; font-weight: 600; color: #fff;
+    }
+    .tag-chip button { background: none; border: none; color: #fff; opacity: 0.7; cursor: pointer; font-size: 0.7rem; padding: 0; display: flex; }
+    .tag-chip button:hover { opacity: 1; }
+    .tag-suggestions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .tag-suggestion {
+      font-size: 0.76rem; font-weight: 600; padding: 4px 11px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--bg-alt); color: var(--muted);
+      cursor: pointer; font-family: var(--font-body);
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    .tag-suggestion:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Mini map for coordinate picking */
+    .mini-map-wrap { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); height: 220px; transition: border-color 0.3s ease; }
+    .mini-map { width: 100%; height: 100%; }
+
+    /* Geocode button row */
+    .geocode-row { display: flex; gap: 8px; align-items: flex-end; }
+    .geocode-row .form-group { flex: 1; }
 
     /* Buttons */
     .btn-primary-sm {
@@ -313,6 +413,7 @@
     }
     .btn-ghost-sm:hover  { background-color: rgba(148,163,184,0.12); }
     .btn-ghost-sm:active { transform: scale(0.97); }
+    .btn-ghost-sm:disabled { opacity: 0.45; pointer-events: none; }
     .btn-danger-sm {
       padding: 10px 18px; border-radius: 999px;
       background: transparent; color: #ef4444; border: 1px solid rgba(239,68,68,0.3);
@@ -322,6 +423,16 @@
     .btn-danger-sm:hover  { background-color: rgba(239,68,68,0.08); }
     .btn-danger-sm:active { transform: scale(0.97); }
     .overlay-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* Quick-shift buttons (duplicate) */
+    .shift-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .shift-btn {
+      padding: 7px 14px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--bg-alt); color: var(--muted); font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font-body);
+      transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+    }
+    .shift-btn:hover { border-color: var(--accent); color: var(--accent); }
 
     .login-error {
       font-size: 0.82rem; color: #ef4444; padding: 8px 12px;
@@ -337,6 +448,7 @@
     .status-msg-inner-pad { padding: 10px 14px; border-radius: 10px; font-size: 0.84rem; }
     .status-msg.success .status-msg-inner-pad { background: rgba(34,197,94,0.09); color: #15803d; border: 1px solid rgba(34,197,94,0.2); }
     .status-msg.error   .status-msg-inner-pad { background: rgba(239,68,68,0.09); color: #dc2626; border: 1px solid rgba(239,68,68,0.2); }
+    .status-msg.info    .status-msg-inner-pad { background: rgba(37,99,235,0.08); color: var(--accent); border: 1px solid rgba(37,99,235,0.2); }
 
     /* Drop zone */
     .drop-zone {
@@ -378,6 +490,9 @@
     .admin-tab-content { display: none; }
     .admin-tab-content.active { display: block; animation: slideUp 0.28s ease both; }
 
+    /* Manage controls */
+    .manage-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+
     /* Manage events list */
     .manage-list { display: flex; flex-direction: column; gap: 9px; max-height: 440px; overflow-y: auto; }
     .manage-item {
@@ -387,6 +502,7 @@
       animation: slideUp 0.25s ease both;
     }
     .manage-item:hover { border-color: rgba(37,99,235,0.3); }
+    .manage-item.is-past { opacity: 0.55; }
     .manage-event-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
     .manage-item-info  { flex: 1; min-width: 0; }
     .manage-item-title { font-weight: 600; font-size: 0.87rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -456,9 +572,8 @@
       nav { width: 100%; justify-content: space-between; }
       nav a { padding: 7px 10px; font-size: 0.82rem; }
       .card { padding: 20px 16px; }
-      .events-grid { grid-template-columns: 1fr; }
       .form-row, .form-row-3 { grid-template-columns: 1fr; }
-      .map-wrap { height: 280px; }
+      .geocode-row { flex-direction: column; align-items: stretch; }
     }
     @media (max-width: 400px) {
       nav a { padding: 6px 8px; font-size: 0.78rem; }
@@ -504,26 +619,46 @@
       <span class="subscribe-hint">Get notified of new events automatically</span>
     </div>
 
+    <!-- Filter/Settings toggle -->
+    <button class="filter-toggle-btn" id="filterToggleBtn">
+      <i class="fas fa-sliders"></i> Filter &amp; Settings
+      <i class="fas fa-chevron-down chevron"></i>
+    </button>
+    <div class="filter-panel" id="filterPanel">
+      <div class="filter-panel-overflow">
+        <div class="filter-panel-inner">
+          <div>
+            <div class="filter-section-label">Filter by Tag</div>
+            <div class="filter-pills" id="tagFilterPills">
+              <button class="filter-pill active" data-tag="all">All Events</button>
+            </div>
+          </div>
+          <div>
+            <div class="filter-section-label">Display</div>
+            <div class="filter-pills">
+              <button class="filter-pill" id="showPastToggle"><i class="fas fa-clock-rotate-left"></i> Show Past Events</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- FullCalendar -->
     <div class="fc-wrapper">
       <div id="calendar"></div>
     </div>
   </main>
 
-  <!-- MAP CARD -->
+  <!-- MAP + UPCOMING CARD -->
   <div class="card animate d3">
-    <div class="section-title">Event Locations</div>
-    <div class="map-wrap">
-      <div id="calMap"></div>
-    </div>
-  </div>
-
-  <!-- UPCOMING EVENTS CARD -->
-  <div class="card animate d3">
-    <div class="section-title">Upcoming Events</div>
-    <div class="events-grid" id="upcomingGrid">
-      <!-- populated by JS -->
-      <div class="events-empty" style="grid-column:1/-1">Loading events…</div>
+    <div class="section-title">Locations &amp; Upcoming Events</div>
+    <div class="map-events-grid">
+      <div class="map-wrap">
+        <div id="calMap"></div>
+      </div>
+      <div class="upcoming-list-wrap" id="upcomingGrid">
+        <div class="events-empty">Loading events…</div>
+      </div>
     </div>
   </div>
 
@@ -546,9 +681,28 @@
         <div class="admin-tab-content active" id="tab-add">
           <div style="display:flex;flex-direction:column;gap:14px;">
 
+            <div class="status-msg info" id="duplicateNotice">
+              <div class="status-msg-inner"><div class="status-msg-inner-pad">
+                <i class="fas fa-copy"></i> Editing a duplicated event — adjust dates below, then Add Event.
+                <button class="btn-ghost-sm" id="cancelDuplicateBtn" style="margin-left:8px;padding:4px 10px;font-size:0.76rem;">Cancel</button>
+              </div></div>
+            </div>
+
             <div class="form-group">
               <label class="form-label" for="evTitle">Event Title *</label>
               <input type="text" class="form-input" id="evTitle" placeholder="e.g. Hot Wheels Convention">
+            </div>
+
+            <!-- All day toggle -->
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">All-day event</div>
+                <div class="toggle-sub">No specific start/end time</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="evAllDay">
+                <span class="toggle-slider"></span>
+              </label>
             </div>
 
             <div class="form-row">
@@ -559,6 +713,7 @@
               <div class="form-group">
                 <label class="form-label" for="evEnd">End Date &amp; Time</label>
                 <input type="datetime-local" class="form-input" id="evEnd">
+                <div class="form-hint">Leave blank for single-time events. For multi-day events, set the end date/time on the last day.</div>
               </div>
             </div>
 
@@ -567,15 +722,31 @@
               <input type="text" class="form-input" id="evLocation" placeholder="e.g. Marriott Hotel, Baltimore MD">
             </div>
 
+            <!-- Geocode -->
+            <div class="geocode-row">
+              <div class="form-group" style="flex:0 0 auto;">
+                <label class="form-label">&nbsp;</label>
+                <button class="btn-ghost-sm" id="addGeocodeBtn" type="button"><i class="fas fa-location-crosshairs"></i> Find Coordinates from Address</button>
+              </div>
+            </div>
+            <div class="status-msg" id="addGeocodeStatus">
+              <div class="status-msg-inner"><div class="status-msg-inner-pad" id="addGeocodeStatusText"></div></div>
+            </div>
+
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label" for="evLat">Latitude (for map)</label>
+                <label class="form-label" for="evLat">Latitude</label>
                 <input type="number" class="form-input" id="evLat" placeholder="e.g. 39.2904" step="any">
               </div>
               <div class="form-group">
-                <label class="form-label" for="evLng">Longitude (for map)</label>
+                <label class="form-label" for="evLng">Longitude</label>
                 <input type="number" class="form-input" id="evLng" placeholder="e.g. -76.6122" step="any">
               </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Or click the map to drop a pin</label>
+              <div class="mini-map-wrap"><div class="mini-map" id="addMiniMap"></div></div>
             </div>
 
             <div class="form-group">
@@ -593,6 +764,17 @@
                 </button>
                 <span id="addColorHex" style="font-size:0.8rem;color:var(--muted);">#2563eb</span>
               </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="form-group">
+              <label class="form-label">Tags</label>
+              <div class="tag-input-row">
+                <input type="text" class="form-input" id="addTagInput" placeholder="Add a tag and press Enter…">
+                <button class="btn-ghost-sm" id="addTagBtn" type="button" style="padding:9px 16px;">Add</button>
+              </div>
+              <div class="tag-chips" id="addTagChips"></div>
+              <div class="tag-suggestions" id="addTagSuggestions"></div>
             </div>
 
             <div class="form-group">
@@ -616,6 +798,9 @@
 
         <!-- MANAGE TAB -->
         <div class="admin-tab-content" id="tab-manage">
+          <div class="manage-controls">
+            <button class="filter-pill" id="manageShowPastToggle"><i class="fas fa-clock-rotate-left"></i> Show Past Events</button>
+          </div>
           <div class="manage-list" id="manageList">
             <div class="manage-empty">Loading…</div>
           </div>
@@ -655,6 +840,7 @@
     <div class="overlay-inner">
       <img class="event-detail-img" id="detailImg" src="" alt="" style="display:none;">
       <div class="overlay-title" id="detailTitle"></div>
+      <div class="event-detail-tags" id="detailTags"></div>
       <div class="event-detail-meta" id="detailMeta"></div>
       <div class="event-detail-desc" id="detailDesc" style="display:none;"></div>
       <div class="overlay-btns">
@@ -662,6 +848,12 @@
         <button class="btn-ghost-sm" id="detailDirections" style="display:none;">
           <i class="fas fa-map-marker-alt"></i> Directions
         </button>
+        <button class="btn-ghost-sm" id="detailDownloadIcs">
+          <i class="fas fa-download"></i> Download Event
+        </button>
+        <a class="btn-ghost-sm" href="https://event.jakebitt3dprints.com/calendarsubscription" target="_blank" rel="noopener" style="text-decoration:none;">
+          <i class="fas fa-calendar-plus"></i> Subscribe to All
+        </a>
       </div>
     </div>
   </div>
@@ -695,6 +887,17 @@
         <input type="text" class="form-input" id="editTitle" placeholder="Event name">
       </div>
 
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">All-day event</div>
+          <div class="toggle-sub">No specific start/end time</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="editAllDay">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
       <div class="form-row">
         <div class="form-group">
           <label class="form-label" for="editStart">Start *</label>
@@ -711,6 +914,15 @@
         <input type="text" class="form-input" id="editLocation" placeholder="Venue / address">
       </div>
 
+      <div class="geocode-row">
+        <div class="form-group" style="flex:0 0 auto;">
+          <button class="btn-ghost-sm" id="editGeocodeBtn" type="button"><i class="fas fa-location-crosshairs"></i> Find Coordinates from Address</button>
+        </div>
+      </div>
+      <div class="status-msg" id="editGeocodeStatus">
+        <div class="status-msg-inner"><div class="status-msg-inner-pad" id="editGeocodeStatusText"></div></div>
+      </div>
+
       <div class="form-row">
         <div class="form-group">
           <label class="form-label" for="editLat">Latitude</label>
@@ -720,6 +932,11 @@
           <label class="form-label" for="editLng">Longitude</label>
           <input type="number" class="form-input" id="editLng" step="any">
         </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Or click the map to drop a pin</label>
+        <div class="mini-map-wrap"><div class="mini-map" id="editMiniMap"></div></div>
       </div>
 
       <div class="form-group">
@@ -739,6 +956,17 @@
         </div>
       </div>
 
+      <!-- Tags -->
+      <div class="form-group">
+        <label class="form-label">Tags</label>
+        <div class="tag-input-row">
+          <input type="text" class="form-input" id="editTagInput" placeholder="Add a tag and press Enter…">
+          <button class="btn-ghost-sm" id="editTagBtn" type="button" style="padding:9px 16px;">Add</button>
+        </div>
+        <div class="tag-chips" id="editTagChips"></div>
+        <div class="tag-suggestions" id="editTagSuggestions"></div>
+      </div>
+
       <div class="form-group">
         <label class="form-label">Replace Image <span style="font-size:0.74rem;color:var(--muted)">(optional)</span></label>
         <div class="drop-zone" id="editDropZone" style="padding:14px;">
@@ -750,6 +978,17 @@
 
       <div class="status-msg" id="editStatus">
         <div class="status-msg-inner"><div class="status-msg-inner-pad" id="editStatusText"></div></div>
+      </div>
+
+      <!-- Duplicate shift row -->
+      <div class="form-group">
+        <label class="form-label">Duplicate this event, shifted by:</label>
+        <div class="shift-row">
+          <button class="shift-btn" data-shift="1d">+1 Day</button>
+          <button class="shift-btn" data-shift="2d">+2 Days</button>
+          <button class="shift-btn" data-shift="1w">+1 Week</button>
+          <button class="shift-btn" data-shift="1m">+1 Month</button>
+        </div>
       </div>
 
       <div class="overlay-btns">
@@ -767,19 +1006,27 @@
   /* ── CONFIG ── */
   var PB_URL     = 'https://pb.jakebitt3dprints.com';
   var COLLECTION = 'events';
+  var COMMON_TAG_SUGGESTIONS = ['Hot Wheels Convention','Pop-up Shop','Craft Fair','Comic Con','Market','Private Event'];
 
   /* ── STATE ── */
-  var allEvents   = [];
-  var authToken   = null;
-  var adminOpen   = false;
-  var editRecord  = null;
-  var editNewFile = null;
-  var addFile     = null;
-  var fcCalendar  = null;
-  var leafletMap  = null;
-  var markers     = [];
-  var addColor    = '#2563eb';
-  var editColor   = '#2563eb';
+  var allEvents    = [];
+  var authToken    = null;
+  var adminOpen    = false;
+  var editRecord   = null;
+  var editNewFile  = null;
+  var addFile      = null;
+  var fcCalendar   = null;
+  var leafletMap   = null;
+  var markers      = [];
+  var addColor     = '#2563eb';
+  var editColor    = '#2563eb';
+  var addTags      = [];
+  var editTags     = [];
+  var activeTagFilter = 'all';
+  var showPastPublic  = false;
+  var showPastAdmin   = false;
+  var addMiniMap, addMiniMarker;
+  var editMiniMap, editMiniMarker;
 
   /* ── HELPERS ── */
   function imageUrl(record) {
@@ -801,13 +1048,36 @@
     var d = new Date(str);
     return d.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
   }
-  // Convert PocketBase date to datetime-local value
   function toLocalInput(str) {
     if (!str) return '';
     var d = new Date(str);
     var pad = function(n) { return n < 10 ? '0' + n : n; };
     return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) +
            'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+  function getTags(record) {
+    var t = record.tags;
+    if (!t) return [];
+    if (Array.isArray(t)) return t;
+    try { return JSON.parse(t); } catch(e) { return []; }
+  }
+  // Simple hash -> color for tag chips (consistent per tag name)
+  function tagColor(tag) {
+    var palette = ['#2563eb','#16a34a','#dc2626','#ca8a04','#7c3aed','#0891b2','#db2777','#ea580c'];
+    var hash = 0;
+    for (var i=0;i<tag.length;i++) hash = (hash * 31 + tag.charCodeAt(i)) >>> 0;
+    return palette[hash % palette.length];
+  }
+  function shiftDate(dateStr, amount) {
+    if (!dateStr) return dateStr;
+    var d = new Date(dateStr);
+    switch(amount) {
+      case '1d': d.setDate(d.getDate()+1); break;
+      case '2d': d.setDate(d.getDate()+2); break;
+      case '1w': d.setDate(d.getDate()+7); break;
+      case '1m': d.setMonth(d.getMonth()+1); break;
+    }
+    return d.toISOString();
   }
 
   /* ── THEME ── */
@@ -826,6 +1096,7 @@
     if (dark) { root.removeAttribute('data-theme'); localStorage.setItem('theme','light'); }
     else       { root.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); }
     syncTheme();
+    setTimeout(function() { if (leafletMap) leafletMap.invalidateSize(); if (addMiniMap) addMiniMap.invalidateSize(); if (editMiniMap) editMiniMap.invalidateSize(); }, 350);
   });
 
   /* ── PAGE TRANSITIONS ── */
@@ -856,8 +1127,62 @@
       .then(function(r) { return r.json(); })
       .then(function(data) {
         allEvents = (data.items || []).filter(function(e) { return e.visible !== false; });
+        buildTagFilterPills();
         return allEvents;
       });
+  }
+
+  /* ── TAG FILTER PILLS ── */
+  function buildTagFilterPills() {
+    var allTags = {};
+    allEvents.forEach(function(ev) { getTags(ev).forEach(function(t) { allTags[t] = true; }); });
+    var container = document.getElementById('tagFilterPills');
+    container.innerHTML = '<button class="filter-pill ' + (activeTagFilter==='all'?'active':'') + '" data-tag="all">All Events</button>';
+    Object.keys(allTags).sort().forEach(function(tag) {
+      var btn = document.createElement('button');
+      btn.className = 'filter-pill' + (activeTagFilter===tag ? ' active' : '');
+      btn.dataset.tag = tag;
+      btn.textContent = tag;
+      container.appendChild(btn);
+    });
+  }
+  document.getElementById('tagFilterPills').addEventListener('click', function(e) {
+    var pill = e.target.closest('.filter-pill');
+    if (!pill) return;
+    activeTagFilter = pill.dataset.tag;
+    document.querySelectorAll('#tagFilterPills .filter-pill').forEach(function(p) { p.classList.remove('active'); });
+    pill.classList.add('active');
+    refreshCalendar(); refreshMap(); renderUpcoming();
+  });
+
+  document.getElementById('filterToggleBtn').addEventListener('click', function() {
+    this.classList.toggle('open');
+    document.getElementById('filterPanel').classList.toggle('open');
+  });
+
+  document.getElementById('showPastToggle').addEventListener('click', function() {
+    showPastPublic = !showPastPublic;
+    this.classList.toggle('active', showPastPublic);
+    refreshCalendar(); renderUpcoming();
+  });
+
+  document.getElementById('manageShowPastToggle').addEventListener('click', function() {
+    showPastAdmin = !showPastAdmin;
+    this.classList.toggle('active', showPastAdmin);
+    loadManageList();
+  });
+
+  /* ── EVENT FILTERING (shared) ── */
+  function getFilteredEvents(includePast) {
+    var now = new Date();
+    return allEvents.filter(function(ev) {
+      if (activeTagFilter !== 'all' && getTags(ev).indexOf(activeTagFilter) === -1) return false;
+      if (!includePast) {
+        var endRef = ev.end ? new Date(ev.end) : new Date(ev.start);
+        if (endRef < now) return false;
+      }
+      return true;
+    });
   }
 
   /* ── FULLCALENDAR ── */
@@ -871,6 +1196,7 @@
         right:  'dayGridMonth,timeGridWeek,listMonth'
       },
       height: 'auto',
+      displayEventTime: false,
       events: buildFCEvents(),
       eventClick: function(info) { openDetailOverlay(info.event.extendedProps.record); },
       eventColor: '#2563eb'
@@ -879,13 +1205,14 @@
   }
 
   function buildFCEvents() {
-    return allEvents.map(function(ev) {
+    return getFilteredEvents(showPastPublic).map(function(ev) {
       return {
         id:    ev.id,
         title: ev.title,
         start: ev.start,
         end:   ev.end || undefined,
         color: ev.color || '#2563eb',
+        allDay: !!ev.all_day,
         extendedProps: { record: ev }
       };
     });
@@ -897,7 +1224,7 @@
     fcCalendar.addEventSource(buildFCEvents());
   }
 
-  /* ── LEAFLET MAP ── */
+  /* ── LEAFLET MAP (main) ── */
   function initMap() {
     leafletMap = L.map('calMap', { zoomControl: true });
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -909,12 +1236,11 @@
 
   function refreshMap() {
     if (!leafletMap) return;
-    // Clear old markers
     markers.forEach(function(m) { leafletMap.removeLayer(m); });
     markers = [];
 
     var coords = [];
-    allEvents.forEach(function(ev) {
+    getFilteredEvents(true).forEach(function(ev) {
       if (!ev.lat || !ev.lng) return;
       var color = ev.color || '#2563eb';
       var icon = L.divIcon({
@@ -935,7 +1261,6 @@
     });
 
     if (coords.length === 0) {
-      // Default view if no events with coords
       leafletMap.setView([39.5, -76.6], 8);
     } else if (coords.length === 1) {
       leafletMap.setView(coords[0], 12);
@@ -947,26 +1272,23 @@
   /* ── UPCOMING EVENTS ── */
   function renderUpcoming() {
     var grid = document.getElementById('upcomingGrid');
-    var now  = new Date();
-    var upcoming = allEvents
-      .filter(function(ev) { return new Date(ev.start) >= now; })
-      .slice(0, 6);
+    var events = getFilteredEvents(showPastPublic).slice(0, 20);
 
-    if (!upcoming.length) {
-      grid.innerHTML = '<div class="events-empty" style="grid-column:1/-1">No upcoming events scheduled right now. Check back soon!</div>';
+    if (!events.length) {
+      grid.innerHTML = '<div class="events-empty">No events to show.</div>';
       return;
     }
 
     grid.innerHTML = '';
-    upcoming.forEach(function(ev) {
+    events.forEach(function(ev) {
       var d     = new Date(ev.start);
       var month = d.toLocaleDateString('en-US', { month:'short' }).toUpperCase();
       var day   = d.getDate();
       var color = ev.color || '#2563eb';
+      var tags  = getTags(ev);
 
       var card = document.createElement('div');
       card.className = 'event-card';
-      card.style.cursor = 'pointer';
       card.innerHTML =
         '<div class="event-date-block">' +
           '<div class="event-date-month">' + month + '</div>' +
@@ -976,8 +1298,11 @@
           '<div class="event-title">' + (ev.title || 'Untitled') + '</div>' +
           '<div class="event-meta">' +
             (ev.location ? '<span><i class="fas fa-map-marker-alt"></i> ' + ev.location + '</span>' : '') +
-            '<span><i class="fas fa-clock"></i> ' + fmtTime(ev.start) + '</span>' +
+            (ev.all_day ? '<span><i class="fas fa-calendar-day"></i> All day</span>' : '<span><i class="fas fa-clock"></i> ' + fmtTime(ev.start) + '</span>') +
           '</div>' +
+          (tags.length ? '<div class="event-tags">' + tags.map(function(t) {
+            return '<span class="event-tag-chip" style="background:' + tagColor(t) + '">' + t + '</span>';
+          }).join('') + '</div>' : '') +
         '</div>' +
         '<div class="event-color-dot" style="background:' + color + ';"></div>';
 
@@ -986,10 +1311,43 @@
     });
   }
 
+  /* ── ICS GENERATION ── */
+  function toIcsDate(str) {
+    var d = new Date(str);
+    return d.getUTCFullYear() +
+      String(d.getUTCMonth()+1).padStart(2,'0') +
+      String(d.getUTCDate()).padStart(2,'0') + 'T' +
+      String(d.getUTCHours()).padStart(2,'0') +
+      String(d.getUTCMinutes()).padStart(2,'0') +
+      String(d.getUTCSeconds()).padStart(2,'0') + 'Z';
+  }
+  function downloadIcsForEvent(ev) {
+    var start = toIcsDate(ev.start);
+    var end   = ev.end ? toIcsDate(ev.end) : toIcsDate(new Date(new Date(ev.start).getTime() + 3600000));
+    var lines = [
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//JakeBitt3DPrints//Events//EN','BEGIN:VEVENT',
+      'UID:' + ev.id + '@jakebitt3dprints.com',
+      'DTSTAMP:' + toIcsDate(new Date().toISOString()),
+      'DTSTART:' + start,
+      'DTEND:' + end,
+      'SUMMARY:' + (ev.title||'Event').replace(/\n/g,' '),
+      ev.location ? 'LOCATION:' + ev.location.replace(/\n/g,' ') : '',
+      ev.description ? 'DESCRIPTION:' + ev.description.replace(/\n/g,'\\n') : '',
+      'END:VEVENT','END:VCALENDAR'
+    ].filter(Boolean);
+    var blob = new Blob([lines.join('\r\n')], {type:'text/calendar'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = (ev.title || 'event').replace(/[^a-z0-9]+/gi,'_') + '.ics';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  }
+
   /* ── EVENT DETAIL OVERLAY ── */
   var detailOverlay = document.getElementById('detailOverlay');
+  var currentDetailEvent = null;
 
   function openDetailOverlay(ev) {
+    currentDetailEvent = ev;
     var img = document.getElementById('detailImg');
     var url = imageUrl(ev);
     if (url) { img.src = url; img.style.display = ''; }
@@ -997,12 +1355,17 @@
 
     document.getElementById('detailTitle').textContent = ev.title || 'Event';
 
+    var tags = getTags(ev);
+    document.getElementById('detailTags').innerHTML = tags.map(function(t) {
+      return '<span class="event-tag-chip" style="background:' + tagColor(t) + '">' + t + '</span>';
+    }).join('');
+
     var meta = document.getElementById('detailMeta');
     meta.innerHTML =
       '<div class="event-detail-row"><i class="fas fa-calendar"></i><span>' + fmtDate(ev.start) +
         (ev.end ? ' – ' + fmtDate(ev.end) : '') + '</span></div>' +
-      (ev.start ? '<div class="event-detail-row"><i class="fas fa-clock"></i><span>' + fmtTime(ev.start) +
-        (ev.end ? ' – ' + fmtTime(ev.end) : '') + '</span></div>' : '') +
+      (!ev.all_day ? '<div class="event-detail-row"><i class="fas fa-clock"></i><span>' + fmtTime(ev.start) +
+        (ev.end ? ' – ' + fmtTime(ev.end) : '') + '</span></div>' : '<div class="event-detail-row"><i class="fas fa-calendar-day"></i><span>All day</span></div>') +
       (ev.location ? '<div class="event-detail-row"><i class="fas fa-map-marker-alt"></i><span>' + ev.location + '</span></div>' : '');
 
     var desc = document.getElementById('detailDesc');
@@ -1021,6 +1384,9 @@
     document.body.style.overflow = 'hidden';
   }
 
+  document.getElementById('detailDownloadIcs').addEventListener('click', function() {
+    if (currentDetailEvent) downloadIcsForEvent(currentDetailEvent);
+  });
   document.getElementById('detailClose').addEventListener('click', function() {
     detailOverlay.classList.remove('open');
     document.body.style.overflow = '';
@@ -1060,7 +1426,10 @@
       adminPanel.classList.toggle('open', adminOpen);
       if (adminOpen) {
         loadManageList();
-        setTimeout(function() { adminPanel.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100);
+        setTimeout(function() {
+          adminPanel.scrollIntoView({behavior:'smooth',block:'nearest'});
+          initMiniMaps();
+        }, 150);
       }
     } else {
       openLogin();
@@ -1094,7 +1463,10 @@
       triggerBtn.classList.add('unlocked');
       lockIcon.className = 'fas fa-unlock';
       loadManageList();
-      setTimeout(function() { adminPanel.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 150);
+      setTimeout(function() {
+        adminPanel.scrollIntoView({behavior:'smooth',block:'nearest'});
+        initMiniMaps();
+      }, 200);
     })
     .catch(function() {
       errEl.textContent = 'Incorrect credentials. Please try again.';
@@ -1119,7 +1491,176 @@
       tab.classList.add('active');
       document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
       if (tab.dataset.tab === 'manage') loadManageList();
+      if (tab.dataset.tab === 'add') setTimeout(function() { if (addMiniMap) addMiniMap.invalidateSize(); }, 50);
     });
+  });
+
+  /* ── MINI MAPS (for coordinate picking) ── */
+  function initMiniMaps() {
+    if (!addMiniMap) {
+      addMiniMap = L.map('addMiniMap', { zoomControl: true }).setView([39.5,-76.6], 7);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(addMiniMap);
+      addMiniMap.on('click', function(e) {
+        setAddMarker(e.latlng.lat, e.latlng.lng);
+        document.getElementById('evLat').value = e.latlng.lat.toFixed(6);
+        document.getElementById('evLng').value = e.latlng.lng.toFixed(6);
+      });
+    } else { addMiniMap.invalidateSize(); }
+
+    if (!editMiniMap) {
+      editMiniMap = L.map('editMiniMap', { zoomControl: true }).setView([39.5,-76.6], 7);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(editMiniMap);
+      editMiniMap.on('click', function(e) {
+        setEditMarker(e.latlng.lat, e.latlng.lng);
+        document.getElementById('editLat').value = e.latlng.lat.toFixed(6);
+        document.getElementById('editLng').value = e.latlng.lng.toFixed(6);
+      });
+    } else { editMiniMap.invalidateSize(); }
+  }
+  function setAddMarker(lat,lng) {
+    if (addMiniMarker) addMiniMap.removeLayer(addMiniMarker);
+    addMiniMarker = L.marker([lat,lng]).addTo(addMiniMap);
+    addMiniMap.setView([lat,lng], 12);
+  }
+  function setEditMarker(lat,lng) {
+    if (editMiniMarker) editMiniMap.removeLayer(editMiniMarker);
+    editMiniMarker = L.marker([lat,lng]).addTo(editMiniMap);
+    editMiniMap.setView([lat,lng], 12);
+  }
+
+  // Manual lat/lng input -> update marker
+  ['evLat','evLng'].forEach(function(id) {
+    document.getElementById(id).addEventListener('change', function() {
+      var lat = parseFloat(document.getElementById('evLat').value);
+      var lng = parseFloat(document.getElementById('evLng').value);
+      if (!isNaN(lat) && !isNaN(lng) && addMiniMap) setAddMarker(lat,lng);
+    });
+  });
+  ['editLat','editLng'].forEach(function(id) {
+    document.getElementById(id).addEventListener('change', function() {
+      var lat = parseFloat(document.getElementById('editLat').value);
+      var lng = parseFloat(document.getElementById('editLng').value);
+      if (!isNaN(lat) && !isNaN(lng) && editMiniMap) setEditMarker(lat,lng);
+    });
+  });
+
+  /* ── GEOCODING (Nominatim) ── */
+  function geocodeAddress(address, statusWrapId, statusTextId, onSuccess) {
+    if (!address.trim()) {
+      showStatus(statusWrapId, statusTextId, 'error', 'Please enter a location first.');
+      return;
+    }
+    showStatus(statusWrapId, statusTextId, 'info', 'Searching…');
+    fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(address), {
+      headers: { 'Accept-Language': 'en' }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(results) {
+      if (!results.length) { showStatus(statusWrapId, statusTextId, 'error', 'No location found for that address.'); return; }
+      var lat = parseFloat(results[0].lat), lon = parseFloat(results[0].lon);
+      onSuccess(lat, lon, results[0].display_name);
+      showStatus(statusWrapId, statusTextId, 'success', 'Found: ' + results[0].display_name);
+    })
+    .catch(function() { showStatus(statusWrapId, statusTextId, 'error', 'Geocoding failed. Try again.'); });
+  }
+  document.getElementById('addGeocodeBtn').addEventListener('click', function() {
+    var addr = document.getElementById('evLocation').value;
+    geocodeAddress(addr, 'addGeocodeStatus','addGeocodeStatusText', function(lat,lng) {
+      document.getElementById('evLat').value = lat.toFixed(6);
+      document.getElementById('evLng').value = lng.toFixed(6);
+      if (addMiniMap) setAddMarker(lat,lng);
+    });
+  });
+  document.getElementById('editGeocodeBtn').addEventListener('click', function() {
+    var addr = document.getElementById('editLocation').value;
+    geocodeAddress(addr, 'editGeocodeStatus','editGeocodeStatusText', function(lat,lng) {
+      document.getElementById('editLat').value = lat.toFixed(6);
+      document.getElementById('editLng').value = lng.toFixed(6);
+      if (editMiniMap) setEditMarker(lat,lng);
+    });
+  });
+
+  /* ── ALL-DAY TOGGLE ── */
+  document.getElementById('evAllDay').addEventListener('change', function() {
+    var disabled = this.checked;
+    ['evStart','evEnd'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (disabled) { el.type = 'date'; } else { el.type = 'datetime-local'; }
+    });
+  });
+  document.getElementById('editAllDay').addEventListener('change', function() {
+    var disabled = this.checked;
+    ['editStart','editEnd'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (disabled) { el.type = 'date'; } else { el.type = 'datetime-local'; }
+    });
+  });
+
+  /* ── TAG MANAGEMENT ── */
+  function renderTagChips(containerId, tags, onRemove) {
+    var container = document.getElementById(containerId);
+    container.innerHTML = '';
+    tags.forEach(function(tag, idx) {
+      var chip = document.createElement('span');
+      chip.className = 'tag-chip';
+      chip.style.background = tagColor(tag);
+      chip.innerHTML = tag + ' <button type="button"><i class="fas fa-xmark"></i></button>';
+      chip.querySelector('button').addEventListener('click', function() { onRemove(idx); });
+      container.appendChild(chip);
+    });
+  }
+  function renderTagSuggestions(containerId, currentTags, onAdd) {
+    var container = document.getElementById(containerId);
+    container.innerHTML = '';
+    var allKnown = {};
+    COMMON_TAG_SUGGESTIONS.forEach(function(t) { allKnown[t]=true; });
+    allEvents.forEach(function(ev) { getTags(ev).forEach(function(t) { allKnown[t]=true; }); });
+    Object.keys(allKnown).forEach(function(tag) {
+      if (currentTags.indexOf(tag) !== -1) return;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'tag-suggestion';
+      btn.textContent = '+ ' + tag;
+      btn.addEventListener('click', function() { onAdd(tag); });
+      container.appendChild(btn);
+    });
+  }
+
+  function addTagFromInput(inputId, tagsArr, chipsId, suggestionsId) {
+    var input = document.getElementById(inputId);
+    var val = input.value.trim();
+    if (!val) return;
+    if (tagsArr.indexOf(val) === -1) tagsArr.push(val);
+    input.value = '';
+    renderTagChips(chipsId, tagsArr, function(idx) { tagsArr.splice(idx,1); renderTagChips(chipsId, tagsArr, arguments.callee); renderTagSuggestions(suggestionsId, tagsArr, function(t){ tagsArr.push(t); renderTagChips(chipsId,tagsArr,arguments.callee); renderTagSuggestions(suggestionsId,tagsArr,arguments.callee); }); });
+    renderTagSuggestions(suggestionsId, tagsArr, function(t) { tagsArr.push(t); refreshTagUI(chipsId, suggestionsId, tagsArr); });
+  }
+
+  function refreshTagUI(chipsId, suggestionsId, tagsArr) {
+    renderTagChips(chipsId, tagsArr, function(idx) { tagsArr.splice(idx,1); refreshTagUI(chipsId, suggestionsId, tagsArr); });
+    renderTagSuggestions(suggestionsId, tagsArr, function(tag) { tagsArr.push(tag); refreshTagUI(chipsId, suggestionsId, tagsArr); });
+  }
+
+  document.getElementById('addTagBtn').addEventListener('click', function() {
+    var input = document.getElementById('addTagInput');
+    var val = input.value.trim();
+    if (val && addTags.indexOf(val) === -1) addTags.push(val);
+    input.value = '';
+    refreshTagUI('addTagChips','addTagSuggestions', addTags);
+  });
+  document.getElementById('addTagInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('addTagBtn').click(); }
+  });
+
+  document.getElementById('editTagBtn').addEventListener('click', function() {
+    var input = document.getElementById('editTagInput');
+    var val = input.value.trim();
+    if (val && editTags.indexOf(val) === -1) editTags.push(val);
+    input.value = '';
+    refreshTagUI('editTagChips','editTagSuggestions', editTags);
+  });
+  document.getElementById('editTagInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('editTagBtn').click(); }
   });
 
   /* ── COLOR PICKERS ── */
@@ -1138,7 +1679,7 @@
   initColorPicker('addColorPicker','addColorPreview','addColorHex','addColorBtn', function(v) { addColor = v; });
   initColorPicker('editColorPicker','editColorPreview','editColorHex','editColorBtn', function(v) { editColor = v; });
 
-  /* ── ADD FILE ── */
+  /* ── FILE DROP ZONES ── */
   function initDropZone(zoneId, inputId, previewId, onFile) {
     var zone    = document.getElementById(zoneId);
     var input   = document.getElementById(inputId);
@@ -1148,13 +1689,12 @@
     zone.addEventListener('drop', function(e) {
       e.preventDefault(); zone.classList.remove('drag-over');
       var f = e.dataTransfer.files[0];
-      if (f && f.type.startsWith('image/')) { input.files; onFile(f, preview); }
+      if (f && f.type.startsWith('image/')) onFile(f, preview);
     });
     input.addEventListener('change', function() {
       if (input.files[0]) onFile(input.files[0], preview);
     });
   }
-
   function handleAddFile(file, preview) {
     addFile = file;
     if (preview) {
@@ -1169,11 +1709,34 @@
     nameEl.textContent = '✓ ' + file.name;
     nameEl.style.display = 'block';
   }
-
   initDropZone('addDropZone',  'addFileInput',  'addPreviewImg', handleAddFile);
   initDropZone('editDropZone', 'editFileInput', null,            handleEditFile);
 
   /* ── ADD EVENT ── */
+  function resetAddForm() {
+    document.getElementById('evTitle').value = '';
+    document.getElementById('evStart').value = '';
+    document.getElementById('evEnd').value   = '';
+    document.getElementById('evLocation').value = '';
+    document.getElementById('evLat').value = '';
+    document.getElementById('evLng').value = '';
+    document.getElementById('evDesc').value = '';
+    document.getElementById('evAllDay').checked = false;
+    document.getElementById('evStart').type = 'datetime-local';
+    document.getElementById('evEnd').type   = 'datetime-local';
+    document.getElementById('addColorPicker').value = '#2563eb';
+    document.getElementById('addColorPreview').style.background = '#2563eb';
+    document.getElementById('addColorHex').textContent = '#2563eb';
+    addColor = '#2563eb'; addFile = null; addTags = [];
+    refreshTagUI('addTagChips','addTagSuggestions', addTags);
+    document.getElementById('addPreviewImg').classList.remove('visible');
+    document.getElementById('addFileInput').value = '';
+    document.getElementById('duplicateNotice').className = 'status-msg info';
+    if (addMiniMarker) { addMiniMap.removeLayer(addMiniMarker); addMiniMarker = null; }
+  }
+
+  document.getElementById('cancelDuplicateBtn').addEventListener('click', resetAddForm);
+
   document.getElementById('addEventBtn').addEventListener('click', function() {
     var title = document.getElementById('evTitle').value.trim();
     var start = document.getElementById('evStart').value;
@@ -1185,11 +1748,12 @@
     btn.disabled = true;
     document.getElementById('addBtnText').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
 
+    var allDay = document.getElementById('evAllDay').checked;
     var fd = new FormData();
-    fd.append('title',       title);
-    fd.append('start',       new Date(start).toISOString());
+    fd.append('title', title);
+    fd.append('start', allDay ? new Date(start + 'T00:00:00').toISOString() : new Date(start).toISOString());
     var endVal = document.getElementById('evEnd').value;
-    if (endVal) fd.append('end', new Date(endVal).toISOString());
+    if (endVal) fd.append('end', allDay ? new Date(endVal + 'T23:59:59').toISOString() : new Date(endVal).toISOString());
     var loc = document.getElementById('evLocation').value.trim();
     if (loc) fd.append('location', loc);
     var lat = document.getElementById('evLat').value;
@@ -1200,6 +1764,8 @@
     if (desc) fd.append('description', desc);
     fd.append('color',   addColor);
     fd.append('visible', 'true');
+    fd.append('all_day', allDay ? 'true' : 'false');
+    fd.append('tags',    JSON.stringify(addTags));
     if (addFile) fd.append('image', addFile, addFile.name);
 
     fetch(PB_URL + '/api/collections/' + COLLECTION + '/records', {
@@ -1210,20 +1776,7 @@
     .then(function(r) { if (!r.ok) throw new Error('Failed ' + r.status); return r.json(); })
     .then(function() {
       showStatus('addStatus','addStatusText','success','Event added!');
-      // Reset form
-      document.getElementById('evTitle').value = '';
-      document.getElementById('evStart').value = '';
-      document.getElementById('evEnd').value   = '';
-      document.getElementById('evLocation').value = '';
-      document.getElementById('evLat').value = '';
-      document.getElementById('evLng').value = '';
-      document.getElementById('evDesc').value = '';
-      document.getElementById('addColorPicker').value = '#2563eb';
-      document.getElementById('addColorPreview').style.background = '#2563eb';
-      document.getElementById('addColorHex').textContent = '#2563eb';
-      addColor = '#2563eb'; addFile = null;
-      document.getElementById('addPreviewImg').classList.remove('visible');
-      document.getElementById('addFileInput').value = '';
+      resetAddForm();
       return fetchEvents();
     })
     .then(function() { refreshCalendar(); refreshMap(); renderUpcoming(); })
@@ -1240,10 +1793,14 @@
     var text = document.getElementById(textId);
     text.textContent = msg;
     wrap.className = 'status-msg ' + type + ' open';
-    setTimeout(function() {
-      wrap.className = 'status-msg';
-      setTimeout(function() { text.textContent = ''; }, 300);
-    }, 4000);
+    if (type !== 'info' || msg === 'Searching…') {
+      setTimeout(function() {
+        if (text.textContent === msg) {
+          wrap.className = 'status-msg';
+          setTimeout(function() { if (text.textContent === msg) text.textContent = ''; }, 300);
+        }
+      }, 4000);
+    }
   }
 
   /* ── MANAGE LIST ── */
@@ -1256,11 +1813,19 @@
     .then(function(r) { return r.json(); })
     .then(function(data) {
       var items = data.items || [];
-      if (!items.length) { list.innerHTML = '<div class="manage-empty">No events yet.</div>'; return; }
+      var now = new Date();
+      if (!showPastAdmin) {
+        items = items.filter(function(ev) {
+          var endRef = ev.end ? new Date(ev.end) : new Date(ev.start);
+          return endRef >= now;
+        });
+      }
+      if (!items.length) { list.innerHTML = '<div class="manage-empty">No events to show.</div>'; return; }
       list.innerHTML = '';
       items.forEach(function(ev, idx) {
+        var isPast = (ev.end ? new Date(ev.end) : new Date(ev.start)) < now;
         var row = document.createElement('div');
-        row.className = 'manage-item';
+        row.className = 'manage-item' + (isPast ? ' is-past' : '');
         row.style.animationDelay = Math.min(idx * 0.03, 0.3) + 's';
         row.dataset.id = ev.id;
 
@@ -1270,22 +1835,27 @@
 
         var info = document.createElement('div');
         info.className = 'manage-item-info';
+        var tags = getTags(ev);
         info.innerHTML =
-          '<div class="manage-item-title">' + (ev.title || 'Untitled') + '</div>' +
+          '<div class="manage-item-title">' + (ev.title || 'Untitled') + (isPast ? ' (past)' : '') + '</div>' +
           '<div class="manage-item-meta">' + fmtDate(ev.start) +
           (ev.location ? ' · ' + ev.location : '') +
+          (tags.length ? ' · ' + tags.join(', ') : '') +
           ' · ' + (ev.visible !== false ? 'Visible' : 'Hidden') + '</div>';
 
         var actions = document.createElement('div');
         actions.className = 'manage-item-actions';
 
-        // Edit
         var editBtn = document.createElement('button');
         editBtn.className = 'manage-btn'; editBtn.title = 'Edit';
         editBtn.innerHTML = '<i class="fas fa-pen"></i>';
         editBtn.addEventListener('click', function() { openEditOverlay(ev); });
 
-        // Visibility
+        var dupBtn = document.createElement('button');
+        dupBtn.className = 'manage-btn'; dupBtn.title = 'Duplicate';
+        dupBtn.innerHTML = '<i class="fas fa-copy"></i>';
+        dupBtn.addEventListener('click', function() { duplicateEvent(ev); });
+
         var visBtn = document.createElement('button');
         visBtn.className = 'manage-btn' + (ev.visible !== false ? ' vis-on' : '');
         visBtn.title = ev.visible !== false ? 'Hide' : 'Show';
@@ -1293,6 +1863,7 @@
         visBtn.addEventListener('click', function() { toggleVis(ev, info, visBtn); });
 
         actions.appendChild(editBtn);
+        actions.appendChild(dupBtn);
         actions.appendChild(visBtn);
 
         row.appendChild(dot);
@@ -1303,6 +1874,55 @@
     })
     .catch(function() { list.innerHTML = '<div class="manage-empty">Failed to load.</div>'; });
   }
+
+  /* ── DUPLICATE EVENT ── */
+  function duplicateEvent(ev) {
+    // Switch to Add tab
+    document.querySelectorAll('.admin-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.admin-tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('.admin-tab[data-tab="add"]').classList.add('active');
+    document.getElementById('tab-add').classList.add('active');
+
+    document.getElementById('evTitle').value    = ev.title || '';
+    document.getElementById('evAllDay').checked = !!ev.all_day;
+    document.getElementById('evStart').type = ev.all_day ? 'date' : 'datetime-local';
+    document.getElementById('evEnd').type   = ev.all_day ? 'date' : 'datetime-local';
+    document.getElementById('evStart').value = ev.all_day ? (ev.start||'').slice(0,10) : toLocalInput(ev.start);
+    document.getElementById('evEnd').value   = ev.end ? (ev.all_day ? ev.end.slice(0,10) : toLocalInput(ev.end)) : '';
+    document.getElementById('evLocation').value = ev.location || '';
+    document.getElementById('evLat').value = ev.lat || '';
+    document.getElementById('evLng').value = ev.lng || '';
+    document.getElementById('evDesc').value = ev.description || '';
+
+    var col = ev.color || '#2563eb';
+    addColor = col;
+    document.getElementById('addColorPicker').value = col;
+    document.getElementById('addColorPreview').style.background = col;
+    document.getElementById('addColorHex').textContent = col;
+
+    addTags = getTags(ev).slice();
+    refreshTagUI('addTagChips','addTagSuggestions', addTags);
+
+    if (ev.lat && ev.lng && addMiniMap) setAddMarker(ev.lat, ev.lng);
+
+    document.getElementById('duplicateNotice').className = 'status-msg info open';
+    setTimeout(function() { if (addMiniMap) addMiniMap.invalidateSize(); }, 50);
+
+    document.getElementById('tab-add').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  /* ── SHIFT BUTTONS (duplicate from edit) ── */
+  document.querySelectorAll('.shift-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (!editRecord) return;
+      var amount = btn.dataset.shift;
+      var newEv = Object.assign({}, editRecord);
+      newEv.start = shiftDate(editRecord.start, amount);
+      if (editRecord.end) newEv.end = shiftDate(editRecord.end, amount);
+      closeEditOverlay();
+      duplicateEvent(newEv);
+    });
+  });
 
   function toggleVis(ev, info, btn) {
     var newVis = ev.visible === false;
@@ -1316,8 +1936,10 @@
       btn.className = 'manage-btn' + (ev.visible !== false ? ' vis-on' : '');
       btn.title     = ev.visible !== false ? 'Hide' : 'Show';
       btn.innerHTML = '<i class="fas fa-' + (ev.visible !== false ? 'eye' : 'eye-slash') + '"></i>';
+      var tags = getTags(ev);
       info.querySelector('.manage-item-meta').textContent =
         fmtDate(ev.start) + (ev.location ? ' · ' + ev.location : '') +
+        (tags.length ? ' · ' + tags.join(', ') : '') +
         ' · ' + (ev.visible !== false ? 'Visible' : 'Hidden');
       return fetchEvents();
     })
@@ -1332,8 +1954,11 @@
     editRecord  = ev;
     editNewFile = null;
     document.getElementById('editTitle').value    = ev.title    || '';
-    document.getElementById('editStart').value    = toLocalInput(ev.start);
-    document.getElementById('editEnd').value      = toLocalInput(ev.end);
+    document.getElementById('editAllDay').checked = !!ev.all_day;
+    document.getElementById('editStart').type = ev.all_day ? 'date' : 'datetime-local';
+    document.getElementById('editEnd').type   = ev.all_day ? 'date' : 'datetime-local';
+    document.getElementById('editStart').value = ev.all_day ? (ev.start||'').slice(0,10) : toLocalInput(ev.start);
+    document.getElementById('editEnd').value   = ev.end ? (ev.all_day ? ev.end.slice(0,10) : toLocalInput(ev.end)) : '';
     document.getElementById('editLocation').value = ev.location || '';
     document.getElementById('editLat').value      = ev.lat      || '';
     document.getElementById('editLng').value      = ev.lng      || '';
@@ -1347,8 +1972,20 @@
     document.getElementById('editFileName').textContent   = '';
     document.getElementById('editFileInput').value        = '';
     document.getElementById('editStatus').className       = 'status-msg';
+    document.getElementById('editGeocodeStatus').className = 'status-msg';
+
+    editTags = getTags(ev).slice();
+    refreshTagUI('editTagChips','editTagSuggestions', editTags);
+
     editOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+
+    setTimeout(function() {
+      initMiniMaps();
+      if (ev.lat && ev.lng && editMiniMap) setEditMarker(ev.lat, ev.lng);
+      else if (editMiniMarker) { editMiniMap.removeLayer(editMiniMarker); editMiniMarker = null; }
+      if (editMiniMap) editMiniMap.invalidateSize();
+    }, 100);
   }
 
   function closeEditOverlay() {
@@ -1382,17 +2019,20 @@
     btn.disabled = true;
     document.getElementById('editSaveBtnText').textContent = 'Saving…';
 
+    var allDay = document.getElementById('editAllDay').checked;
     var fd = new FormData();
     fd.append('title',  document.getElementById('editTitle').value.trim()    || editRecord.title);
     var startVal = document.getElementById('editStart').value;
-    if (startVal) fd.append('start', new Date(startVal).toISOString());
+    if (startVal) fd.append('start', allDay ? new Date(startVal + 'T00:00:00').toISOString() : new Date(startVal).toISOString());
     var endVal   = document.getElementById('editEnd').value;
-    fd.append('end', endVal ? new Date(endVal).toISOString() : '');
+    fd.append('end', endVal ? (allDay ? new Date(endVal + 'T23:59:59').toISOString() : new Date(endVal).toISOString()) : '');
     fd.append('location',    document.getElementById('editLocation').value.trim());
     fd.append('lat',         document.getElementById('editLat').value  || '');
     fd.append('lng',         document.getElementById('editLng').value  || '');
     fd.append('description', document.getElementById('editDesc').value.trim());
     fd.append('color',       editColor);
+    fd.append('all_day',     allDay ? 'true' : 'false');
+    fd.append('tags',        JSON.stringify(editTags));
     if (editNewFile) fd.append('image', editNewFile, editNewFile.name);
 
     fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + editRecord.id, {
@@ -1413,7 +2053,6 @@
     .finally(function() { btn.disabled=false; document.getElementById('editSaveBtnText').textContent='Save'; });
   });
 
-  /* ── EDIT FILE INPUT ── */
   document.getElementById('editFileInput').addEventListener('change', function() {
     if (this.files[0]) handleEditFile(this.files[0]);
   });
@@ -1434,7 +2073,7 @@
     })
     .catch(function() {
       document.getElementById('upcomingGrid').innerHTML =
-        '<div class="events-empty" style="grid-column:1/-1">Could not load events. Please try again later.</div>';
+        '<div class="events-empty">Could not load events. Please try again later.</div>';
     });
 
 })();
