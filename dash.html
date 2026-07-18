@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>JakeBitt3DPrints — Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f9fafb; --bg-alt:#ffffff; --text:#12151f; --muted:#737b8c;
+  --accent:#3b82f6; --accent2:#7c3aed; --border:#e6e9ee;
+  --green:#16a34a; --red:#dc2626; --orange:#ea580c; --yellow:#ca8a04; --pink:#db2777;
+  --radius:16px; --shadow:0 8px 24px rgba(20,25,40,.06);
+}
+[data-theme="dark"]{
+  --bg:#0e1220; --bg-alt:#171c2c; --text:#f1f3f9; --muted:#93a0b8;
+  --border:#242b40; --shadow:0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); transition:background .2s,color .2s;}
+h1,h2,h3,.serif{font-family:'DM Serif Display',serif; font-weight:400;}
+a{color:inherit;}
+button{font-family:inherit; cursor:pointer; border:none;}
+input,select,textarea{font-family:inherit; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:10px 12px; font-size:14px; width:100%;}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
+
+/* ---------- Login ---------- */
+#loginScreen{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;}
+.login-card{background:var(--bg-alt); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:36px 32px; width:100%; max-width:380px; text-align:center;}
+.login-logo{width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2)); margin:0 auto 18px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:26px; font-weight:700;}
+.login-card h1{font-size:24px; margin-bottom:6px; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.login-card p{color:var(--muted); font-size:13px; margin-bottom:22px;}
+.login-card input{margin-bottom:12px;}
+.btn{background:var(--accent); color:#fff; padding:11px 20px; border-radius:10px; font-weight:600; font-size:14px; width:100%; transition:opacity .15s;}
+.btn:hover{opacity:.9;}
+.btn-outline{background:transparent; border:1px solid var(--border); color:var(--text);}
+.btn-danger{background:var(--red);}
+.btn-green{background:var(--green);}
+.btn-sm{width:auto; padding:7px 14px; font-size:12.5px; border-radius:8px;}
+.error-banner{background:rgba(220,38,38,.1); color:var(--red); border:1px solid rgba(220,38,38,.25); border-radius:10px; padding:9px 12px; font-size:12.5px; margin-bottom:12px; text-align:left;}
+.success-banner{background:rgba(22,163,74,.1); color:var(--green); border:1px solid rgba(22,163,74,.25); border-radius:10px; padding:9px 12px; font-size:12.5px; margin-bottom:12px; text-align:left;}
+
+/* ---------- App shell ---------- */
+#app{display:none; min-height:100vh;}
+.topbar{position:sticky; top:0; z-index:20; display:flex; align-items:center; justify-content:space-between; padding:14px 22px; background:var(--bg-alt); border-bottom:1px solid var(--border); backdrop-filter:blur(10px);}
+.topbar-left{display:flex; align-items:center; gap:12px;}
+.topbar-left .dot{width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:15px;}
+.topbar-left h1{font-size:17px;}
+.topbar-right{display:flex; gap:8px; align-items:center;}
+.icon-btn{width:36px; height:36px; border-radius:9px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:15px; color:var(--text);}
+
+.tabs{display:flex; gap:6px; overflow-x:auto; padding:10px 18px; background:var(--bg-alt); border-bottom:1px solid var(--border);}
+.tab{white-space:nowrap; padding:8px 15px; border-radius:20px; font-size:13.5px; font-weight:600; color:var(--muted); background:transparent;}
+.tab.active{background:var(--accent); color:#fff;}
+
+main{padding:20px; max-width:1200px; margin:0 auto;}
+.section{display:none;}
+.section.active{display:block; animation:fade .25s ease;}
+@keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+
+.grid{display:grid; gap:14px;}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+@media(max-width:900px){.grid-4{grid-template-columns:repeat(2,1fr);} .grid-3{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.grid-4,.grid-3,.grid-2{grid-template-columns:1fr;}}
+
+.card{background:var(--bg-alt); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px;}
+.stat-card .stat-icon{width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:15px; color:#fff; margin-bottom:10px;}
+.stat-card .stat-value{font-size:24px; font-family:'DM Serif Display',serif;}
+.stat-card .stat-label{color:var(--muted); font-size:12.5px; font-weight:600; margin-top:2px;}
+
+.section-header{display:flex; align-items:center; justify-content:space-between; margin:22px 0 12px;}
+.section-header h2{font-size:20px;}
+.section-eyebrow{font-size:11px; font-weight:700; letter-spacing:1.5px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;}
+
+.toolbar{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; align-items:center;}
+.search-box{flex:1; min-width:180px; display:flex; align-items:center; gap:8px; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:9px 12px;}
+.search-box input{border:none; background:transparent; padding:0;}
+.pill{padding:6px 13px; border-radius:20px; font-size:12.5px; font-weight:600; background:var(--bg); border:1px solid var(--border); color:var(--muted); white-space:nowrap;}
+.pill.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+.pill-row{display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;}
+
+.list-row{display:flex; align-items:center; gap:12px; padding:12px 14px; background:var(--bg); border:1px solid var(--border); border-radius:12px; margin-bottom:8px;}
+.list-row img{width:46px; height:46px; border-radius:8px; object-fit:cover; background:var(--border);}
+.list-row .info{flex:1; min-width:0;}
+.list-row .info .name{font-weight:600; font-size:14px;}
+.list-row .info .meta{font-size:11.5px; color:var(--muted); margin-top:2px;}
+.list-row .actions{display:flex; gap:6px;}
+.list-row .actions button{width:30px; height:30px; border-radius:7px; background:var(--bg-alt); border:1px solid var(--border); font-size:12px; color:var(--text);}
+.badge{font-size:10px; font-weight:700; padding:2px 7px; border-radius:20px;}
+.badge-green{background:rgba(22,163,74,.12); color:var(--green);}
+.badge-red{background:rgba(220,38,38,.12); color:var(--red);}
+.badge-purple{background:rgba(124,58,237,.12); color:var(--accent2);}
+.badge-orange{background:rgba(234,88,12,.12); color:var(--orange);}
+.empty-state{text-align:center; padding:50px 20px; color:var(--muted);}
+.empty-state .big{font-size:32px; margin-bottom:10px;}
+
+.gallery-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px;}
+.gallery-tile{position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--border); background:var(--bg-alt); cursor:pointer;}
+.gallery-tile img{width:100%; aspect-ratio:1; object-fit:cover; display:block;}
+.gallery-tile .tile-info{padding:8px 10px;}
+.gallery-tile .tile-info .name{font-size:12.5px; font-weight:600;}
+.gallery-tile .tile-info .cats{font-size:10.5px; color:var(--muted); margin-top:2px;}
+.gallery-tile .star{position:absolute; top:6px; right:6px; background:rgba(0,0,0,.5); color:#facc15; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px;}
+
+/* modal */
+.modal-overlay{display:none; position:fixed; inset:0; background:rgba(10,12,20,.55); z-index:50; align-items:flex-start; justify-content:center; padding:30px 16px; overflow-y:auto;}
+.modal-overlay.active{display:flex;}
+.modal{background:var(--bg-alt); border-radius:18px; max-width:520px; width:100%; padding:24px; box-shadow:var(--shadow); margin-bottom:40px;}
+.modal-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;}
+.modal-header h3{font-size:18px;}
+.modal-close{width:30px; height:30px; border-radius:8px; background:var(--bg); border:1px solid var(--border); font-size:14px;}
+.field{margin-bottom:12px;}
+.field label{display:block; font-size:12.5px; font-weight:600; margin-bottom:5px; color:var(--muted);}
+.field-row{display:flex; gap:10px;}
+.field-row .field{flex:1;}
+.checkbox-row{display:flex; align-items:center; gap:8px; margin-bottom:10px;}
+.checkbox-row input{width:auto;}
+.modal-actions{display:flex; gap:10px; margin-top:18px;}
+.modal-actions .btn{flex:1;}
+
+/* misc */
+.spinner{width:22px; height:22px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; margin:30px auto;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.hidden{display:none !important;}
+.divider{height:1px; background:var(--border); margin:14px 0;}
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+@media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+table{width:100%; border-collapse:collapse; font-size:13px;}
+th{text-align:left; color:var(--muted); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.5px; padding:8px 10px; border-bottom:1px solid var(--border);}
+td{padding:10px; border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+</style>
+</head>
+<body data-theme="dark">
+
+<!-- ============ LOGIN ============ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">JB</div>
+    <h1>JakeBitt3DPrints</h1>
+    <p>Admin Dashboard — sign in with your PocketBase account</p>
+    <div id="loginError" class="error-banner hidden"></div>
+    <input type="email" id="loginEmail" placeholder="Email" autocomplete="username">
+    <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+    <button class="btn" onclick="login()" id="loginBtn">Sign In</button>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="dot">JB</div>
+      <h1>JakeBitt3DPrints Admin</h1>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      <button class="icon-btn" onclick="refreshAll()" title="Refresh">⟳</button>
+      <button class="icon-btn" onclick="logout()" title="Sign out">⎋</button>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabBar">
+    <button class="tab active" data-tab="dashboard" onclick="showTab('dashboard')">Dashboard</button>
+    <button class="tab" data-tab="gallery" onclick="showTab('gallery')">Gallery</button>
+    <button class="tab" data-tab="events" onclick="showTab('events')">Events</button>
+    <button class="tab" data-tab="sell" onclick="showTab('sell')">Sell</button>
+    <button class="tab" data-tab="products" onclick="showTab('products')">Products</button>
+    <button class="tab" data-tab="receipts" onclick="showTab('receipts')">Receipts</button>
+    <button class="tab" data-tab="customers" onclick="showTab('customers')">Customers</button>
+    <button class="tab" data-tab="filament" onclick="showTab('filament')">Filament</button>
+    <button class="tab" data-tab="calc" onclick="showTab('calc')">Calculator</button>
+  </div>
+
+  <main>
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="section active" id="section-dashboard">
+      <div class="section-eyebrow">Overview</div>
+      <div class="grid grid-4">
+        <div class="card stat-card">
+          <div class="stat-icon" style="background:var(--accent2)">🖼</div>
+          <div class="stat-value" id="statGallery">—</div>
+          <div class="stat-label">Gallery Images</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon" style="background:#0891b2">📅</div>
+          <div class="stat-value" id="statEvents">—</div>
+          <div class="stat-label">Upcoming Events</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon" style="background:var(--green)">💵</div>
+          <div class="stat-value" id="statRevenue">—</div>
+          <div class="stat-label">Revenue (30d)</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon" style="background:var(--orange)">🛒</div>
+          <div class="stat-value" id="statAvg">—</div>
+          <div class="stat-label">Avg Sale</div>
+        </div>
+      </div>
+
+      <div class="section-header"><h2>Upcoming Events</h2></div>
+      <div class="card" id="dashUpcomingEvents"><div class="spinner"></div></div>
+
+      <div class="section-header"><h2>Recent Sales</h2></div>
+      <div class="card" id="dashRecentSales"><div class="spinner"></div></div>
+    </section>
+
+    <!-- ===== GALLERY ===== -->
+    <section class="section" id="section-gallery">
+      <div class="section-header">
+        <h2>Gallery</h2>
+        <button class="btn btn-sm" onclick="openGalleryModal()">+ Add Image</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box">🔍<input id="gallerySearch" placeholder="Search images…" oninput="renderGallery()"></div>
+      </div>
+      <div class="pill-row" id="galleryFilterPills"></div>
+      <div style="height:12px"></div>
+      <div class="gallery-grid" id="galleryGrid"><div class="spinner"></div></div>
+    </section>
+
+    <!-- ===== EVENTS ===== -->
+    <section class="section" id="section-events">
+      <div class="section-header">
+        <h2>Events</h2>
+        <button class="btn btn-sm" onclick="openEventModal()">+ Add Event</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box">🔍<input id="eventSearch" placeholder="Search events…" oninput="renderEvents()"></div>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)"><input type="checkbox" id="showPastEvents" style="width:auto" onchange="renderEvents()"> Show past</label>
+      </div>
+      <div id="eventsList"><div class="spinner"></div></div>
+    </section>
+
+    <!-- ===== SELL (simple POS) ===== -->
+    <section class="section" id="section-sell">
+      <div class="two-col">
+        <div>
+          <div class="section-header"><h2>Products</h2></div>
+          <div class="search-box" style="margin-bottom:10px">🔍<input id="sellSearch" placeholder="Search products…" oninput="renderSellGrid()"></div>
+          <div class="gallery-grid" id="sellGrid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))"><div class="spinner"></div></div>
+        </div>
+        <div>
+          <div class="section-header"><h2>Cart</h2></div>
+          <div class="card" id="cartCard">
+            <div id="cartLines"><p style="color:var(--muted);font-size:13px">Cart is empty — tap a product to add it.</p></div>
+            <div class="divider"></div>
+            <div class="field">
+              <label>Discount %</label>
+              <input type="number" id="cartDiscount" value="0" min="0" max="100" oninput="renderCart()">
+            </div>
+            <div class="field">
+              <label>Payment Method</label>
+              <select id="cartPayment"></select>
+            </div>
+            <div class="field">
+              <label>Customer name (optional)</label>
+              <input id="cartCustomerName" placeholder="Name">
+            </div>
+            <div class="field">
+              <label>Customer email (optional, for receipt)</label>
+              <input id="cartCustomerEmail" placeholder="Email">
+            </div>
+            <div class="divider"></div>
+            <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><span style="color:var(--muted)">Subtotal</span><span id="cartSubtotal">$0.00</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px"><span style="color:var(--muted)">Discount</span><span id="cartDiscountAmt">-$0.00</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:20px;font-family:'DM Serif Display',serif;margin-bottom:14px"><span>Total</span><span id="cartTotal">$0.00</span></div>
+            <button class="btn btn-green" onclick="completeSale()">Complete Sale</button>
+            <button class="btn btn-outline" style="margin-top:8px" onclick="clearCart()">Clear Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRODUCTS ===== -->
+    <section class="section" id="section-products">
+      <div class="section-header">
+        <h2>Manage Products</h2>
+        <button class="btn btn-sm" onclick="openProductModal()">+ Add Product</button>
+      </div>
+      <div class="search-box" style="margin-bottom:12px">🔍<input id="productSearch" placeholder="Search products…" oninput="renderProducts()"></div>
+      <div id="productsList"><div class="spinner"></div></div>
+    </section>
+
+    <!-- ===== RECEIPTS ===== -->
+    <section class="section" id="section-receipts">
+      <div class="section-header"><h2>Receipts</h2></div>
+      <div class="grid grid-3" style="margin-bottom:18px">
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--green)">💵</div><div class="stat-value" id="recRevenue">—</div><div class="stat-label">Revenue (30d)</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--accent)">🧾</div><div class="stat-value" id="recCount">—</div><div class="stat-label">Sales (30d)</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--red)">↩️</div><div class="stat-value" id="recRefunded">—</div><div class="stat-label">Refunded</div></div>
+      </div>
+      <div class="search-box" style="margin-bottom:12px">🔍<input id="receiptSearch" placeholder="Search by receipt # or customer…" oninput="renderReceipts()"></div>
+      <div id="receiptsList"><div class="spinner"></div></div>
+    </section>
+
+    <!-- ===== CUSTOMERS ===== -->
+    <section class="section" id="section-customers">
+      <div class="section-header"><h2>Customers</h2></div>
+      <div class="search-box" style="margin-bottom:12px">🔍<input id="customerSearch" placeholder="Search customers…" oninput="renderCustomers()"></div>
+      <div id="customersList"><div class="spinner"></div></div>
+    </section>
+
+    <!-- ===== FILAMENT ===== -->
+    <section class="section" id="section-filament">
+      <div class="section-header">
+        <h2>Filament Tracker</h2>
+        <button class="btn btn-sm" onclick="openSpoolModal()">+ Add Spool</button>
+      </div>
+      <div class="grid grid-3" style="margin-bottom:18px">
+        <div class="card stat-card"><div class="stat-icon" style="background:#0891b2">🧵</div><div class="stat-value" id="filSpools">—</div><div class="stat-label">Spools</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--accent2)">⚖️</div><div class="stat-value" id="filWeight">—</div><div class="stat-label">Total Weight</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--green)">💰</div><div class="stat-value" id="filValue">—</div><div class="stat-label">Inventory Value</div></div>
+      </div>
+      <div id="filamentList"><div class="spinner"></div></div>
+    </section>
+
+    <!-- ===== CALCULATOR ===== -->
+    <section class="section" id="section-calc">
+      <div class="section-header"><h2>Print Cost Calculator</h2></div>
+      <div class="two-col">
+        <div class="card">
+          <h3 style="font-size:15px;margin-bottom:14px">This Print</h3>
+          <div class="field"><label>Filament Used (g)</label><input type="number" id="calcWeight" value="50" oninput="calcUpdate()"></div>
+          <div class="field"><label>Print Hours</label><input type="number" id="calcHours" value="2" oninput="calcUpdate()"></div>
+          <div class="divider"></div>
+          <h3 style="font-size:15px;margin-bottom:14px">Settings</h3>
+          <div class="field-row">
+            <div class="field"><label>Filament $/kg</label><input type="number" id="calcCostKg" value="25" oninput="calcUpdate()"></div>
+            <div class="field"><label>Electricity $/kWh</label><input type="number" id="calcElec" value="0.12" step="0.01" oninput="calcUpdate()"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Printer Watts</label><input type="number" id="calcWatts" value="120" oninput="calcUpdate()"></div>
+            <div class="field"><label>Failure Rate %</label><input type="number" id="calcFail" value="10" oninput="calcUpdate()"></div>
+          </div>
+          <div class="field"><label>Profit Margin %</label><input type="number" id="calcMargin" value="40" oninput="calcUpdate()"></div>
+        </div>
+        <div class="card">
+          <h3 style="font-size:15px;margin-bottom:14px">Breakdown</h3>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Filament</span><span id="calcFilamentCost">$0</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Electricity</span><span id="calcElecCost">$0</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Failure Buffer</span><span id="calcFailCost">$0</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;margin-bottom:14px"><span style="color:var(--muted);font-weight:700">Total Cost</span><span id="calcTotalCost" style="font-weight:700">$0</span></div>
+          <div style="text-align:center;padding:18px;background:var(--bg);border-radius:12px">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Suggested Price</div>
+            <div style="font-size:32px;font-family:'DM Serif Display',serif" id="calcPrice">$0</div>
+            <div style="font-size:13px;color:var(--green);margin-top:6px" id="calcProfit">Profit: $0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===== GENERIC MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBody"></div>
+</div>
+
+<script>
+/* ============================================================
+   JakeBitt3DPrints Admin Dashboard
+   Talks directly to the same PocketBase backend as the iOS app.
+   ============================================================ */
+const PB_URL = 'https://pb.jakebitt3dprints.com';
+let authToken = localStorage.getItem('jb_pb_token') || null;
+
+let DATA = {
+  gallery: [], events: [], products: [], sales: [], customers: [],
+  paymentMethods: [], filament: []
+};
+let cart = []; // {productId, name, price, qty}
+let galleryFilter = 'all';
+
+// ---------- Auth ----------
+async function login(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const errBox = document.getElementById('loginError');
+  errBox.classList.add('hidden');
+  if(!email || !password){ errBox.textContent = 'Enter your email and password.'; errBox.classList.remove('hidden'); return; }
+  btn.textContent = 'Signing in…'; btn.disabled = true;
+  try{
+    const res = await fetch(`${PB_URL}/api/collections/_superusers/auth-with-password`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({identity:email, password})
+    });
+    if(!res.ok) throw new Error('Incorrect email or password.');
+    const data = await res.json();
+    authToken = data.token;
+    localStorage.setItem('jb_pb_token', authToken);
+    enterApp();
+  }catch(e){
+    errBox.textContent = e.message || 'Sign in failed.'; errBox.classList.remove('hidden');
+  }finally{
+    btn.textContent = 'Sign In'; btn.disabled = false;
+  }
+}
+function logout(){
+  localStorage.removeItem('jb_pb_token'); authToken = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+async function pbFetch(path, opts={}){
+  opts.headers = opts.headers || {};
+  if(authToken) opts.headers['Authorization'] = authToken;
+  const res = await fetch(`${PB_URL}${path}`, opts);
+  if(res.status === 401 || res.status === 403){
+    // token dead — send back to login
+    logout();
+    throw new Error('Session expired — please sign in again.');
+  }
+  return res;
+}
+async function pbList(collection, sort=''){
+  const q = sort ? `?perPage=500&sort=${sort}` : '?perPage=500';
+  const res = await pbFetch(`/api/collections/${collection}/records${q}`);
+  if(!res.ok) return [];
+  const data = await res.json();
+  return data.items || [];
+}
+async function pbCreate(collection, fields){
+  const res = await pbFetch(`/api/collections/${collection}/records`, {
+    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(fields)
+  });
+  if(!res.ok) throw new Error((await res.json()).message || 'Create failed');
+  return res.json();
+}
+async function pbUpdate(collection, id, fields){
+  const res = await pbFetch(`/api/collections/${collection}/records/${id}`, {
+    method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(fields)
+  });
+  if(!res.ok) throw new Error((await res.json()).message || 'Update failed');
+  return res.json();
+}
+async function pbDelete(collection, id){
+  const res = await pbFetch(`/api/collections/${collection}/records/${id}`, {method:'DELETE'});
+  if(!res.ok) throw new Error('Delete failed');
+}
+function fileUrl(collection, id, filename, thumb=''){
+  if(!filename) return '';
+  return `${PB_URL}/api/files/${collection}/${id}/${filename}${thumb ? '?thumb='+thumb : ''}`;
+}
+function money(n){ return '$' + (Number(n)||0).toFixed(2); }
+function parseJSONField(v, fallback){ try{ return typeof v==='string' ? JSON.parse(v) : (v||fallback); }catch(e){ return fallback; } }
+
+// ---------- Boot ----------
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('jb_theme') || 'dark';
+  document.body.setAttribute('data-theme', savedTheme);
+  if(authToken){ enterApp(); }
+  document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
+});
+
+async function enterApp(){
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  await refreshAll();
+}
+
+async function refreshAll(){
+  try{
+    const [gallery, events, products, sales, customers, paymentMethods, filament] = await Promise.all([
+      pbList('gallery_images','sort_order'), pbList('events','start'), pbList('products'),
+      pbList('sales'), pbList('customers'), pbList('payment_methods','sort_order'), pbList('filament_spools')
+    ]);
+    DATA.gallery = gallery; DATA.events = events; DATA.products = products;
+    DATA.sales = sales; DATA.customers = customers; DATA.paymentMethods = paymentMethods; DATA.filament = filament;
+    renderDashboard(); renderGallery(); renderEvents(); renderSellGrid(); renderProducts();
+    renderReceipts(); renderCustomers(); renderFilament(); populatePaymentSelect();
+  }catch(e){ console.error(e); }
+}
+
+function toggleTheme(){
+  const cur = document.body.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.body.setAttribute('data-theme', next);
+  localStorage.setItem('jb_theme', next);
+}
+
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === `section-${name}`));
+}
+
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('active'); }
+function openModal(html){ document.getElementById('modalBody').innerHTML = html; document.getElementById('modalOverlay').classList.add('active'); }
+
+/* =================== DASHBOARD =================== */
+function renderDashboard(){
+  document.getElementById('statGallery').textContent = DATA.gallery.length;
+  const now = new Date();
+  const upcoming = DATA.events.filter(e => new Date(e.start || e.created) >= now).sort((a,b)=> new Date(a.start)-new Date(b.start));
+  document.getElementById('statEvents').textContent = upcoming.length;
+
+  const cutoff = new Date(now.getTime() - 30*24*60*60*1000);
+  const sales30 = DATA.sales.filter(s => !s.is_refunded && new Date(s.created_at || s.created) >= cutoff);
+  const revenue = sales30.reduce((sum,s)=> sum + (s.total||0), 0);
+  document.getElementById('statRevenue').textContent = money(revenue);
+  document.getElementById('statAvg').textContent = sales30.length ? money(revenue/sales30.length) : '$0.00';
+
+  const upEl = document.getElementById('dashUpcomingEvents');
+  if(upcoming.length === 0){ upEl.innerHTML = `<div class="empty-state">No upcoming events.</div>`; }
+  else {
+    upEl.innerHTML = upcoming.slice(0,5).map(e => `
+      <div class="list-row">
+        <div style="width:4px;height:36px;border-radius:3px;background:${e.color||'#3b82f6'}"></div>
+        <div class="info"><div class="name">${escapeHtml(e.title||'Untitled')}</div>
+        <div class="meta">${new Date(e.start).toLocaleDateString(undefined,{month:'short',day:'numeric'})} ${e.location ? '· '+escapeHtml(e.location) : ''}</div></div>
+      </div>`).join('');
+  }
+
+  const recentSales = [...DATA.sales].sort((a,b)=> new Date(b.created_at||b.created) - new Date(a.created_at||a.created)).slice(0,6);
+  const rsEl = document.getElementById('dashRecentSales');
+  if(recentSales.length===0){ rsEl.innerHTML = `<div class="empty-state">No sales recorded yet.</div>`; }
+  else {
+    rsEl.innerHTML = recentSales.map(s => `
+      <div class="list-row">
+        <div class="info"><div class="name">${escapeHtml(s.receipt_number||'—')} ${s.is_refunded?'<span class="badge badge-red">Refunded</span>':''}</div>
+        <div class="meta">${new Date(s.created_at||s.created).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})} · ${escapeHtml(s.customer_name||'Walk-in')}</div></div>
+        <div style="font-weight:700">${money(s.total)}</div>
+      </div>`).join('');
+  }
+}
+
+function escapeHtml(s){ const d=document.createElement('div'); d.textContent = s||''; return d.innerHTML; }
+
+/* =================== GALLERY =================== */
+const TOP_CATS = [['product','Products'],['event','Events'],['holiday','Holidays'],['other','Other']];
+const PRODUCT_SUBS = [['toy','Toys'],['fidget','Fidgets'],['custom','Customs'],['lightbox','Lightboxes'],['display','Display'],['organizer','Organizers'],['keychain','Keychains']];
+const HOLIDAY_SUBS = [['christmas','Christmas'],['halloween','Halloween'],['easter','Easter'],['valentines',"Valentine's"],['4th of july','4th of July']];
+
+function renderGalleryPills(){
+  const wrap = document.getElementById('galleryFilterPills');
+  const cats = ['all', ...TOP_CATS.map(c=>c[0])];
+  wrap.innerHTML = cats.map(c => `<button class="pill ${galleryFilter===c?'active':''}" onclick="setGalleryFilter('${c}')">${c==='all'?'All':TOP_CATS.find(t=>t[0]===c)[1]}</button>`).join('');
+}
+function setGalleryFilter(c){ galleryFilter = c; renderGalleryPills(); renderGallery(); }
+
+function renderGallery(){
+  renderGalleryPills();
+  const search = document.getElementById('gallerySearch').value.toLowerCase();
+  let list = DATA.gallery;
+  if(galleryFilter !== 'all') list = list.filter(g => parseJSONField(g.categories,[]).includes(galleryFilter));
+  if(search) list = list.filter(g => (g.title||'').toLowerCase().includes(search));
+  const grid = document.getElementById('galleryGrid');
+  if(list.length===0){ grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="big">🖼</div>No images found.</div>`; return; }
+  grid.innerHTML = list.map(g => {
+    const cats = parseJSONField(g.categories, []);
+    const url = fileUrl('gallery_images', g.id, g.image, '300x300');
+    return `<div class="gallery-tile" onclick='openGalleryModal(${JSON.stringify(g).replace(/'/g,"&apos;")})'>
+      ${g.featured ? '<div class="star">★</div>' : ''}
+      <img src="${url}" loading="lazy" onerror="this.style.opacity=0.2">
+      <div class="tile-info"><div class="name">${escapeHtml(g.title||'Untitled')}</div>
+      <div class="cats">${cats.join(', ')||'No category'} ${g.visible===false?' · Hidden':''}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function openGalleryModal(g){
+  g = g || {};
+  const cats = parseJSONField(g.categories, []);
+  const allSubs = [...PRODUCT_SUBS, ...HOLIDAY_SUBS];
+  const pillHtml = (list, selectedList) => list.map(([key,label]) =>
+    `<button type="button" class="pill ${selectedList.includes(key)?'active':''}" data-cat="${key}" onclick="this.classList.toggle('active')">${label}</button>`).join('');
+  openModal(`
+    <div class="modal-header"><h3>${g.id ? 'Edit Image' : 'Add Image'}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    ${g.id ? `<img src="${fileUrl('gallery_images', g.id, g.image, '300x300')}" style="width:100%;border-radius:10px;margin-bottom:12px;max-height:200px;object-fit:cover">` : ''}
+    <div class="field"><label>Image File ${g.id?'(leave empty to keep current)':'*'}</label><input type="file" id="galleryFile" accept="image/*"></div>
+    <div class="field"><label>Title</label><input id="galleryTitle" value="${escapeHtml(g.title||'')}"></div>
+    <div class="field"><label>Categories</label><div class="pill-row" id="galleryCatPills" style="flex-wrap:wrap">${pillHtml(TOP_CATS, cats)}</div></div>
+    <div class="field"><label>Product Type (if Products category)</label><div class="pill-row" id="galleryProdPills" style="flex-wrap:wrap">${pillHtml(PRODUCT_SUBS, cats)}</div></div>
+    <div class="field"><label>Holiday (if Holidays category)</label><div class="pill-row" id="galleryHolPills" style="flex-wrap:wrap">${pillHtml(HOLIDAY_SUBS, cats)}</div></div>
+    <div class="checkbox-row"><input type="checkbox" id="galleryFeatured" ${g.featured?'checked':''}><label>Featured ⭐</label></div>
+    <div class="checkbox-row"><input type="checkbox" id="galleryVisible" ${g.visible!==false?'checked':''}><label>Visible on website</label></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveGallery('${g.id||''}')">Save</button>
+      ${g.id ? `<button class="btn btn-danger" onclick="deleteGallery('${g.id}')">Delete</button>` : ''}
+    </div>
+  `);
+}
+async function saveGallery(id){
+  const title = document.getElementById('galleryTitle').value;
+  const featured = document.getElementById('galleryFeatured').checked;
+  const visible = document.getElementById('galleryVisible').checked;
+  const cats = [...document.querySelectorAll('#galleryCatPills .pill.active, #galleryProdPills .pill.active, #galleryHolPills .pill.active')].map(p=>p.dataset.cat);
+  const fileInput = document.getElementById('galleryFile');
+  try{
+    if(fileInput.files.length > 0){
+      const fd = new FormData();
+      fd.append('title', title); fd.append('categories', JSON.stringify(cats));
+      fd.append('featured', featured); fd.append('visible', visible);
+      fd.append('image', fileInput.files[0]);
+      if(!id) fd.append('sort_order', '999');
+      const url = id ? `${PB_URL}/api/collections/gallery_images/records/${id}` : `${PB_URL}/api/collections/gallery_images/records`;
+      const res = await pbFetch(url.replace(PB_URL,''), {method: id?'PATCH':'POST', body: fd});
+      if(!res.ok) throw new Error('Upload failed');
+    } else {
+      await pbUpdate('gallery_images', id, {title, categories: JSON.stringify(cats), featured, visible});
+    }
+    closeModal(); await refreshAll();
+  }catch(e){ alert(e.message); }
+}
+async function deleteGallery(id){
+  if(!confirm('Delete this image?')) return;
+  await pbDelete('gallery_images', id); closeModal(); await refreshAll();
+}
+
+/* =================== EVENTS =================== */
+function renderEvents(){
+  const search = document.getElementById('eventSearch').value.toLowerCase();
+  const showPast = document.getElementById('showPastEvents').checked;
+  const now = new Date();
+  let list = DATA.events;
+  if(!showPast) list = list.filter(e => new Date(e.end || e.start) >= now);
+  if(search) list = list.filter(e => (e.title||'').toLowerCase().includes(search) || (e.location||'').toLowerCase().includes(search));
+  list.sort((a,b)=> new Date(a.start) - new Date(b.start));
+  const el = document.getElementById('eventsList');
+  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">📅</div>No events found.</div>`; return; }
+  el.innerHTML = list.map(e => {
+    const d = new Date(e.start);
+    const isPast = new Date(e.end||e.start) < now;
+    return `<div class="list-row" style="opacity:${isPast?0.6:1}">
+      <div style="width:4px;height:44px;border-radius:3px;background:${e.color||'#3b82f6'}"></div>
+      <div class="info"><div class="name">${escapeHtml(e.title||'Untitled')} ${e.visible===false?'<span class="badge badge-red">Hidden</span>':''}</div>
+      <div class="meta">${d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})} ${e.location?'· '+escapeHtml(e.location):''}</div></div>
+      <div class="actions">
+        <button onclick='openEventModal(${JSON.stringify(e).replace(/'/g,"&apos;")})'>✎</button>
+        <button onclick="deleteEvent('${e.id}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function openEventModal(e){
+  e = e || {};
+  const startVal = e.start ? new Date(e.start).toISOString().slice(0,16) : '';
+  const tags = parseJSONField(e.tags, []);
+  openModal(`
+    <div class="modal-header"><h3>${e.id?'Edit Event':'Add Event'}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>Title *</label><input id="evTitle" value="${escapeHtml(e.title||'')}"></div>
+    <div class="field"><label>Location</label><input id="evLocation" value="${escapeHtml(e.location||'')}"></div>
+    <div class="field"><label>Start Date/Time *</label><input type="datetime-local" id="evStart" value="${startVal}"></div>
+    <div class="field"><label>Description</label><textarea id="evDesc" rows="2">${escapeHtml(e.description||'')}</textarea></div>
+    <div class="field"><label>Color</label><input type="color" id="evColor" value="${e.color||'#3b82f6'}" style="height:40px;padding:4px"></div>
+    <div class="field"><label>Tags (comma separated)</label><input id="evTags" value="${tags.join(', ')}"></div>
+    <div class="checkbox-row"><input type="checkbox" id="evVisible" ${e.visible!==false?'checked':''}><label>Visible on website</label></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveEvent('${e.id||''}')">Save</button>
+      ${e.id ? `<button class="btn btn-danger" onclick="deleteEvent('${e.id}')">Delete</button>` : ''}
+    </div>
+  `);
+}
+async function saveEvent(id){
+  const title = document.getElementById('evTitle').value;
+  const start = document.getElementById('evStart').value;
+  if(!title || !start){ alert('Title and start date are required.'); return; }
+  const fields = {
+    title, location: document.getElementById('evLocation').value,
+    start: new Date(start).toISOString(), description: document.getElementById('evDesc').value,
+    color: document.getElementById('evColor').value,
+    tags: JSON.stringify(document.getElementById('evTags').value.split(',').map(t=>t.trim()).filter(Boolean)),
+    visible: document.getElementById('evVisible').checked
+  };
+  try{
+    if(id) await pbUpdate('events', id, fields); else await pbCreate('events', fields);
+    closeModal(); await refreshAll();
+  }catch(e){ alert(e.message); }
+}
+async function deleteEvent(id){
+  if(!confirm('Delete this event?')) return;
+  await pbDelete('events', id); closeModal(); await refreshAll();
+}
+
+/* =================== PRODUCTS =================== */
+function renderProducts(){
+  const search = document.getElementById('productSearch').value.toLowerCase();
+  let list = DATA.products;
+  if(search) list = list.filter(p => (p.name||'').toLowerCase().includes(search));
+  const el = document.getElementById('productsList');
+  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">📦</div>No products yet.</div>`; return; }
+  el.innerHTML = list.map(p => `
+    <div class="list-row">
+      <div class="info"><div class="name">${escapeHtml(p.name)} ${p.active===false?'<span class="badge badge-red">Inactive</span>':''} ${p.track_inventory?`<span class="badge badge-purple">${p.stock_count||0} in stock</span>`:''}</div>
+      <div class="meta">${escapeHtml(p.category||'General')}</div></div>
+      <div style="font-weight:700">${money(p.price)}</div>
+      <div class="actions">
+        <button onclick='openProductModal(${JSON.stringify(p).replace(/'/g,"&apos;")})'>✎</button>
+        <button onclick="deleteProduct('${p.id}')">🗑</button>
+      </div>
+    </div>`).join('');
+}
+function openProductModal(p){
+  p = p || {};
+  openModal(`
+    <div class="modal-header"><h3>${p.id?'Edit Product':'Add Product'}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>Name *</label><input id="prodName" value="${escapeHtml(p.name||'')}"></div>
+    <div class="field-row">
+      <div class="field"><label>Price ($) *</label><input type="number" id="prodPrice" value="${p.price||''}" step="0.01"></div>
+      <div class="field"><label>Cost ($)</label><input type="number" id="prodCost" value="${p.cost||''}" step="0.01"></div>
+    </div>
+    <div class="field"><label>Category</label><input id="prodCategory" value="${escapeHtml(p.category||'General')}"></div>
+    <div class="checkbox-row"><input type="checkbox" id="prodActive" ${p.active!==false?'checked':''}><label>Active (shows in Sell)</label></div>
+    <div class="checkbox-row"><input type="checkbox" id="prodTrackInv" ${p.track_inventory?'checked':''}><label>Track inventory</label></div>
+    <div class="field"><label>Stock Count</label><input type="number" id="prodStock" value="${p.stock_count||0}"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveProduct('${p.id||''}')">Save</button>
+      ${p.id ? `<button class="btn btn-danger" onclick="deleteProduct('${p.id}')">Delete</button>` : ''}
+    </div>
+  `);
+}
+async function saveProduct(id){
+  const name = document.getElementById('prodName').value;
+  const price = parseFloat(document.getElementById('prodPrice').value);
+  if(!name || isNaN(price)){ alert('Name and price are required.'); return; }
+  const fields = {
+    name, price, cost: parseFloat(document.getElementById('prodCost').value)||0,
+    category: document.getElementById('prodCategory').value || 'General',
+    active: document.getElementById('prodActive').checked,
+    track_inventory: document.getElementById('prodTrackInv').checked,
+    stock_count: parseInt(document.getElementById('prodStock').value)||0
+  };
+  try{
+    if(id) await pbUpdate('products', id, fields); else await pbCreate('products', {...fields, local_id: crypto.randomUUID()});
+    closeModal(); await refreshAll();
+  }catch(e){ alert(e.message); }
+}
+async function deleteProduct(id){
+  if(!confirm('Delete this product?')) return;
+  await pbDelete('products', id); closeModal(); await refreshAll();
+}
+
+/* =================== SELL / CART =================== */
+function populatePaymentSelect(){
+  const sel = document.getElementById('cartPayment');
+  const methods = DATA.paymentMethods.filter(m=>m.active!==false).sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));
+  sel.innerHTML = methods.length ? methods.map(m=>`<option>${escapeHtml(m.name)}</option>`).join('') : `<option>Cash</option><option>Card</option>`;
+}
+function renderSellGrid(){
+  const search = document.getElementById('sellSearch').value.toLowerCase();
+  let list = DATA.products.filter(p => p.active !== false);
+  if(search) list = list.filter(p => (p.name||'').toLowerCase().includes(search));
+  const grid = document.getElementById('sellGrid');
+  if(list.length===0){ grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">No products yet — add some in the Products tab.</div>`; return; }
+  grid.innerHTML = list.map(p => {
+    const inCart = cart.find(c=>c.productId===p.id);
+    const outOfStock = p.track_inventory && (p.stock_count||0) <= 0;
+    return `<div class="gallery-tile" style="cursor:${outOfStock?'not-allowed':'pointer'};opacity:${outOfStock?0.5:1}" onclick="${outOfStock?'':'addToCart(\''+p.id+'\')'}">
+      <div class="tile-info" style="padding:12px">
+        <div class="name">${escapeHtml(p.name)} ${inCart?`<span class="badge badge-purple">×${inCart.qty}</span>`:''}</div>
+        <div class="cats">${escapeHtml(p.category||'')}</div>
+        <div style="font-weight:700;margin-top:6px">${money(p.price)}</div>
+        ${p.track_inventory ? `<div class="cats" style="color:${outOfStock?'var(--red)':'var(--muted)'}">${outOfStock?'Out':p.stock_count+' left'}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function addToCart(productId){
+  const p = DATA.products.find(x=>x.id===productId); if(!p) return;
+  const existing = cart.find(c=>c.productId===productId);
+  if(existing) existing.qty += 1;
+  else cart.push({productId, name:p.name, price:p.price, qty:1});
+  renderSellGrid(); renderCart();
+}
+function renderCart(){
+  const el = document.getElementById('cartLines');
+  if(cart.length===0){ el.innerHTML = `<p style="color:var(--muted);font-size:13px">Cart is empty — tap a product to add it.</p>`; }
+  else {
+    el.innerHTML = cart.map((c,i) => `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <div style="flex:1"><div style="font-size:13.5px;font-weight:600">${escapeHtml(c.name)}</div><div style="font-size:11.5px;color:var(--muted)">${money(c.price)} each</div></div>
+        <input type="number" value="${c.qty}" min="0" style="width:55px;padding:6px" onchange="updateCartQty(${i}, this.value)">
+        <div style="width:60px;text-align:right;font-weight:600;font-size:13.5px">${money(c.price*c.qty)}</div>
+      </div>`).join('');
+  }
+  const subtotal = cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const discountPct = parseFloat(document.getElementById('cartDiscount').value)||0;
+  const discountAmt = subtotal * (discountPct/100);
+  const total = Math.max(0, subtotal - discountAmt);
+  document.getElementById('cartSubtotal').textContent = money(subtotal);
+  document.getElementById('cartDiscountAmt').textContent = '-'+money(discountAmt);
+  document.getElementById('cartTotal').textContent = money(total);
+}
+function updateCartQty(i, val){
+  const q = parseInt(val)||0;
+  if(q<=0) cart.splice(i,1); else cart[i].qty = q;
+  renderSellGrid(); renderCart();
+}
+function clearCart(){
+  cart = []; document.getElementById('cartDiscount').value = 0;
+  document.getElementById('cartCustomerName').value=''; document.getElementById('cartCustomerEmail').value='';
+  renderSellGrid(); renderCart();
+}
+async function completeSale(){
+  if(cart.length===0){ alert('Cart is empty.'); return; }
+  const subtotal = cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const discountPct = parseFloat(document.getElementById('cartDiscount').value)||0;
+  const discountAmt = subtotal * (discountPct/100);
+  const total = Math.max(0, subtotal - discountAmt);
+  const receiptNum = 'JB-' + new Date().toISOString().replace(/[-:T.]/g,'').slice(0,14);
+  const items = cart.map(c => ({productName:c.name, unitPrice:c.price, quantity:c.qty, customDetails:''}));
+  const fields = {
+    local_id: crypto.randomUUID(), receipt_number: receiptNum, items: JSON.stringify(items),
+    subtotal, discount_percent: discountPct, discount_amount: discountAmt, tip: 0, total,
+    payment_method: document.getElementById('cartPayment').value,
+    customer_name: document.getElementById('cartCustomerName').value,
+    customer_email: document.getElementById('cartCustomerEmail').value,
+    notes: '', created_at: new Date().toISOString(), is_refunded:false, is_exchanged:false
+  };
+  try{
+    await pbCreate('sales', fields);
+    // decrement inventory
+    for(const c of cart){
+      const p = DATA.products.find(x=>x.id===c.productId);
+      if(p && p.track_inventory){ await pbUpdate('products', p.id, {stock_count: Math.max(0,(p.stock_count||0)-c.qty)}); }
+    }
+    alert(`Sale complete! ${receiptNum} — ${money(total)}`);
+    clearCart(); await refreshAll();
+  }catch(e){ alert(e.message); }
+}
+
+/* =================== RECEIPTS =================== */
+function renderReceipts(){
+  const search = document.getElementById('receiptSearch').value.toLowerCase();
+  let list = DATA.sales;
+  if(search) list = list.filter(s => (s.receipt_number||'').toLowerCase().includes(search) || (s.customer_name||'').toLowerCase().includes(search));
+  list.sort((a,b)=> new Date(b.created_at||b.created) - new Date(a.created_at||a.created));
+
+  const now = new Date(); const cutoff = new Date(now.getTime()-30*24*60*60*1000);
+  const in30 = DATA.sales.filter(s=> new Date(s.created_at||s.created) >= cutoff);
+  const revenue = in30.filter(s=>!s.is_refunded).reduce((s,x)=>s+(x.total||0),0);
+  document.getElementById('recRevenue').textContent = money(revenue);
+  document.getElementById('recCount').textContent = in30.filter(s=>!s.is_refunded).length;
+  document.getElementById('recRefunded').textContent = in30.filter(s=>s.is_refunded).length;
+
+  const el = document.getElementById('receiptsList');
+  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">🧾</div>No sales recorded yet.</div>`; return; }
+  el.innerHTML = list.map(s => {
+    const items = parseJSONField(s.items, []);
+    return `<div class="list-row" style="opacity:${s.is_refunded?0.6:1}">
+      <div class="info"><div class="name">${escapeHtml(s.receipt_number||'—')} ${s.is_refunded?'<span class="badge badge-red">Refunded</span>':''}</div>
+      <div class="meta">${new Date(s.created_at||s.created).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})} · ${escapeHtml(s.customer_name||'Walk-in')} · ${items.length} item${items.length===1?'':'s'}</div></div>
+      <div style="font-weight:700">${money(s.total)}</div>
+      <div class="actions">
+        ${!s.is_refunded ? `<button onclick="refundSale('${s.id}')" title="Refund">↩️</button>` : ''}
+        <button onclick="deleteSale('${s.id}')" title="Delete">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+async function refundSale(id){
+  if(!confirm('Refund this sale? It will be excluded from revenue totals.')) return;
+  await pbUpdate('sales', id, {is_refunded:true, refunded_at: new Date().toISOString()});
+  await refreshAll();
+}
+async function deleteSale(id){
+  if(!confirm('Permanently delete this receipt?')) return;
+  await pbDelete('sales', id); await refreshAll();
+}
+
+/* =================== CUSTOMERS =================== */
+function renderCustomers(){
+  const search = document.getElementById('customerSearch').value.toLowerCase();
+  let list = DATA.customers;
+  if(search) list = list.filter(c => (c.name||'').toLowerCase().includes(search));
+  const el = document.getElementById('customersList');
+  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">👥</div>No customers yet.</div>`; return; }
+  el.innerHTML = list.map(c => {
+    const spent = DATA.sales.filter(s => (s.customer_name||'').toLowerCase() === (c.name||'').toLowerCase() && !s.is_refunded).reduce((s,x)=>s+(x.total||0),0);
+    return `<div class="list-row">
+      <div class="info"><div class="name">${escapeHtml(c.name)}</div><div class="meta">${escapeHtml(c.phone||'')} ${c.email?'· '+escapeHtml(c.email):''}</div></div>
+      <div style="font-weight:700;color:var(--green)">${money(spent)}</div>
+    </div>`;
+  }).join('');
+}
+
+/* =================== FILAMENT =================== */
+function renderFilament(){
+  const totalWeight = DATA.filament.reduce((s,f)=>s+(f.weight_remaining||0),0);
+  const totalValue = DATA.filament.reduce((s,f)=>s+((f.weight_remaining||0)/1000)*(f.cost_per_kg||0),0);
+  document.getElementById('filSpools').textContent = DATA.filament.length;
+  document.getElementById('filWeight').textContent = Math.round(totalWeight)+'g';
+  document.getElementById('filValue').textContent = money(totalValue);
+  const el = document.getElementById('filamentList');
+  if(DATA.filament.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">🧵</div>No spools added yet.</div>`; return; }
+  el.innerHTML = DATA.filament.map(f => {
+    const pct = f.weight_total ? Math.round((f.weight_remaining/f.weight_total)*100) : 0;
+    const color = pct>50?'var(--green)':pct>20?'var(--yellow)':'var(--red)';
+    return `<div class="list-row">
+      <div style="width:36px;height:36px;border-radius:8px;background:${f.color_hex||'#3b82f6'}"></div>
+      <div class="info"><div class="name">${escapeHtml(f.brand||'')} ${escapeHtml(f.color||'')}</div>
+      <div class="meta">${escapeHtml(f.material||'')} · ${Math.round(f.weight_remaining||0)}g / ${Math.round(f.weight_total||0)}g</div></div>
+      <div style="font-weight:700;color:${color}">${pct}%</div>
+      <div class="actions">
+        <button onclick='openSpoolModal(${JSON.stringify(f).replace(/'/g,"&apos;")})'>✎</button>
+        <button onclick="deleteSpool('${f.id}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function openSpoolModal(f){
+  f = f || {};
+  openModal(`
+    <div class="modal-header"><h3>${f.id?'Edit Spool':'Add Spool'}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field-row">
+      <div class="field"><label>Brand</label><input id="spoolBrand" value="${escapeHtml(f.brand||'')}"></div>
+      <div class="field"><label>Material</label><input id="spoolMaterial" value="${escapeHtml(f.material||'PLA')}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Color Name</label><input id="spoolColor" value="${escapeHtml(f.color||'')}"></div>
+      <div class="field"><label>Color</label><input type="color" id="spoolColorHex" value="${f.color_hex||'#3b82f6'}" style="height:40px;padding:4px"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Total Weight (g)</label><input type="number" id="spoolWeightTotal" value="${f.weight_total||1000}"></div>
+      <div class="field"><label>Remaining (g)</label><input type="number" id="spoolWeightRemaining" value="${f.weight_remaining||1000}"></div>
+    </div>
+    <div class="field"><label>Cost per kg ($)</label><input type="number" id="spoolCostKg" value="${f.cost_per_kg||25}" step="0.01"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveSpool('${f.id||''}')">Save</button>
+      ${f.id ? `<button class="btn btn-danger" onclick="deleteSpool('${f.id}')">Delete</button>` : ''}
+    </div>
+  `);
+}
+async function saveSpool(id){
+  const fields = {
+    brand: document.getElementById('spoolBrand').value, material: document.getElementById('spoolMaterial').value,
+    color: document.getElementById('spoolColor').value, color_hex: document.getElementById('spoolColorHex').value,
+    weight_total: parseFloat(document.getElementById('spoolWeightTotal').value)||0,
+    weight_remaining: parseFloat(document.getElementById('spoolWeightRemaining').value)||0,
+    cost_per_kg: parseFloat(document.getElementById('spoolCostKg').value)||0, notes:''
+  };
+  try{
+    if(id) await pbUpdate('filament_spools', id, fields); else await pbCreate('filament_spools', {...fields, local_id: crypto.randomUUID()});
+    closeModal(); await refreshAll();
+  }catch(e){ alert(e.message); }
+}
+async function deleteSpool(id){
+  if(!confirm('Delete this spool?')) return;
+  await pbDelete('filament_spools', id); closeModal(); await refreshAll();
+}
+
+/* =================== CALCULATOR =================== */
+function calcUpdate(){
+  const weight = parseFloat(document.getElementById('calcWeight').value)||0;
+  const hours = parseFloat(document.getElementById('calcHours').value)||0;
+  const costKg = parseFloat(document.getElementById('calcCostKg').value)||0;
+  const elec = parseFloat(document.getElementById('calcElec').value)||0;
+  const watts = parseFloat(document.getElementById('calcWatts').value)||0;
+  const fail = parseFloat(document.getElementById('calcFail').value)||0;
+  const margin = parseFloat(document.getElementById('calcMargin').value)||0;
+
+  const filamentCost = (weight/1000)*costKg;
+  const elecCost = (watts/1000)*hours*elec;
+  const baseCost = filamentCost + elecCost;
+  const failCost = baseCost * (fail/100);
+  const totalCost = baseCost + failCost;
+  const price = margin>=100 ? totalCost*2 : totalCost/(1-margin/100);
+  const profit = price - totalCost;
+
+  document.getElementById('calcFilamentCost').textContent = money(filamentCost);
+  document.getElementById('calcElecCost').textContent = money(elecCost);
+  document.getElementById('calcFailCost').textContent = money(failCost);
+  document.getElementById('calcTotalCost').textContent = money(totalCost);
+  document.getElementById('calcPrice').textContent = money(price);
+  document.getElementById('calcProfit').textContent = 'Profit: ' + money(profit);
+}
+calcUpdate();
+</script>
+</body>
+</html>
