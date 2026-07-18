@@ -12,7 +12,7 @@
   --bg:#f9fafb; --bg-alt:#ffffff; --text:#12151f; --muted:#737b8c;
   --accent:#3b82f6; --accent2:#7c3aed; --border:#e6e9ee;
   --green:#16a34a; --red:#dc2626; --orange:#ea580c; --yellow:#ca8a04; --pink:#db2777;
-  --radius:16px; --shadow:0 8px 24px rgba(20,25,40,.06);
+  --radius:16px; --shadow:0 8px 24px rgba(20,25,40,.06); --sidebar-w:230px;
 }
 [data-theme="dark"]{
   --bg:#0e1220; --bg-alt:#171c2c; --text:#f1f3f9; --muted:#93a0b8;
@@ -25,6 +25,8 @@ a{color:inherit;}
 button{font-family:inherit; cursor:pointer; border:none;}
 input,select,textarea{font-family:inherit; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:10px 12px; font-size:14px; width:100%;}
 input:focus,select:focus,textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
+::-webkit-scrollbar{width:8px; height:8px;}
+::-webkit-scrollbar-thumb{background:var(--border); border-radius:8px;}
 
 /* ---------- Login ---------- */
 #loginScreen{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;}
@@ -33,29 +35,46 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent); outline
 .login-card h1{font-size:24px; margin-bottom:6px; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
 .login-card p{color:var(--muted); font-size:13px; margin-bottom:22px;}
 .login-card input{margin-bottom:12px;}
-.btn{background:var(--accent); color:#fff; padding:11px 20px; border-radius:10px; font-weight:600; font-size:14px; width:100%; transition:opacity .15s;}
-.btn:hover{opacity:.9;}
+.btn{background:var(--accent); color:#fff; padding:11px 20px; border-radius:10px; font-weight:600; font-size:14px; width:100%; transition:opacity .15s, transform .1s;}
+.btn:hover{opacity:.9;} .btn:active{transform:scale(.98);}
 .btn-outline{background:transparent; border:1px solid var(--border); color:var(--text);}
 .btn-danger{background:var(--red);}
 .btn-green{background:var(--green);}
+.btn-purple{background:var(--accent2);}
 .btn-sm{width:auto; padding:7px 14px; font-size:12.5px; border-radius:8px;}
 .error-banner{background:rgba(220,38,38,.1); color:var(--red); border:1px solid rgba(220,38,38,.25); border-radius:10px; padding:9px 12px; font-size:12.5px; margin-bottom:12px; text-align:left;}
 .success-banner{background:rgba(22,163,74,.1); color:var(--green); border:1px solid rgba(22,163,74,.25); border-radius:10px; padding:9px 12px; font-size:12.5px; margin-bottom:12px; text-align:left;}
+.info-banner{background:rgba(59,130,246,.1); color:var(--accent); border:1px solid rgba(59,130,246,.25); border-radius:10px; padding:9px 12px; font-size:12.5px; margin-bottom:12px; text-align:left;}
 
-/* ---------- App shell ---------- */
+/* ---------- App shell (sidebar layout) ---------- */
 #app{display:none; min-height:100vh;}
-.topbar{position:sticky; top:0; z-index:20; display:flex; align-items:center; justify-content:space-between; padding:14px 22px; background:var(--bg-alt); border-bottom:1px solid var(--border); backdrop-filter:blur(10px);}
-.topbar-left{display:flex; align-items:center; gap:12px;}
-.topbar-left .dot{width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:15px;}
-.topbar-left h1{font-size:17px;}
+.app-shell{display:flex; min-height:100vh;}
+.sidebar{width:var(--sidebar-w); flex-shrink:0; background:var(--bg-alt); border-right:1px solid var(--border); display:flex; flex-direction:column; position:sticky; top:0; height:100vh; overflow-y:auto; z-index:30; transition:transform .25s;}
+.sidebar-brand{display:flex; align-items:center; gap:10px; padding:20px 18px 14px;}
+.sidebar-brand .dot{width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:15px; flex-shrink:0;}
+.sidebar-brand .name{font-size:14.5px; font-weight:700; line-height:1.2;}
+.sidebar-brand .sub{font-size:10.5px; color:var(--muted);}
+.nav-group-label{font-size:10.5px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); padding:14px 18px 6px;}
+.nav-item{display:flex; align-items:center; gap:11px; padding:10px 18px; font-size:13.5px; font-weight:600; color:var(--muted); border-left:3px solid transparent; transition:background .12s;}
+.nav-item:hover{background:var(--bg);}
+.nav-item.active{color:var(--accent); background:rgba(59,130,246,.08); border-left-color:var(--accent);}
+.nav-item .icon{width:18px; text-align:center; font-size:14px;}
+.sidebar-footer{margin-top:auto; padding:14px 18px; border-top:1px solid var(--border); display:flex; gap:8px;}
+.sidebar-footer .icon-btn{flex:1;}
+
+.main-wrap{flex:1; min-width:0; display:flex; flex-direction:column;}
+.topbar{position:sticky; top:0; z-index:20; display:flex; align-items:center; justify-content:space-between; padding:14px 24px; background:var(--bg-alt); border-bottom:1px solid var(--border); backdrop-filter:blur(10px);}
+.topbar h1{font-size:16px;}
 .topbar-right{display:flex; gap:8px; align-items:center;}
 .icon-btn{width:36px; height:36px; border-radius:9px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:15px; color:var(--text);}
+.hamburger{display:none;}
+@media(max-width:900px){
+  .sidebar{position:fixed; left:0; transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.3);}
+  .hamburger{display:flex;}
+}
 
-.tabs{display:flex; gap:6px; overflow-x:auto; padding:10px 18px; background:var(--bg-alt); border-bottom:1px solid var(--border);}
-.tab{white-space:nowrap; padding:8px 15px; border-radius:20px; font-size:13.5px; font-weight:600; color:var(--muted); background:transparent;}
-.tab.active{background:var(--accent); color:#fff;}
-
-main{padding:20px; max-width:1200px; margin:0 auto;}
+main{padding:22px; max-width:1300px; margin:0 auto; width:100%;}
 .section{display:none;}
 .section.active{display:block; animation:fade .25s ease;}
 @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
@@ -69,47 +88,55 @@ main{padding:20px; max-width:1200px; margin:0 auto;}
 
 .card{background:var(--bg-alt); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px;}
 .stat-card .stat-icon{width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:15px; color:#fff; margin-bottom:10px;}
-.stat-card .stat-value{font-size:24px; font-family:'DM Serif Display',serif;}
-.stat-card .stat-label{color:var(--muted); font-size:12.5px; font-weight:600; margin-top:2px;}
+.stat-card .stat-value{font-size:23px; font-family:'DM Serif Display',serif;}
+.stat-card .stat-label{color:var(--muted); font-size:12px; font-weight:600; margin-top:2px;}
+.stat-card .stat-sub{color:var(--green); font-size:11px; font-weight:600; margin-top:3px;}
 
-.section-header{display:flex; align-items:center; justify-content:space-between; margin:22px 0 12px;}
-.section-header h2{font-size:20px;}
+.section-header{display:flex; align-items:center; justify-content:space-between; margin:4px 0 14px; flex-wrap:wrap; gap:10px;}
+.section-header h2{font-size:21px;}
+.section-header .actions-row{display:flex; gap:8px; flex-wrap:wrap;}
 .section-eyebrow{font-size:11px; font-weight:700; letter-spacing:1.5px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;}
 
 .toolbar{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; align-items:center;}
 .search-box{flex:1; min-width:180px; display:flex; align-items:center; gap:8px; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:9px 12px;}
 .search-box input{border:none; background:transparent; padding:0;}
-.pill{padding:6px 13px; border-radius:20px; font-size:12.5px; font-weight:600; background:var(--bg); border:1px solid var(--border); color:var(--muted); white-space:nowrap;}
+.pill{padding:6px 13px; border-radius:20px; font-size:12.5px; font-weight:600; background:var(--bg); border:1px solid var(--border); color:var(--muted); white-space:nowrap; transition:.12s;}
 .pill.active{background:var(--accent); color:#fff; border-color:var(--accent);}
-.pill-row{display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;}
+.pill.disabled{opacity:.4; cursor:not-allowed;}
+.pill-row{display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; flex-wrap:wrap;}
 
-.list-row{display:flex; align-items:center; gap:12px; padding:12px 14px; background:var(--bg); border:1px solid var(--border); border-radius:12px; margin-bottom:8px;}
+.list-row{display:flex; align-items:center; gap:12px; padding:12px 14px; background:var(--bg); border:1px solid var(--border); border-radius:12px; margin-bottom:8px; cursor:default;}
 .list-row img{width:46px; height:46px; border-radius:8px; object-fit:cover; background:var(--border);}
 .list-row .info{flex:1; min-width:0;}
 .list-row .info .name{font-weight:600; font-size:14px;}
 .list-row .info .meta{font-size:11.5px; color:var(--muted); margin-top:2px;}
 .list-row .actions{display:flex; gap:6px;}
 .list-row .actions button{width:30px; height:30px; border-radius:7px; background:var(--bg-alt); border:1px solid var(--border); font-size:12px; color:var(--text);}
-.badge{font-size:10px; font-weight:700; padding:2px 7px; border-radius:20px;}
+.badge{font-size:9.5px; font-weight:700; padding:2px 7px; border-radius:20px; white-space:nowrap;}
 .badge-green{background:rgba(22,163,74,.12); color:var(--green);}
 .badge-red{background:rgba(220,38,38,.12); color:var(--red);}
 .badge-purple{background:rgba(124,58,237,.12); color:var(--accent2);}
 .badge-orange{background:rgba(234,88,12,.12); color:var(--orange);}
+.badge-yellow{background:rgba(202,138,4,.12); color:var(--yellow);}
+.badge-blue{background:rgba(59,130,246,.12); color:var(--accent);}
 .empty-state{text-align:center; padding:50px 20px; color:var(--muted);}
 .empty-state .big{font-size:32px; margin-bottom:10px;}
 
 .gallery-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px;}
-.gallery-tile{position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--border); background:var(--bg-alt); cursor:pointer;}
+.gallery-tile{position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--border); background:var(--bg-alt); cursor:pointer; transition:transform .12s, box-shadow .12s;}
+.gallery-tile:hover{transform:translateY(-2px); box-shadow:var(--shadow);}
 .gallery-tile img{width:100%; aspect-ratio:1; object-fit:cover; display:block;}
 .gallery-tile .tile-info{padding:8px 10px;}
 .gallery-tile .tile-info .name{font-size:12.5px; font-weight:600;}
 .gallery-tile .tile-info .cats{font-size:10.5px; color:var(--muted); margin-top:2px;}
 .gallery-tile .star{position:absolute; top:6px; right:6px; background:rgba(0,0,0,.5); color:#facc15; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px;}
+.gallery-tile.out-of-stock{opacity:.45; cursor:not-allowed;}
 
 /* modal */
 .modal-overlay{display:none; position:fixed; inset:0; background:rgba(10,12,20,.55); z-index:50; align-items:flex-start; justify-content:center; padding:30px 16px; overflow-y:auto;}
 .modal-overlay.active{display:flex;}
-.modal{background:var(--bg-alt); border-radius:18px; max-width:520px; width:100%; padding:24px; box-shadow:var(--shadow); margin-bottom:40px;}
+.modal{background:var(--bg-alt); border-radius:18px; max-width:560px; width:100%; padding:24px; box-shadow:var(--shadow); margin-bottom:40px;}
+.modal.modal-lg{max-width:720px;}
 .modal-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;}
 .modal-header h3{font-size:18px;}
 .modal-close{width:30px; height:30px; border-radius:8px; background:var(--bg); border:1px solid var(--border); font-size:14px;}
@@ -119,20 +146,44 @@ main{padding:20px; max-width:1200px; margin:0 auto;}
 .field-row .field{flex:1;}
 .checkbox-row{display:flex; align-items:center; gap:8px; margin-bottom:10px;}
 .checkbox-row input{width:auto;}
-.modal-actions{display:flex; gap:10px; margin-top:18px;}
-.modal-actions .btn{flex:1;}
+.modal-actions{display:flex; gap:10px; margin-top:18px; flex-wrap:wrap;}
+.modal-actions .btn{flex:1; min-width:120px;}
+.modal-section-title{font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:16px 0 8px;}
+.tag-chip{display:inline-flex; align-items:center; gap:5px; background:var(--accent); color:#fff; padding:4px 10px; border-radius:20px; font-size:11.5px; font-weight:600; margin:0 5px 5px 0;}
+.tag-chip button{background:none; color:#fff; font-size:11px; opacity:.8;}
+.swatch-row{display:flex; gap:8px; flex-wrap:wrap;}
+.swatch{width:30px; height:30px; border-radius:50%; border:2px solid var(--border); cursor:pointer;}
+.swatch.selected{border-color:var(--text); box-shadow:0 0 0 2px var(--bg-alt), 0 0 0 4px var(--accent);}
 
 /* misc */
 .spinner{width:22px; height:22px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; margin:30px auto;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .hidden{display:none !important;}
 .divider{height:1px; background:var(--border); margin:14px 0;}
-.two-col{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
-@media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+.two-col{display:grid; grid-template-columns:1.3fr 1fr; gap:16px; align-items:start;}
+@media(max-width:900px){.two-col{grid-template-columns:1fr;}}
 table{width:100%; border-collapse:collapse; font-size:13px;}
 th{text-align:left; color:var(--muted); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.5px; padding:8px 10px; border-bottom:1px solid var(--border);}
 td{padding:10px; border-bottom:1px solid var(--border);}
 tr:last-child td{border-bottom:none;}
+.progress-bar{height:7px; border-radius:4px; background:var(--border); overflow:hidden;}
+.progress-fill{height:100%; border-radius:4px; transition:width .3s;}
+.toggle-switch{position:relative; width:42px; height:24px; flex-shrink:0;}
+.toggle-switch input{opacity:0; width:100%; height:100%; position:absolute; margin:0; cursor:pointer; z-index:1;}
+.toggle-track{position:absolute; inset:0; background:var(--border); border-radius:20px; transition:.2s;}
+.toggle-track::after{content:''; position:absolute; width:18px; height:18px; border-radius:50%; background:#fff; top:3px; left:3px; transition:.2s;}
+.toggle-switch input:checked + .toggle-track{background:var(--accent);}
+.toggle-switch input:checked + .toggle-track::after{transform:translateX(18px);}
+.settings-row{display:flex; align-items:center; justify-content:space-between; padding:13px 0; border-bottom:1px solid var(--border);}
+.settings-row:last-child{border-bottom:none;}
+.settings-row .label-block .title{font-size:14px; font-weight:600;}
+.settings-row .label-block .sub{font-size:11.5px; color:var(--muted); margin-top:2px;}
+.cash-denom-row{display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px solid var(--border);}
+.cash-denom-row:last-child{border-bottom:none;}
+.cash-denom-row .denom-label{width:56px; font-weight:700; font-size:15px;}
+.qty-stepper{display:flex; align-items:center; gap:8px;}
+.qty-stepper button{width:28px; height:28px; border-radius:7px; background:var(--bg-alt); border:1px solid var(--border); font-size:14px;}
+.qty-stepper span{min-width:24px; text-align:center; font-weight:600;}
 </style>
 </head>
 <body data-theme="dark">
@@ -152,70 +203,105 @@ tr:last-child td{border-bottom:none;}
 
 <!-- ============ APP ============ -->
 <div id="app">
-  <div class="topbar">
-    <div class="topbar-left">
+<div class="app-shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
       <div class="dot">JB</div>
-      <h1>JakeBitt3DPrints Admin</h1>
+      <div><div class="name">JakeBitt3DPrints</div><div class="sub">Admin Dashboard</div></div>
     </div>
-    <div class="topbar-right">
+
+    <div class="nav-group-label">Overview</div>
+    <div class="nav-item active" data-tab="dashboard" onclick="showTab('dashboard')"><span class="icon">◆</span>Dashboard</div>
+
+    <div class="nav-group-label">Website</div>
+    <div class="nav-item" data-tab="gallery" onclick="showTab('gallery')"><span class="icon">▦</span>Gallery</div>
+    <div class="nav-item" data-tab="events" onclick="showTab('events')"><span class="icon">◷</span>Events</div>
+
+    <div class="nav-group-label">Sales</div>
+    <div class="nav-item" data-tab="sell" onclick="showTab('sell')"><span class="icon">＋</span>Sell</div>
+    <div class="nav-item" data-tab="products" onclick="showTab('products')"><span class="icon">▢</span>Products</div>
+    <div class="nav-item" data-tab="receipts" onclick="showTab('receipts')"><span class="icon">▤</span>Receipts</div>
+    <div class="nav-item" data-tab="customers" onclick="showTab('customers')"><span class="icon">☺</span>Customers</div>
+    <div class="nav-item" data-tab="cashdrawer" onclick="showTab('cashdrawer')"><span class="icon">$</span>Cash Drawer</div>
+
+    <div class="nav-group-label">Business</div>
+    <div class="nav-item" data-tab="orders" onclick="showTab('orders')"><span class="icon">✎</span>Order Notes</div>
+    <div class="nav-item" data-tab="tasks" onclick="showTab('tasks')"><span class="icon">☑</span>Tasks &amp; Notes</div>
+    <div class="nav-item" data-tab="expenses" onclick="showTab('expenses')"><span class="icon">−</span>Expenses</div>
+    <div class="nav-item" data-tab="filament" onclick="showTab('filament')"><span class="icon">◐</span>Filament</div>
+    <div class="nav-item" data-tab="calc" onclick="showTab('calc')"><span class="icon">÷</span>Calculator</div>
+
+    <div class="nav-group-label">App</div>
+    <div class="nav-item" data-tab="settings" onclick="showTab('settings')"><span class="icon">⚙</span>Settings</div>
+
+    <div class="sidebar-footer">
       <button class="icon-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
       <button class="icon-btn" onclick="refreshAll()" title="Refresh">⟳</button>
       <button class="icon-btn" onclick="logout()" title="Sign out">⎋</button>
     </div>
-  </div>
+  </nav>
 
-  <div class="tabs" id="tabBar">
-    <button class="tab active" data-tab="dashboard" onclick="showTab('dashboard')">Dashboard</button>
-    <button class="tab" data-tab="gallery" onclick="showTab('gallery')">Gallery</button>
-    <button class="tab" data-tab="events" onclick="showTab('events')">Events</button>
-    <button class="tab" data-tab="sell" onclick="showTab('sell')">Sell</button>
-    <button class="tab" data-tab="products" onclick="showTab('products')">Products</button>
-    <button class="tab" data-tab="receipts" onclick="showTab('receipts')">Receipts</button>
-    <button class="tab" data-tab="customers" onclick="showTab('customers')">Customers</button>
-    <button class="tab" data-tab="filament" onclick="showTab('filament')">Filament</button>
-    <button class="tab" data-tab="calc" onclick="showTab('calc')">Calculator</button>
-  </div>
+  <div class="main-wrap">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="icon-btn hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <h1 id="topbarTitle">Dashboard</h1>
+      </div>
+      <div class="topbar-right">
+        <span id="syncStatus" style="font-size:11.5px;color:var(--muted)"></span>
+      </div>
+    </div>
 
-  <main>
+    <main>
 
     <!-- ===== DASHBOARD ===== -->
     <section class="section active" id="section-dashboard">
       <div class="section-eyebrow">Overview</div>
       <div class="grid grid-4">
-        <div class="card stat-card">
-          <div class="stat-icon" style="background:var(--accent2)">🖼</div>
-          <div class="stat-value" id="statGallery">—</div>
-          <div class="stat-label">Gallery Images</div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--accent2)">▦</div><div class="stat-value" id="statGallery">—</div><div class="stat-label">Gallery Images</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:#0891b2">◷</div><div class="stat-value" id="statEvents">—</div><div class="stat-label">Upcoming Events</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--green)">$</div><div class="stat-value" id="statRevenue">—</div><div class="stat-label">Revenue (30d)</div><div class="stat-sub" id="statRevenueGoal"></div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--orange)">▢</div><div class="stat-value" id="statAvg">—</div><div class="stat-label">Avg Sale</div></div>
+      </div>
+      <div class="grid grid-4" style="margin-top:14px">
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--pink)">✎</div><div class="stat-value" id="statOrders">—</div><div class="stat-label">Open Orders</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:#0891b2">◐</div><div class="stat-value" id="statFilamentValue">—</div><div class="stat-label">Filament Value</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--red)">−</div><div class="stat-value" id="statExpenses">—</div><div class="stat-label">Expenses (30d)</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--yellow)">☑</div><div class="stat-value" id="statTasks">—</div><div class="stat-label">Open Tasks</div></div>
+      </div>
+
+      <div class="section-header" style="margin-top:24px"><h2>Revenue — Last 14 Days</h2></div>
+      <div class="card"><canvas id="revenueChart" height="90"></canvas></div>
+
+      <div class="two-col" style="margin-top:22px">
+        <div>
+          <div class="section-header"><h2>Upcoming Events</h2></div>
+          <div class="card" id="dashUpcomingEvents"><div class="spinner"></div></div>
         </div>
-        <div class="card stat-card">
-          <div class="stat-icon" style="background:#0891b2">📅</div>
-          <div class="stat-value" id="statEvents">—</div>
-          <div class="stat-label">Upcoming Events</div>
-        </div>
-        <div class="card stat-card">
-          <div class="stat-icon" style="background:var(--green)">💵</div>
-          <div class="stat-value" id="statRevenue">—</div>
-          <div class="stat-label">Revenue (30d)</div>
-        </div>
-        <div class="card stat-card">
-          <div class="stat-icon" style="background:var(--orange)">🛒</div>
-          <div class="stat-value" id="statAvg">—</div>
-          <div class="stat-label">Avg Sale</div>
+        <div>
+          <div class="section-header"><h2>Recent Sales</h2></div>
+          <div class="card" id="dashRecentSales"><div class="spinner"></div></div>
         </div>
       </div>
 
-      <div class="section-header"><h2>Upcoming Events</h2></div>
-      <div class="card" id="dashUpcomingEvents"><div class="spinner"></div></div>
+      <div class="section-header" style="margin-top:22px"><h2>Top Products (30d)</h2></div>
+      <div class="card" id="dashTopProducts"><div class="spinner"></div></div>
 
-      <div class="section-header"><h2>Recent Sales</h2></div>
-      <div class="card" id="dashRecentSales"><div class="spinner"></div></div>
+      <div class="section-header" style="margin-top:22px"><h2>Low Stock Alerts</h2></div>
+      <div class="card" id="dashLowStock"><div class="spinner"></div></div>
     </section>
 
     <!-- ===== GALLERY ===== -->
     <section class="section" id="section-gallery">
       <div class="section-header">
         <h2>Gallery</h2>
-        <button class="btn btn-sm" onclick="openGalleryModal()">+ Add Image</button>
+        <div class="actions-row"><button class="btn btn-sm" onclick="openGalleryModal()">+ Add Image</button></div>
+      </div>
+      <div class="grid grid-4" style="margin-bottom:16px">
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--accent2)">▦</div><div class="stat-value" id="galStatTotal">—</div><div class="stat-label">Total</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--green)">◉</div><div class="stat-value" id="galStatVisible">—</div><div class="stat-label">Visible</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--yellow)">★</div><div class="stat-value" id="galStatFeatured">—</div><div class="stat-label">Featured</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--red)">◎</div><div class="stat-value" id="galStatHidden">—</div><div class="stat-label">Hidden</div></div>
       </div>
       <div class="toolbar">
         <div class="search-box">🔍<input id="gallerySearch" placeholder="Search images…" oninput="renderGallery()"></div>
@@ -229,7 +315,7 @@ tr:last-child td{border-bottom:none;}
     <section class="section" id="section-events">
       <div class="section-header">
         <h2>Events</h2>
-        <button class="btn btn-sm" onclick="openEventModal()">+ Add Event</button>
+        <div class="actions-row"><button class="btn btn-sm" onclick="openEventModal()">+ Add Event</button></div>
       </div>
       <div class="toolbar">
         <div class="search-box">🔍<input id="eventSearch" placeholder="Search events…" oninput="renderEvents()"></div>
@@ -238,22 +324,33 @@ tr:last-child td{border-bottom:none;}
       <div id="eventsList"><div class="spinner"></div></div>
     </section>
 
-    <!-- ===== SELL (simple POS) ===== -->
+    <!-- ===== SELL (POS) ===== -->
     <section class="section" id="section-sell">
+      <div class="section-header"><h2>Sell</h2></div>
       <div class="two-col">
         <div>
-          <div class="section-header"><h2>Products</h2></div>
-          <div class="search-box" style="margin-bottom:10px">🔍<input id="sellSearch" placeholder="Search products…" oninput="renderSellGrid()"></div>
-          <div class="gallery-grid" id="sellGrid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))"><div class="spinner"></div></div>
+          <div class="toolbar">
+            <div class="search-box">🔍<input id="sellSearch" placeholder="Search products…" oninput="renderSellGrid()"></div>
+            <button class="btn btn-outline btn-sm" onclick="openCustomItemModal()">+ Custom Item</button>
+          </div>
+          <div class="pill-row" id="sellCatPills"></div>
+          <div style="height:10px"></div>
+          <div class="gallery-grid" id="sellGrid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr))"><div class="spinner"></div></div>
         </div>
         <div>
-          <div class="section-header"><h2>Cart</h2></div>
           <div class="card" id="cartCard">
+            <h3 style="font-size:16px;margin-bottom:12px">Cart</h3>
             <div id="cartLines"><p style="color:var(--muted);font-size:13px">Cart is empty — tap a product to add it.</p></div>
             <div class="divider"></div>
-            <div class="field">
-              <label>Discount %</label>
-              <input type="number" id="cartDiscount" value="0" min="0" max="100" oninput="renderCart()">
+            <div id="discountPresetPills" class="pill-row" style="margin-bottom:10px"></div>
+            <div class="field-row">
+              <div class="field"><label>Discount Type</label>
+                <select id="cartDiscountType" onchange="renderCart()"><option value="percent">Percent %</option><option value="dollar">Dollar $</option></select>
+              </div>
+              <div class="field"><label id="cartDiscountLabel">Discount %</label><input type="number" id="cartDiscount" value="0" min="0" oninput="renderCart()"></div>
+            </div>
+            <div class="field" id="tipField" style="display:none">
+              <label>Tip ($)</label><input type="number" id="cartTip" value="0" min="0" oninput="renderCart()">
             </div>
             <div class="field">
               <label>Payment Method</label>
@@ -263,14 +360,20 @@ tr:last-child td{border-bottom:none;}
               <label>Customer name (optional)</label>
               <input id="cartCustomerName" placeholder="Name">
             </div>
-            <div class="field">
-              <label>Customer email (optional, for receipt)</label>
-              <input id="cartCustomerEmail" placeholder="Email">
+            <div class="field-row">
+              <div class="field"><label>Phone</label><input id="cartCustomerPhone" placeholder="Phone"></div>
+              <div class="field"><label>Email (for receipt)</label><input id="cartCustomerEmail" placeholder="Email"></div>
             </div>
             <div class="divider"></div>
             <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><span style="color:var(--muted)">Subtotal</span><span id="cartSubtotal">$0.00</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px"><span style="color:var(--muted)">Discount</span><span id="cartDiscountAmt">-$0.00</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:20px;font-family:'DM Serif Display',serif;margin-bottom:14px"><span>Total</span><span id="cartTotal">$0.00</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><span style="color:var(--muted)">Discount</span><span id="cartDiscountAmt">-$0.00</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px" id="cartTipRow"><span style="color:var(--muted)">Tip</span><span id="cartTipAmt">$0.00</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:22px;font-family:'DM Serif Display',serif;margin-bottom:14px"><span>Total</span><span id="cartTotal">$0.00</span></div>
+            <div id="cashHelperBox" class="hidden" style="background:var(--bg);border-radius:10px;padding:12px;margin-bottom:12px">
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">Cash given</label>
+              <input type="number" id="cashGivenInput" placeholder="0.00" oninput="calcChange()" style="margin-top:6px">
+              <div id="changeDueBox" style="margin-top:8px;font-size:13px"></div>
+            </div>
             <button class="btn btn-green" onclick="completeSale()">Complete Sale</button>
             <button class="btn btn-outline" style="margin-top:8px" onclick="clearCart()">Clear Cart</button>
           </div>
@@ -282,7 +385,7 @@ tr:last-child td{border-bottom:none;}
     <section class="section" id="section-products">
       <div class="section-header">
         <h2>Manage Products</h2>
-        <button class="btn btn-sm" onclick="openProductModal()">+ Add Product</button>
+        <div class="actions-row"><button class="btn btn-sm" onclick="openProductModal()">+ Add Product</button></div>
       </div>
       <div class="search-box" style="margin-bottom:12px">🔍<input id="productSearch" placeholder="Search products…" oninput="renderProducts()"></div>
       <div id="productsList"><div class="spinner"></div></div>
@@ -291,10 +394,15 @@ tr:last-child td{border-bottom:none;}
     <!-- ===== RECEIPTS ===== -->
     <section class="section" id="section-receipts">
       <div class="section-header"><h2>Receipts</h2></div>
-      <div class="grid grid-3" style="margin-bottom:18px">
-        <div class="card stat-card"><div class="stat-icon" style="background:var(--green)">💵</div><div class="stat-value" id="recRevenue">—</div><div class="stat-label">Revenue (30d)</div></div>
-        <div class="card stat-card"><div class="stat-icon" style="background:var(--accent)">🧾</div><div class="stat-value" id="recCount">—</div><div class="stat-label">Sales (30d)</div></div>
-        <div class="card stat-card"><div class="stat-icon" style="background:var(--red)">↩️</div><div class="stat-value" id="recRefunded">—</div><div class="stat-label">Refunded</div></div>
+      <div class="grid grid-4" style="margin-bottom:18px">
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--green)">$</div><div class="stat-value" id="recRevenue">—</div><div class="stat-label">Revenue (30d)</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--accent)">▤</div><div class="stat-value" id="recCount">—</div><div class="stat-label">Sales (30d)</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--orange)">▢</div><div class="stat-value" id="recAvg">—</div><div class="stat-label">Avg Sale</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--red)">↺</div><div class="stat-value" id="recRefunded">—</div><div class="stat-label">Refunded</div></div>
+      </div>
+      <div class="card" style="margin-bottom:18px">
+        <h3 style="font-size:14px;margin-bottom:10px">Payment Method Breakdown (30d)</h3>
+        <div id="recPaymentBreakdown"></div>
       </div>
       <div class="search-box" style="margin-bottom:12px">🔍<input id="receiptSearch" placeholder="Search by receipt # or customer…" oninput="renderReceipts()"></div>
       <div id="receiptsList"><div class="spinner"></div></div>
@@ -302,21 +410,93 @@ tr:last-child td{border-bottom:none;}
 
     <!-- ===== CUSTOMERS ===== -->
     <section class="section" id="section-customers">
-      <div class="section-header"><h2>Customers</h2></div>
+      <div class="section-header">
+        <h2>Customers</h2>
+        <div class="actions-row"><button class="btn btn-sm" onclick="openCustomerModal()">+ Add Customer</button></div>
+      </div>
       <div class="search-box" style="margin-bottom:12px">🔍<input id="customerSearch" placeholder="Search customers…" oninput="renderCustomers()"></div>
       <div id="customersList"><div class="spinner"></div></div>
+    </section>
+
+    <!-- ===== CASH DRAWER ===== -->
+    <section class="section" id="section-cashdrawer">
+      <div class="section-header"><h2>Cash Drawer</h2></div>
+      <div class="two-col">
+        <div class="card">
+          <h3 style="font-size:15px;margin-bottom:4px">Count Your Drawer</h3>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Saved on this device/browser only.</p>
+          <div id="cashDenomRows"></div>
+          <div class="divider"></div>
+          <div style="display:flex;justify-content:space-between;font-size:18px;font-family:'DM Serif Display',serif"><span>Total</span><span id="drawerTotal">$0.00</span></div>
+        </div>
+        <div class="card">
+          <h3 style="font-size:15px;margin-bottom:14px">Change Calculator</h3>
+          <div class="field"><label>Sale Total ($)</label><input type="number" id="ccSaleTotal" oninput="calcDrawerChange()"></div>
+          <div class="field"><label>Cash Given ($)</label><input type="number" id="ccCashGiven" oninput="calcDrawerChange()"></div>
+          <div class="pill-row" style="margin-bottom:10px">
+            <button class="pill" onclick="quickFillCash(20)">$20</button>
+            <button class="pill" onclick="quickFillCash(50)">$50</button>
+            <button class="pill" onclick="quickFillCash(100)">$100</button>
+          </div>
+          <div id="ccResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ORDER NOTES ===== -->
+    <section class="section" id="section-orders">
+      <div class="section-header">
+        <h2>Order Notes</h2>
+        <div class="actions-row"><button class="btn btn-sm" onclick="openOrderModal()">+ Add Order</button></div>
+      </div>
+      <div class="pill-row" id="orderStatusPills" style="margin-bottom:12px"></div>
+      <div id="ordersList"><div class="spinner"></div></div>
+    </section>
+
+    <!-- ===== TASKS & NOTES ===== -->
+    <section class="section" id="section-tasks">
+      <div class="section-header"><h2>Tasks &amp; Notes</h2></div>
+      <div class="pill-row" style="margin-bottom:16px">
+        <button class="pill active" data-tasktab="todo" onclick="setTaskTab('todo')">To-Do</button>
+        <button class="pill" data-tasktab="notes" onclick="setTaskTab('notes')">Quick Notes</button>
+      </div>
+      <div id="taskTabTodo">
+        <div class="section-header"><div></div><button class="btn btn-sm" onclick="openTodoModal()">+ Add Task</button></div>
+        <div id="todoProgress" class="card" style="margin-bottom:14px"></div>
+        <div id="todoList"><div class="spinner"></div></div>
+      </div>
+      <div id="taskTabNotes" class="hidden">
+        <div class="section-header"><div></div><button class="btn btn-sm" onclick="openNoteModal()">+ Add Note</button></div>
+        <div class="grid grid-3" id="notesGrid"><div class="spinner"></div></div>
+      </div>
+    </section>
+
+    <!-- ===== EXPENSES ===== -->
+    <section class="section" id="section-expenses">
+      <div class="section-header">
+        <h2>Expenses</h2>
+        <div class="actions-row"><button class="btn btn-sm" onclick="openExpenseModal()">+ Add Expense</button></div>
+      </div>
+      <div class="grid grid-3" style="margin-bottom:16px">
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--red)">−</div><div class="stat-value" id="expTotal">—</div><div class="stat-label">Total Spent</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--orange)">◷</div><div class="stat-value" id="expMonth">—</div><div class="stat-label">This Month</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--accent2)">▤</div><div class="stat-value" id="expCount">—</div><div class="stat-label">Entries</div></div>
+      </div>
+      <div class="pill-row" id="expenseCatPills" style="margin-bottom:12px"></div>
+      <div id="expensesList"><div class="spinner"></div></div>
     </section>
 
     <!-- ===== FILAMENT ===== -->
     <section class="section" id="section-filament">
       <div class="section-header">
         <h2>Filament Tracker</h2>
-        <button class="btn btn-sm" onclick="openSpoolModal()">+ Add Spool</button>
+        <div class="actions-row"><button class="btn btn-sm" onclick="openSpoolModal()">+ Add Spool</button></div>
       </div>
-      <div class="grid grid-3" style="margin-bottom:18px">
-        <div class="card stat-card"><div class="stat-icon" style="background:#0891b2">🧵</div><div class="stat-value" id="filSpools">—</div><div class="stat-label">Spools</div></div>
-        <div class="card stat-card"><div class="stat-icon" style="background:var(--accent2)">⚖️</div><div class="stat-value" id="filWeight">—</div><div class="stat-label">Total Weight</div></div>
-        <div class="card stat-card"><div class="stat-icon" style="background:var(--green)">💰</div><div class="stat-value" id="filValue">—</div><div class="stat-label">Inventory Value</div></div>
+      <div class="grid grid-4" style="margin-bottom:18px">
+        <div class="card stat-card"><div class="stat-icon" style="background:#0891b2">◐</div><div class="stat-value" id="filSpools">—</div><div class="stat-label">Spools</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--accent2)">▬</div><div class="stat-value" id="filWeight">—</div><div class="stat-label">Total Weight</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--green)">$</div><div class="stat-value" id="filValue">—</div><div class="stat-label">Inventory Value</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--red)">!</div><div class="stat-value" id="filLow">—</div><div class="stat-label">Low Stock (&lt;20%)</div></div>
       </div>
       <div id="filamentList"><div class="spinner"></div></div>
     </section>
@@ -330,7 +510,7 @@ tr:last-child td{border-bottom:none;}
           <div class="field"><label>Filament Used (g)</label><input type="number" id="calcWeight" value="50" oninput="calcUpdate()"></div>
           <div class="field"><label>Print Hours</label><input type="number" id="calcHours" value="2" oninput="calcUpdate()"></div>
           <div class="divider"></div>
-          <h3 style="font-size:15px;margin-bottom:14px">Settings</h3>
+          <h3 style="font-size:15px;margin-bottom:14px">Settings (saved)</h3>
           <div class="field-row">
             <div class="field"><label>Filament $/kg</label><input type="number" id="calcCostKg" value="25" oninput="calcUpdate()"></div>
             <div class="field"><label>Electricity $/kWh</label><input type="number" id="calcElec" value="0.12" step="0.01" oninput="calcUpdate()"></div>
@@ -339,12 +519,16 @@ tr:last-child td{border-bottom:none;}
             <div class="field"><label>Printer Watts</label><input type="number" id="calcWatts" value="120" oninput="calcUpdate()"></div>
             <div class="field"><label>Failure Rate %</label><input type="number" id="calcFail" value="10" oninput="calcUpdate()"></div>
           </div>
-          <div class="field"><label>Profit Margin %</label><input type="number" id="calcMargin" value="40" oninput="calcUpdate()"></div>
+          <div class="field-row">
+            <div class="field"><label>Profit Margin %</label><input type="number" id="calcMargin" value="40" oninput="calcUpdate()"></div>
+            <div class="field"><label>Labor Rate $/hr</label><input type="number" id="calcLabor" value="0" oninput="calcUpdate()"></div>
+          </div>
         </div>
         <div class="card">
           <h3 style="font-size:15px;margin-bottom:14px">Breakdown</h3>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Filament</span><span id="calcFilamentCost">$0</span></div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Electricity</span><span id="calcElecCost">$0</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Labor</span><span id="calcLaborCost">$0</span></div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Failure Buffer</span><span id="calcFailCost">$0</span></div>
           <div style="display:flex;justify-content:space-between;padding:8px 0;margin-bottom:14px"><span style="color:var(--muted);font-weight:700">Total Cost</span><span id="calcTotalCost" style="font-weight:700">$0</span></div>
           <div style="text-align:center;padding:18px;background:var(--bg);border-radius:12px">
@@ -356,7 +540,65 @@ tr:last-child td{border-bottom:none;}
       </div>
     </section>
 
-  </main>
+    <!-- ===== SETTINGS ===== -->
+    <section class="section" id="section-settings">
+      <div class="section-header"><h2>Settings</h2></div>
+
+      <div class="card" style="margin-bottom:16px">
+        <h3 style="font-size:15px;margin-bottom:6px">Appearance</h3>
+        <div class="settings-row">
+          <div class="label-block"><div class="title">Dark Mode</div></div>
+          <label class="toggle-switch"><input type="checkbox" id="settingDark" checked onchange="applyThemeSetting()"><span class="toggle-track"></span></label>
+        </div>
+        <div class="settings-row">
+          <div class="label-block"><div class="title">Accent Color</div><div class="sub">Used for buttons and highlights</div></div>
+          <div class="swatch-row" id="accentSwatches"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <h3 style="font-size:15px;margin-bottom:6px">Sales</h3>
+        <div class="settings-row">
+          <div class="label-block"><div class="title">Enable Tips</div><div class="sub">Show a tip field at checkout</div></div>
+          <label class="toggle-switch"><input type="checkbox" id="settingTips" onchange="saveSettingsLocal()"><span class="toggle-track"></span></label>
+        </div>
+        <div class="settings-row">
+          <div class="label-block"><div class="title">Monthly Revenue Goal ($)</div></div>
+          <input type="number" id="settingRevenueGoal" style="width:120px" value="500" onchange="saveSettingsLocal()">
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="section-header" style="margin:0 0 10px"><h3 style="font-size:15px">Payment Methods</h3><button class="btn btn-sm" onclick="openPaymentMethodModal()">+ Add</button></div>
+        <div id="paymentMethodsList"></div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="section-header" style="margin:0 0 10px"><h3 style="font-size:15px">Discount Presets</h3><button class="btn btn-sm" onclick="openDiscountPresetModal()">+ Add</button></div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:10px">Quick-tap discounts on the Sell screen, like "$5 off $30+."</p>
+        <div id="discountPresetsList"></div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <h3 style="font-size:15px;margin-bottom:6px">Email Receipts (Resend)</h3>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Get a free API key at resend.com, verify your sending domain, then paste it here to email receipts directly.</p>
+        <div class="field"><label>API Key</label><input type="password" id="settingResendKey" onchange="saveSettingsLocal()"></div>
+        <div class="field-row">
+          <div class="field"><label>From Email</label><input id="settingResendEmail" onchange="saveSettingsLocal()"></div>
+          <div class="field"><label>From Name</label><input id="settingResendName" onchange="saveSettingsLocal()"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:15px;margin-bottom:10px">About</h3>
+        <div class="settings-row"><div class="label-block"><div class="title">PocketBase URL</div></div><div style="font-size:12.5px;color:var(--muted)">pb.jakebitt3dprints.com</div></div>
+        <div class="settings-row"><div class="label-block"><div class="title">Website</div></div><a href="https://jakebitt3dprints.com" target="_blank" style="color:var(--accent);font-size:12.5px">jakebitt3dprints.com ↗</a></div>
+      </div>
+    </section>
+
+    </main>
+  </div>
+</div>
 </div>
 
 <!-- ===== GENERIC MODAL ===== -->
@@ -366,18 +608,64 @@ tr:last-child td{border-bottom:none;}
 
 <script>
 /* ============================================================
-   JakeBitt3DPrints Admin Dashboard
-   Talks directly to the same PocketBase backend as the iOS app.
+   JakeBitt3DPrints Admin Dashboard — talks directly to the
+   same PocketBase backend as the iOS app.
    ============================================================ */
 const PB_URL = 'https://pb.jakebitt3dprints.com';
 let authToken = localStorage.getItem('jb_pb_token') || null;
 
 let DATA = {
   gallery: [], events: [], products: [], sales: [], customers: [],
-  paymentMethods: [], filament: []
+  paymentMethods: [], filament: [], orders: [], todos: [], notes: [],
+  expenses: [], discountPresets: []
 };
-let cart = []; // {productId, name, price, qty}
+let cart = [];
 let galleryFilter = 'all';
+let sellCatFilter = 'All';
+let orderStatusFilter = 'All';
+let expenseCatFilter = 'All';
+let taskTab = 'todo';
+
+const SETTINGS_KEY = 'jb_dash_settings';
+function loadSettings(){
+  const raw = localStorage.getItem(SETTINGS_KEY);
+  const defaults = {
+    dark:true, accent:'#3b82f6', tips:false, revenueGoal:500,
+    resendKey:'re_CXobCd6t_9FhDH2gYRxYVeN26cu4g6GrF',
+    resendEmail:'receipts@receipts.jakebitt3dprints.com', resendName:'JakeBitt3DPrints'
+  };
+  try{ return {...defaults, ...(raw?JSON.parse(raw):{})}; }catch(e){ return defaults; }
+}
+let SETTINGS = loadSettings();
+function saveSettingsLocal(){
+  SETTINGS.dark = document.getElementById('settingDark').checked;
+  SETTINGS.tips = document.getElementById('settingTips').checked;
+  SETTINGS.revenueGoal = parseFloat(document.getElementById('settingRevenueGoal').value)||0;
+  SETTINGS.resendKey = document.getElementById('settingResendKey').value;
+  SETTINGS.resendEmail = document.getElementById('settingResendEmail').value;
+  SETTINGS.resendName = document.getElementById('settingResendName').value;
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(SETTINGS));
+  applyTipVisibility(); renderDashboard();
+}
+function applyThemeSetting(){
+  SETTINGS.dark = document.getElementById('settingDark').checked;
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(SETTINGS));
+  document.body.setAttribute('data-theme', SETTINGS.dark ? 'dark':'light');
+}
+const ACCENT_SWATCHES = ['#3b82f6','#16a34a','#7c3aed','#dc2626','#ea580c','#0891b2','#db2777'];
+function renderAccentSwatches(){
+  const wrap = document.getElementById('accentSwatches');
+  wrap.innerHTML = ACCENT_SWATCHES.map(c => `<div class="swatch ${SETTINGS.accent===c?'selected':''}" style="background:${c}" onclick="setAccent('${c}')"></div>`).join('');
+}
+function setAccent(c){
+  SETTINGS.accent = c; localStorage.setItem(SETTINGS_KEY, JSON.stringify(SETTINGS));
+  document.documentElement.style.setProperty('--accent', c);
+  renderAccentSwatches();
+}
+function applyTipVisibility(){
+  document.getElementById('tipField').style.display = SETTINGS.tips ? 'block':'none';
+  document.getElementById('cartTipRow').style.display = SETTINGS.tips ? 'flex':'none';
+}
 
 // ---------- Auth ----------
 async function login(){
@@ -413,19 +701,17 @@ async function pbFetch(path, opts={}){
   opts.headers = opts.headers || {};
   if(authToken) opts.headers['Authorization'] = authToken;
   const res = await fetch(`${PB_URL}${path}`, opts);
-  if(res.status === 401 || res.status === 403){
-    // token dead — send back to login
-    logout();
-    throw new Error('Session expired — please sign in again.');
-  }
+  if(res.status === 401 || res.status === 403){ logout(); throw new Error('Session expired — please sign in again.'); }
   return res;
 }
 async function pbList(collection, sort=''){
   const q = sort ? `?perPage=500&sort=${sort}` : '?perPage=500';
-  const res = await pbFetch(`/api/collections/${collection}/records${q}`);
-  if(!res.ok) return [];
-  const data = await res.json();
-  return data.items || [];
+  try{
+    const res = await pbFetch(`/api/collections/${collection}/records${q}`);
+    if(!res.ok) return [];
+    const data = await res.json();
+    return data.items || [];
+  }catch(e){ return []; }
 }
 async function pbCreate(collection, fields){
   const res = await pbFetch(`/api/collections/${collection}/records`, {
@@ -451,11 +737,26 @@ function fileUrl(collection, id, filename, thumb=''){
 }
 function money(n){ return '$' + (Number(n)||0).toFixed(2); }
 function parseJSONField(v, fallback){ try{ return typeof v==='string' ? JSON.parse(v) : (v||fallback); }catch(e){ return fallback; } }
+function escapeHtml(s){ const d=document.createElement('div'); d.textContent = s||''; return d.innerHTML; }
+function uid(){ return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r=Math.random()*16|0; return (c==='x'?r:(r&0x3|0x8)).toString(16); }); }
+function baseProductName(name){
+  if(!name) return name;
+  let i = name.indexOf(' — '); if(i>-1) return name.slice(0,i);
+  i = name.indexOf(' ('); if(i>-1) return name.slice(0,i);
+  return name;
+}
 
 // ---------- Boot ----------
 window.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem('jb_theme') || 'dark';
-  document.body.setAttribute('data-theme', savedTheme);
+  document.body.setAttribute('data-theme', SETTINGS.dark ? 'dark':'light');
+  document.documentElement.style.setProperty('--accent', SETTINGS.accent);
+  document.getElementById('settingDark').checked = SETTINGS.dark;
+  document.getElementById('settingTips').checked = SETTINGS.tips;
+  document.getElementById('settingRevenueGoal').value = SETTINGS.revenueGoal;
+  document.getElementById('settingResendKey').value = SETTINGS.resendKey;
+  document.getElementById('settingResendEmail').value = SETTINGS.resendEmail;
+  document.getElementById('settingResendName').value = SETTINGS.resendName;
+  renderAccentSwatches(); applyTipVisibility(); initCashDrawer();
   if(authToken){ enterApp(); }
   document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
 });
@@ -467,38 +768,48 @@ async function enterApp(){
 }
 
 async function refreshAll(){
+  const statusEl = document.getElementById('syncStatus');
+  statusEl.textContent = 'Syncing…';
   try{
-    const [gallery, events, products, sales, customers, paymentMethods, filament] = await Promise.all([
+    const [gallery, events, products, sales, customers, paymentMethods, filament, orders, todos, notes, expenses, discountPresets] = await Promise.all([
       pbList('gallery_images','sort_order'), pbList('events','start'), pbList('products'),
-      pbList('sales'), pbList('customers'), pbList('payment_methods','sort_order'), pbList('filament_spools')
+      pbList('sales'), pbList('customers'), pbList('payment_methods','sort_order'), pbList('filament_spools'),
+      pbList('order_notes'), pbList('business_todos'), pbList('business_notes'), pbList('expenses'), pbList('discount_presets','sort_order')
     ]);
-    DATA.gallery = gallery; DATA.events = events; DATA.products = products;
-    DATA.sales = sales; DATA.customers = customers; DATA.paymentMethods = paymentMethods; DATA.filament = filament;
+    DATA = {gallery, events, products, sales, customers, paymentMethods, filament, orders, todos, notes, expenses, discountPresets};
     renderDashboard(); renderGallery(); renderEvents(); renderSellGrid(); renderProducts();
     renderReceipts(); renderCustomers(); renderFilament(); populatePaymentSelect();
-  }catch(e){ console.error(e); }
+    renderOrders(); renderTodos(); renderNotes(); renderExpenses(); renderDiscountPresetPills();
+    renderPaymentMethodsSettings(); renderDiscountPresetsSettings();
+    statusEl.textContent = 'Synced ' + new Date().toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+  }catch(e){ console.error(e); statusEl.textContent = 'Sync error'; }
 }
 
 function toggleTheme(){
-  const cur = document.body.getAttribute('data-theme');
-  const next = cur === 'dark' ? 'light' : 'dark';
-  document.body.setAttribute('data-theme', next);
-  localStorage.setItem('jb_theme', next);
+  SETTINGS.dark = !SETTINGS.dark;
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(SETTINGS));
+  document.body.setAttribute('data-theme', SETTINGS.dark ? 'dark':'light');
+  document.getElementById('settingDark').checked = SETTINGS.dark;
 }
 
+const TAB_TITLES = {dashboard:'Dashboard',gallery:'Gallery',events:'Events',sell:'Sell',products:'Products',
+  receipts:'Receipts',customers:'Customers',cashdrawer:'Cash Drawer',orders:'Order Notes',tasks:'Tasks & Notes',
+  expenses:'Expenses',filament:'Filament Tracker',calc:'Print Calculator',settings:'Settings'};
 function showTab(name){
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.nav-item').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === `section-${name}`));
+  document.getElementById('topbarTitle').textContent = TAB_TITLES[name] || name;
+  document.getElementById('sidebar').classList.remove('open');
 }
 
 function closeModal(){ document.getElementById('modalOverlay').classList.remove('active'); }
-function openModal(html){ document.getElementById('modalBody').innerHTML = html; document.getElementById('modalOverlay').classList.add('active'); }
+function openModal(html, lg){ document.getElementById('modalBody').className = 'modal' + (lg?' modal-lg':''); document.getElementById('modalBody').innerHTML = html; document.getElementById('modalOverlay').classList.add('active'); }
 
 /* =================== DASHBOARD =================== */
 function renderDashboard(){
   document.getElementById('statGallery').textContent = DATA.gallery.length;
   const now = new Date();
-  const upcoming = DATA.events.filter(e => new Date(e.start || e.created) >= now).sort((a,b)=> new Date(a.start)-new Date(b.start));
+  const upcoming = DATA.events.filter(e => new Date(e.end || e.start) >= now).sort((a,b)=> new Date(a.start)-new Date(b.start));
   document.getElementById('statEvents').textContent = upcoming.length;
 
   const cutoff = new Date(now.getTime() - 30*24*60*60*1000);
@@ -506,6 +817,19 @@ function renderDashboard(){
   const revenue = sales30.reduce((sum,s)=> sum + (s.total||0), 0);
   document.getElementById('statRevenue').textContent = money(revenue);
   document.getElementById('statAvg').textContent = sales30.length ? money(revenue/sales30.length) : '$0.00';
+  const goalPct = SETTINGS.revenueGoal>0 ? Math.min(100, Math.round(revenue/SETTINGS.revenueGoal*100)) : 0;
+  document.getElementById('statRevenueGoal').textContent = SETTINGS.revenueGoal>0 ? `${goalPct}% of ${money(SETTINGS.revenueGoal)} goal` : '';
+
+  const openOrders = DATA.orders.filter(o => o.status !== 'Delivered').length;
+  document.getElementById('statOrders').textContent = openOrders;
+  const filValue = DATA.filament.reduce((s,f)=>s+((f.weight_remaining||0)/1000)*(f.cost_per_kg||0),0);
+  document.getElementById('statFilamentValue').textContent = money(filValue);
+  const exp30 = DATA.expenses.filter(e => new Date(e.date||e.created) >= cutoff).reduce((s,e)=>s+(e.amount||0),0);
+  document.getElementById('statExpenses').textContent = money(exp30);
+  document.getElementById('statTasks').textContent = DATA.todos.filter(t=>!t.is_done).length;
+
+  // Revenue chart (last 14 days, simple canvas bars)
+  drawRevenueChart();
 
   const upEl = document.getElementById('dashUpcomingEvents');
   if(upcoming.length === 0){ upEl.innerHTML = `<div class="empty-state">No upcoming events.</div>`; }
@@ -529,9 +853,63 @@ function renderDashboard(){
         <div style="font-weight:700">${money(s.total)}</div>
       </div>`).join('');
   }
+
+  const productMap = {};
+  sales30.forEach(s => parseJSONField(s.items,[]).forEach(it => {
+    const key = baseProductName(it.productName);
+    productMap[key] = productMap[key] || {qty:0, rev:0};
+    productMap[key].qty += it.quantity||0;
+    productMap[key].rev += (it.unitPrice||0)*(it.quantity||0);
+  }));
+  const topProducts = Object.entries(productMap).sort((a,b)=>b[1].rev-a[1].rev).slice(0,6);
+  const tpEl = document.getElementById('dashTopProducts');
+  tpEl.innerHTML = topProducts.length===0 ? `<div class="empty-state">No sales data yet.</div>` :
+    topProducts.map(([name,v],i) => `<div class="list-row"><div style="width:22px;color:var(--muted);font-weight:700">#${i+1}</div>
+      <div class="info"><div class="name">${escapeHtml(name)}</div><div class="meta">×${v.qty} sold</div></div>
+      <div style="font-weight:700">${money(v.rev)}</div></div>`).join('');
+
+  const lowStock = DATA.filament.filter(f => f.weight_total>0 && (f.weight_remaining/f.weight_total)<0.2);
+  const lowProducts = DATA.products.filter(p => p.track_inventory && (p.stock_count||0) <= 3);
+  const lsEl = document.getElementById('dashLowStock');
+  if(lowStock.length===0 && lowProducts.length===0){ lsEl.innerHTML = `<div class="empty-state">Nothing low on stock.</div>`; }
+  else {
+    lsEl.innerHTML = lowStock.map(f => `<div class="list-row"><div style="width:28px;height:28px;border-radius:6px;background:${f.color_hex||'#888'}"></div>
+      <div class="info"><div class="name">${escapeHtml(f.brand)} ${escapeHtml(f.color)}</div><div class="meta">Filament — ${Math.round((f.weight_remaining/f.weight_total)*100)}% left</div></div>
+      <span class="badge badge-red">Low</span></div>`).join('') +
+    lowProducts.map(p => `<div class="list-row"><div class="info"><div class="name">${escapeHtml(p.name)}</div><div class="meta">Product stock</div></div>
+      <span class="badge badge-orange">${p.stock_count||0} left</span></div>`).join('');
+  }
 }
 
-function escapeHtml(s){ const d=document.createElement('div'); d.textContent = s||''; return d.innerHTML; }
+function drawRevenueChart(){
+  const canvas = document.getElementById('revenueChart');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const w = canvas.parentElement.clientWidth - 36; const h = 90;
+  canvas.width = w*dpr; canvas.height = h*dpr; canvas.style.width = w+'px'; canvas.style.height = h+'px';
+  ctx.scale(dpr,dpr); ctx.clearRect(0,0,w,h);
+  const days = [];
+  for(let i=13;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); d.setHours(0,0,0,0); days.push({date:d, total:0}); }
+  DATA.sales.filter(s=>!s.is_refunded).forEach(s => {
+    const d = new Date(s.created_at||s.created); d.setHours(0,0,0,0);
+    const match = days.find(x=>x.date.getTime()===d.getTime());
+    if(match) match.total += s.total||0;
+  });
+  const max = Math.max(...days.map(d=>d.total), 1);
+  const barW = w/days.length*0.6; const gap = w/days.length*0.4;
+  const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#3b82f6';
+  days.forEach((d,i) => {
+    const barH = (d.total/max)*(h-20);
+    const x = i*(barW+gap)+gap/2;
+    ctx.fillStyle = accentColor;
+    ctx.globalAlpha = d.total>0 ? 0.85 : 0.15;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(x, h-barH-4, barW, barH||2, 3) : ctx.rect(x, h-barH-4, barW, barH||2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+}
+window.addEventListener('resize', () => { if(document.getElementById('section-dashboard').classList.contains('active')) drawRevenueChart(); });
 
 /* =================== GALLERY =================== */
 const TOP_CATS = [['product','Products'],['event','Events'],['holiday','Holidays'],['other','Other']];
@@ -547,12 +925,16 @@ function setGalleryFilter(c){ galleryFilter = c; renderGalleryPills(); renderGal
 
 function renderGallery(){
   renderGalleryPills();
+  document.getElementById('galStatTotal').textContent = DATA.gallery.length;
+  document.getElementById('galStatVisible').textContent = DATA.gallery.filter(g=>g.visible!==false).length;
+  document.getElementById('galStatFeatured').textContent = DATA.gallery.filter(g=>g.featured).length;
+  document.getElementById('galStatHidden').textContent = DATA.gallery.filter(g=>g.visible===false).length;
   const search = document.getElementById('gallerySearch').value.toLowerCase();
   let list = DATA.gallery;
   if(galleryFilter !== 'all') list = list.filter(g => parseJSONField(g.categories,[]).includes(galleryFilter));
   if(search) list = list.filter(g => (g.title||'').toLowerCase().includes(search));
   const grid = document.getElementById('galleryGrid');
-  if(list.length===0){ grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="big">🖼</div>No images found.</div>`; return; }
+  if(list.length===0){ grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="big">▦</div>No images found.</div>`; return; }
   grid.innerHTML = list.map(g => {
     const cats = parseJSONField(g.categories, []);
     const url = fileUrl('gallery_images', g.id, g.image, '300x300');
@@ -568,7 +950,6 @@ function renderGallery(){
 function openGalleryModal(g){
   g = g || {};
   const cats = parseJSONField(g.categories, []);
-  const allSubs = [...PRODUCT_SUBS, ...HOLIDAY_SUBS];
   const pillHtml = (list, selectedList) => list.map(([key,label]) =>
     `<button type="button" class="pill ${selectedList.includes(key)?'active':''}" data-cat="${key}" onclick="this.classList.toggle('active')">${label}</button>`).join('');
   openModal(`
@@ -576,9 +957,9 @@ function openGalleryModal(g){
     ${g.id ? `<img src="${fileUrl('gallery_images', g.id, g.image, '300x300')}" style="width:100%;border-radius:10px;margin-bottom:12px;max-height:200px;object-fit:cover">` : ''}
     <div class="field"><label>Image File ${g.id?'(leave empty to keep current)':'*'}</label><input type="file" id="galleryFile" accept="image/*"></div>
     <div class="field"><label>Title</label><input id="galleryTitle" value="${escapeHtml(g.title||'')}"></div>
-    <div class="field"><label>Categories</label><div class="pill-row" id="galleryCatPills" style="flex-wrap:wrap">${pillHtml(TOP_CATS, cats)}</div></div>
-    <div class="field"><label>Product Type (if Products category)</label><div class="pill-row" id="galleryProdPills" style="flex-wrap:wrap">${pillHtml(PRODUCT_SUBS, cats)}</div></div>
-    <div class="field"><label>Holiday (if Holidays category)</label><div class="pill-row" id="galleryHolPills" style="flex-wrap:wrap">${pillHtml(HOLIDAY_SUBS, cats)}</div></div>
+    <div class="field"><label>Categories</label><div class="pill-row" id="galleryCatPills">${pillHtml(TOP_CATS, cats)}</div></div>
+    <div class="field"><label>Product Type</label><div class="pill-row" id="galleryProdPills">${pillHtml(PRODUCT_SUBS, cats)}</div></div>
+    <div class="field"><label>Holiday</label><div class="pill-row" id="galleryHolPills">${pillHtml(HOLIDAY_SUBS, cats)}</div></div>
     <div class="checkbox-row"><input type="checkbox" id="galleryFeatured" ${g.featured?'checked':''}><label>Featured ⭐</label></div>
     <div class="checkbox-row"><input type="checkbox" id="galleryVisible" ${g.visible!==false?'checked':''}><label>Visible on website</label></div>
     <div class="modal-actions">
@@ -600,8 +981,8 @@ async function saveGallery(id){
       fd.append('featured', featured); fd.append('visible', visible);
       fd.append('image', fileInput.files[0]);
       if(!id) fd.append('sort_order', '999');
-      const url = id ? `${PB_URL}/api/collections/gallery_images/records/${id}` : `${PB_URL}/api/collections/gallery_images/records`;
-      const res = await pbFetch(url.replace(PB_URL,''), {method: id?'PATCH':'POST', body: fd});
+      const url = id ? `/api/collections/gallery_images/records/${id}` : `/api/collections/gallery_images/records`;
+      const res = await pbFetch(url, {method: id?'PATCH':'POST', body: fd});
       if(!res.ok) throw new Error('Upload failed');
     } else {
       await pbUpdate('gallery_images', id, {title, categories: JSON.stringify(cats), featured, visible});
@@ -624,14 +1005,15 @@ function renderEvents(){
   if(search) list = list.filter(e => (e.title||'').toLowerCase().includes(search) || (e.location||'').toLowerCase().includes(search));
   list.sort((a,b)=> new Date(a.start) - new Date(b.start));
   const el = document.getElementById('eventsList');
-  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">📅</div>No events found.</div>`; return; }
+  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">◷</div>No events found.</div>`; return; }
   el.innerHTML = list.map(e => {
     const d = new Date(e.start);
     const isPast = new Date(e.end||e.start) < now;
+    const tags = parseJSONField(e.tags, []);
     return `<div class="list-row" style="opacity:${isPast?0.6:1}">
       <div style="width:4px;height:44px;border-radius:3px;background:${e.color||'#3b82f6'}"></div>
       <div class="info"><div class="name">${escapeHtml(e.title||'Untitled')} ${e.visible===false?'<span class="badge badge-red">Hidden</span>':''}</div>
-      <div class="meta">${d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})} ${e.location?'· '+escapeHtml(e.location):''}</div></div>
+      <div class="meta">${d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})} ${e.location?'· '+escapeHtml(e.location):''} ${tags.length?'· '+tags.join(', '):''}</div></div>
       <div class="actions">
         <button onclick='openEventModal(${JSON.stringify(e).replace(/'/g,"&apos;")})'>✎</button>
         <button onclick="deleteEvent('${e.id}')">🗑</button>
@@ -685,12 +1067,15 @@ function renderProducts(){
   let list = DATA.products;
   if(search) list = list.filter(p => (p.name||'').toLowerCase().includes(search));
   const el = document.getElementById('productsList');
-  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">📦</div>No products yet.</div>`; return; }
+  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">▢</div>No products yet.</div>`; return; }
   el.innerHTML = list.map(p => `
     <div class="list-row">
-      <div class="info"><div class="name">${escapeHtml(p.name)} ${p.active===false?'<span class="badge badge-red">Inactive</span>':''} ${p.track_inventory?`<span class="badge badge-purple">${p.stock_count||0} in stock</span>`:''}</div>
-      <div class="meta">${escapeHtml(p.category||'General')}</div></div>
-      <div style="font-weight:700">${money(p.price)}</div>
+      <div class="info"><div class="name">${escapeHtml(p.name)} ${p.active===false?'<span class="badge badge-red">Inactive</span>':''}
+        ${p.track_inventory?`<span class="badge badge-purple">${p.stock_count||0} in stock</span>`:''}
+        ${p.is_bundle?'<span class="badge badge-blue">Bundle</span>':''}
+        ${p.customizable||p.has_name_input?'<span class="badge badge-orange">Customizable</span>':''}</div>
+      <div class="meta">${escapeHtml(p.category||'General')}${p.has_name_input && p.price_per_base>0 ? ' · +'+money(p.price_per_base)+'/extra base':''}</div></div>
+      <div style="font-weight:700">${p.has_name_input && p.price_per_base>0 ? 'from '+money(p.price) : money(p.price)}</div>
       <div class="actions">
         <button onclick='openProductModal(${JSON.stringify(p).replace(/'/g,"&apos;")})'>✎</button>
         <button onclick="deleteProduct('${p.id}')">🗑</button>
@@ -699,6 +1084,7 @@ function renderProducts(){
 }
 function openProductModal(p){
   p = p || {};
+  const attrs = parseJSONField(p.custom_attributes, []);
   openModal(`
     <div class="modal-header"><h3>${p.id?'Edit Product':'Add Product'}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
     <div class="field"><label>Name *</label><input id="prodName" value="${escapeHtml(p.name||'')}"></div>
@@ -708,27 +1094,64 @@ function openProductModal(p){
     </div>
     <div class="field"><label>Category</label><input id="prodCategory" value="${escapeHtml(p.category||'General')}"></div>
     <div class="checkbox-row"><input type="checkbox" id="prodActive" ${p.active!==false?'checked':''}><label>Active (shows in Sell)</label></div>
+
+    <div class="modal-section-title">Inventory</div>
     <div class="checkbox-row"><input type="checkbox" id="prodTrackInv" ${p.track_inventory?'checked':''}><label>Track inventory</label></div>
     <div class="field"><label>Stock Count</label><input type="number" id="prodStock" value="${p.stock_count||0}"></div>
+
+    <div class="modal-section-title">Bundle</div>
+    <div class="checkbox-row"><input type="checkbox" id="prodIsBundle" ${p.is_bundle?'checked':''}><label>This is a bundle</label></div>
+    <div class="field"><label>Bundle Components (comma separated product names)</label><input id="prodBundleComponents" value="${(parseJSONField(p.bundle_components,[])).join(', ')}"></div>
+
+    <div class="modal-section-title">Custom Name Input (e.g. name clickers)</div>
+    <div class="checkbox-row"><input type="checkbox" id="prodHasNameInput" ${p.has_name_input?'checked':''}><label>Let customer type a name/word/symbols</label></div>
+    <div class="field"><label>Field Label</label><input id="prodNameInputLabel" value="${escapeHtml(p.name_input_label||'Name or Symbols')}"></div>
+    <div class="field"><label>Price per additional base ($)</label><input type="number" id="prodPricePerBase" value="${p.price_per_base||0}" step="0.01"></div>
+
+    <div class="modal-section-title">Customization Attributes</div>
+    <div class="checkbox-row"><input type="checkbox" id="prodCustomizable" ${p.customizable?'checked':''}><label>Customizable (colors, switches, etc.)</label></div>
+    <div id="prodAttrsList">${attrs.map((a,i)=>`<div class="field-row" style="align-items:flex-end"><div class="field"><label>Attribute</label><input class="attr-name" value="${escapeHtml(a.name)}"></div><div class="field"><label>Options</label><input class="attr-opts" value="${(a.options||[]).join(', ')}"></div><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button></div>`).join('')}</div>
+    <button class="btn btn-outline btn-sm" onclick="addAttrRow()" type="button">+ Add Attribute</button>
+
+    <div class="field" style="margin-top:14px"><label>Notes</label><textarea id="prodNotes" rows="2">${escapeHtml(p.notes||'')}</textarea></div>
     <div class="modal-actions">
       <button class="btn" onclick="saveProduct('${p.id||''}')">Save</button>
       ${p.id ? `<button class="btn btn-danger" onclick="deleteProduct('${p.id}')">Delete</button>` : ''}
     </div>
-  `);
+  `, true);
+}
+function addAttrRow(){
+  const wrap = document.getElementById('prodAttrsList');
+  const div = document.createElement('div');
+  div.className = 'field-row'; div.style.alignItems = 'flex-end';
+  div.innerHTML = `<div class="field"><label>Attribute</label><input class="attr-name" placeholder="e.g. Base Color"></div><div class="field"><label>Options</label><input class="attr-opts" placeholder="Red, Blue, Black"></div><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>`;
+  wrap.appendChild(div);
 }
 async function saveProduct(id){
   const name = document.getElementById('prodName').value;
   const price = parseFloat(document.getElementById('prodPrice').value);
   if(!name || isNaN(price)){ alert('Name and price are required.'); return; }
+  const attrs = [...document.querySelectorAll('#prodAttrsList .field-row')].map(row => ({
+    name: row.querySelector('.attr-name').value,
+    options: row.querySelector('.attr-opts').value.split(',').map(s=>s.trim()).filter(Boolean)
+  })).filter(a=>a.name && a.options.length);
   const fields = {
     name, price, cost: parseFloat(document.getElementById('prodCost').value)||0,
     category: document.getElementById('prodCategory').value || 'General',
     active: document.getElementById('prodActive').checked,
     track_inventory: document.getElementById('prodTrackInv').checked,
-    stock_count: parseInt(document.getElementById('prodStock').value)||0
+    stock_count: parseInt(document.getElementById('prodStock').value)||0,
+    is_bundle: document.getElementById('prodIsBundle').checked,
+    bundle_components: JSON.stringify(document.getElementById('prodBundleComponents').value.split(',').map(s=>s.trim()).filter(Boolean)),
+    has_name_input: document.getElementById('prodHasNameInput').checked,
+    name_input_label: document.getElementById('prodNameInputLabel').value || 'Name or Symbols',
+    price_per_base: parseFloat(document.getElementById('prodPricePerBase').value)||0,
+    customizable: document.getElementById('prodCustomizable').checked,
+    custom_attributes: JSON.stringify(attrs),
+    notes: document.getElementById('prodNotes').value
   };
   try{
-    if(id) await pbUpdate('products', id, fields); else await pbCreate('products', {...fields, local_id: crypto.randomUUID()});
+    if(id) await pbUpdate('products', id, fields); else await pbCreate('products', {...fields, local_id: uid()});
     closeModal(); await refreshAll();
   }catch(e){ alert(e.message); }
 }
@@ -742,21 +1165,30 @@ function populatePaymentSelect(){
   const sel = document.getElementById('cartPayment');
   const methods = DATA.paymentMethods.filter(m=>m.active!==false).sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));
   sel.innerHTML = methods.length ? methods.map(m=>`<option>${escapeHtml(m.name)}</option>`).join('') : `<option>Cash</option><option>Card</option>`;
+  sel.onchange = () => { document.getElementById('cashHelperBox').classList.toggle('hidden', !sel.value.toLowerCase().includes('cash')); };
 }
+function renderSellCatPills(){
+  const cats = ['All', ...new Set(DATA.products.filter(p=>p.active!==false).map(p=>p.category||'General'))];
+  document.getElementById('sellCatPills').innerHTML = cats.map(c => `<button class="pill ${sellCatFilter===c?'active':''}" onclick="setSellCat('${c}')">${escapeHtml(c)}</button>`).join('');
+}
+function setSellCat(c){ sellCatFilter = c; renderSellCatPills(); renderSellGrid(); }
 function renderSellGrid(){
+  renderSellCatPills();
   const search = document.getElementById('sellSearch').value.toLowerCase();
   let list = DATA.products.filter(p => p.active !== false);
+  if(sellCatFilter !== 'All') list = list.filter(p => (p.category||'General') === sellCatFilter);
   if(search) list = list.filter(p => (p.name||'').toLowerCase().includes(search));
   const grid = document.getElementById('sellGrid');
   if(list.length===0){ grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">No products yet — add some in the Products tab.</div>`; return; }
   grid.innerHTML = list.map(p => {
-    const inCart = cart.find(c=>c.productId===p.id);
+    const inCart = cart.find(c=>c.productId===p.id && !c.custom);
     const outOfStock = p.track_inventory && (p.stock_count||0) <= 0;
-    return `<div class="gallery-tile" style="cursor:${outOfStock?'not-allowed':'pointer'};opacity:${outOfStock?0.5:1}" onclick="${outOfStock?'':'addToCart(\''+p.id+'\')'}">
+    const isCustom = p.customizable || p.has_name_input;
+    return `<div class="gallery-tile ${outOfStock?'out-of-stock':''}" onclick="${outOfStock?'':(isCustom?`openCustomizeModal('${p.id}')`:`addToCart('${p.id}')`)}">
       <div class="tile-info" style="padding:12px">
-        <div class="name">${escapeHtml(p.name)} ${inCart?`<span class="badge badge-purple">×${inCart.qty}</span>`:''}</div>
+        <div class="name">${escapeHtml(p.name)} ${inCart?`<span class="badge badge-purple">×${inCart.qty}</span>`:''} ${isCustom?'<span class="badge badge-orange">Custom</span>':''}</div>
         <div class="cats">${escapeHtml(p.category||'')}</div>
-        <div style="font-weight:700;margin-top:6px">${money(p.price)}</div>
+        <div style="font-weight:700;margin-top:6px">${p.has_name_input && p.price_per_base>0 ? 'from '+money(p.price) : money(p.price)}</div>
         ${p.track_inventory ? `<div class="cats" style="color:${outOfStock?'var(--red)':'var(--muted)'}">${outOfStock?'Out':p.stock_count+' left'}</div>` : ''}
       </div>
     </div>`;
@@ -764,29 +1196,108 @@ function renderSellGrid(){
 }
 function addToCart(productId){
   const p = DATA.products.find(x=>x.id===productId); if(!p) return;
-  const existing = cart.find(c=>c.productId===productId);
+  const existing = cart.find(c=>c.productId===productId && !c.custom);
   if(existing) existing.qty += 1;
-  else cart.push({productId, name:p.name, price:p.price, qty:1});
+  else cart.push({productId, name:p.name, price:p.price, qty:1, custom:false, customDetails:''});
   renderSellGrid(); renderCart();
 }
+function openCustomizeModal(productId){
+  const p = DATA.products.find(x=>x.id===productId); if(!p) return;
+  const attrs = parseJSONField(p.custom_attributes, []);
+  openModal(`
+    <div class="modal-header"><h3>Customize</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="card" style="margin-bottom:14px;text-align:center">
+      <div style="font-family:'DM Serif Display',serif;font-size:19px">${escapeHtml(p.name)}</div>
+      <div id="customizePrice" style="font-size:22px;font-weight:700;margin-top:4px">${money(p.price)}</div>
+    </div>
+    ${p.has_name_input ? `<div class="field"><label>${escapeHtml(p.name_input_label||'Name or Symbols')}</label><input id="customizeNameText" oninput="updateCustomizePrice('${productId}')" placeholder="Type here…"></div>
+    <div class="field"><label>Number of Bases</label><input type="number" id="customizeBaseCount" value="1" min="1" oninput="updateCustomizePrice('${productId}')"></div>` : ''}
+    ${attrs.map((a,i) => `<div class="field"><label>${escapeHtml(a.name)}</label><div class="pill-row" data-attr="${escapeHtml(a.name)}">${a.options.map(o=>`<button type="button" class="pill" data-val="${escapeHtml(o)}" onclick="selectAttrOption(this)">${escapeHtml(o)}</button>`).join('')}</div></div>`).join('')}
+    <div class="modal-actions"><button class="btn" onclick="addCustomToCart('${productId}')">Add to Cart</button></div>
+  `);
+  if(p.has_name_input) updateCustomizePrice(productId);
+}
+function selectAttrOption(btn){
+  btn.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+}
+function updateCustomizePrice(productId){
+  const p = DATA.products.find(x=>x.id===productId); if(!p) return;
+  const nameInput = document.getElementById('customizeNameText');
+  const baseInput = document.getElementById('customizeBaseCount');
+  if(nameInput && baseInput && !baseInput.dataset.manual){ baseInput.value = Math.max(1, nameInput.value.length || 1); }
+  const bases = parseInt(baseInput ? baseInput.value : 1) || 1;
+  const price = p.price + Math.max(0,bases-1) * (p.price_per_base||0);
+  document.getElementById('customizePrice').textContent = money(price);
+}
+function addCustomToCart(productId){
+  const p = DATA.products.find(x=>x.id===productId); if(!p) return;
+  const nameInput = document.getElementById('customizeNameText');
+  const baseInput = document.getElementById('customizeBaseCount');
+  const bases = baseInput ? (parseInt(baseInput.value)||1) : 1;
+  const price = p.price + (p.has_name_input ? Math.max(0,bases-1)*(p.price_per_base||0) : 0);
+  const selections = [...document.querySelectorAll('[data-attr]')].map(row => {
+    const active = row.querySelector('.pill.active');
+    return active ? `${row.dataset.attr}: ${active.dataset.val}` : null;
+  }).filter(Boolean);
+  let summary = p.name;
+  let details = [];
+  if(p.has_name_input && nameInput){
+    summary += ` — "${nameInput.value}"`;
+    details.push(`Name/Word: ${nameInput.value}`, `Bases: ${bases}`);
+  }
+  if(selections.length){ summary += ` (${selections.join(', ')})`; details.push(...selections); }
+  cart.push({productId, name:summary, price, qty:1, custom:true, customDetails: details.join('\n')});
+  closeModal(); renderSellGrid(); renderCart();
+}
+function renderDiscountPresetPills(){
+  const wrap = document.getElementById('discountPresetPills');
+  const active = DATA.discountPresets.filter(d=>d.active!==false);
+  if(active.length===0){ wrap.innerHTML=''; return; }
+  const subtotal = cart.reduce((s,c)=>s+c.price*c.qty,0);
+  wrap.innerHTML = active.map(d => {
+    const eligible = subtotal >= (d.minimum_subtotal||0);
+    return `<button class="pill ${eligible?'':'disabled'}" onclick="${eligible?`applyDiscountPreset('${d.id}')`:''}">${escapeHtml(d.name)}</button>`;
+  }).join('');
+}
+function applyDiscountPreset(id){
+  const d = DATA.discountPresets.find(x=>x.id===id); if(!d) return;
+  document.getElementById('cartDiscountType').value = d.is_percent ? 'percent':'dollar';
+  document.getElementById('cartDiscount').value = d.value;
+  document.getElementById('cartDiscountLabel').textContent = d.is_percent ? 'Discount %' : 'Discount $';
+  renderCart();
+}
+document.addEventListener('change', e => {
+  if(e.target && e.target.id === 'cartDiscountType'){
+    document.getElementById('cartDiscountLabel').textContent = e.target.value==='percent' ? 'Discount %':'Discount $';
+  }
+});
 function renderCart(){
+  renderDiscountPresetPills();
   const el = document.getElementById('cartLines');
   if(cart.length===0){ el.innerHTML = `<p style="color:var(--muted);font-size:13px">Cart is empty — tap a product to add it.</p>`; }
   else {
     el.innerHTML = cart.map((c,i) => `
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-        <div style="flex:1"><div style="font-size:13.5px;font-weight:600">${escapeHtml(c.name)}</div><div style="font-size:11.5px;color:var(--muted)">${money(c.price)} each</div></div>
-        <input type="number" value="${c.qty}" min="0" style="width:55px;padding:6px" onchange="updateCartQty(${i}, this.value)">
-        <div style="width:60px;text-align:right;font-weight:600;font-size:13.5px">${money(c.price*c.qty)}</div>
+      <div style="margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="flex:1"><div style="font-size:13.5px;font-weight:600">${escapeHtml(c.name)}</div><div style="font-size:11.5px;color:var(--muted)">${money(c.price)} each</div></div>
+          <input type="number" value="${c.qty}" min="0" style="width:55px;padding:6px" onchange="updateCartQty(${i}, this.value)">
+          <div style="width:60px;text-align:right;font-weight:600;font-size:13.5px">${money(c.price*c.qty)}</div>
+        </div>
+        ${c.customDetails ? `<div style="font-size:10.5px;color:var(--muted);margin-top:3px;white-space:pre-line">${escapeHtml(c.customDetails)}</div>` : ''}
       </div>`).join('');
   }
   const subtotal = cart.reduce((s,c)=>s+c.price*c.qty,0);
-  const discountPct = parseFloat(document.getElementById('cartDiscount').value)||0;
-  const discountAmt = subtotal * (discountPct/100);
-  const total = Math.max(0, subtotal - discountAmt);
+  const discType = document.getElementById('cartDiscountType').value;
+  const discVal = parseFloat(document.getElementById('cartDiscount').value)||0;
+  const discountAmt = discType==='percent' ? subtotal*(discVal/100) : Math.min(discVal, subtotal);
+  const tip = SETTINGS.tips ? (parseFloat(document.getElementById('cartTip').value)||0) : 0;
+  const total = Math.max(0, subtotal - discountAmt) + tip;
   document.getElementById('cartSubtotal').textContent = money(subtotal);
   document.getElementById('cartDiscountAmt').textContent = '-'+money(discountAmt);
+  document.getElementById('cartTipAmt').textContent = money(tip);
   document.getElementById('cartTotal').textContent = money(total);
+  calcChange();
 }
 function updateCartQty(i, val){
   const q = parseInt(val)||0;
@@ -794,32 +1305,67 @@ function updateCartQty(i, val){
   renderSellGrid(); renderCart();
 }
 function clearCart(){
-  cart = []; document.getElementById('cartDiscount').value = 0;
-  document.getElementById('cartCustomerName').value=''; document.getElementById('cartCustomerEmail').value='';
+  cart = []; document.getElementById('cartDiscount').value = 0; document.getElementById('cartTip').value = 0;
+  document.getElementById('cartCustomerName').value=''; document.getElementById('cartCustomerEmail').value=''; document.getElementById('cartCustomerPhone').value='';
+  document.getElementById('cashGivenInput').value = '';
   renderSellGrid(); renderCart();
+}
+function calcChange(){
+  const totalText = document.getElementById('cartTotal').textContent.replace('$','');
+  const total = parseFloat(totalText)||0;
+  const given = parseFloat(document.getElementById('cashGivenInput').value)||0;
+  const box = document.getElementById('changeDueBox');
+  if(given <= 0){ box.innerHTML=''; return; }
+  const change = given - total;
+  box.innerHTML = change >= 0 ? `<b style="color:var(--green)">Change due: ${money(change)}</b>` : `<b style="color:var(--red)">Short by ${money(-change)}</b>`;
+}
+function openCustomItemModal(){
+  openModal(`
+    <div class="modal-header"><h3>Custom Item</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>What are you selling? *</label><input id="ciName"></div>
+    <div class="field"><label>Price ($) *</label><input type="number" id="ciPrice" step="0.01"></div>
+    <div class="field"><label>Quantity</label><input type="number" id="ciQty" value="1" min="1"></div>
+    <div class="modal-actions"><button class="btn" onclick="addCustomItem()">Add to Cart</button></div>
+  `);
+}
+function addCustomItem(){
+  const name = document.getElementById('ciName').value;
+  const price = parseFloat(document.getElementById('ciPrice').value);
+  const qty = parseInt(document.getElementById('ciQty').value)||1;
+  if(!name || isNaN(price)){ alert('Name and price are required.'); return; }
+  cart.push({productId:null, name, price, qty, custom:true, customDetails:''});
+  closeModal(); renderCart();
 }
 async function completeSale(){
   if(cart.length===0){ alert('Cart is empty.'); return; }
   const subtotal = cart.reduce((s,c)=>s+c.price*c.qty,0);
-  const discountPct = parseFloat(document.getElementById('cartDiscount').value)||0;
-  const discountAmt = subtotal * (discountPct/100);
-  const total = Math.max(0, subtotal - discountAmt);
+  const discType = document.getElementById('cartDiscountType').value;
+  const discVal = parseFloat(document.getElementById('cartDiscount').value)||0;
+  const discountAmt = discType==='percent' ? subtotal*(discVal/100) : Math.min(discVal, subtotal);
+  const tip = SETTINGS.tips ? (parseFloat(document.getElementById('cartTip').value)||0) : 0;
+  const total = Math.max(0, subtotal - discountAmt) + tip;
   const receiptNum = 'JB-' + new Date().toISOString().replace(/[-:T.]/g,'').slice(0,14);
-  const items = cart.map(c => ({productName:c.name, unitPrice:c.price, quantity:c.qty, customDetails:''}));
+  const items = cart.map(c => ({productName:c.name, unitPrice:c.price, quantity:c.qty, customDetails:c.customDetails||''}));
   const fields = {
-    local_id: crypto.randomUUID(), receipt_number: receiptNum, items: JSON.stringify(items),
-    subtotal, discount_percent: discountPct, discount_amount: discountAmt, tip: 0, total,
+    local_id: uid(), receipt_number: receiptNum, items: JSON.stringify(items),
+    subtotal, discount_percent: discType==='percent'?discVal:(subtotal>0?discountAmt/subtotal*100:0),
+    discount_amount: discountAmt, tip, total,
     payment_method: document.getElementById('cartPayment').value,
     customer_name: document.getElementById('cartCustomerName').value,
+    customer_phone: document.getElementById('cartCustomerPhone').value,
     customer_email: document.getElementById('cartCustomerEmail').value,
     notes: '', created_at: new Date().toISOString(), is_refunded:false, is_exchanged:false
   };
   try{
     await pbCreate('sales', fields);
-    // decrement inventory
     for(const c of cart){
+      if(!c.productId) continue;
       const p = DATA.products.find(x=>x.id===c.productId);
       if(p && p.track_inventory){ await pbUpdate('products', p.id, {stock_count: Math.max(0,(p.stock_count||0)-c.qty)}); }
+    }
+    const custName = document.getElementById('cartCustomerName').value;
+    if(custName && !DATA.customers.find(c=>(c.name||'').toLowerCase()===custName.toLowerCase())){
+      await pbCreate('customers', {local_id:uid(), name:custName, phone:document.getElementById('cartCustomerPhone').value, email:document.getElementById('cartCustomerEmail').value, notes:''});
     }
     alert(`Sale complete! ${receiptNum} — ${money(total)}`);
     clearCart(); await refreshAll();
@@ -835,34 +1381,85 @@ function renderReceipts(){
 
   const now = new Date(); const cutoff = new Date(now.getTime()-30*24*60*60*1000);
   const in30 = DATA.sales.filter(s=> new Date(s.created_at||s.created) >= cutoff);
-  const revenue = in30.filter(s=>!s.is_refunded).reduce((s,x)=>s+(x.total||0),0);
+  const validSales = in30.filter(s=>!s.is_refunded);
+  const revenue = validSales.reduce((s,x)=>s+(x.total||0),0);
   document.getElementById('recRevenue').textContent = money(revenue);
-  document.getElementById('recCount').textContent = in30.filter(s=>!s.is_refunded).length;
+  document.getElementById('recCount').textContent = validSales.length;
+  document.getElementById('recAvg').textContent = validSales.length ? money(revenue/validSales.length) : '$0.00';
   document.getElementById('recRefunded').textContent = in30.filter(s=>s.is_refunded).length;
 
+  const payMap = {};
+  validSales.forEach(s => { payMap[s.payment_method||'Other'] = (payMap[s.payment_method||'Other']||0) + (s.total||0); });
+  const payEntries = Object.entries(payMap).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('recPaymentBreakdown').innerHTML = payEntries.length===0 ? `<p style="color:var(--muted);font-size:13px">No sales yet.</p>` :
+    payEntries.map(([name,amt]) => `<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span>${escapeHtml(name)}</span><b>${money(amt)}</b></div>`).join('');
+
   const el = document.getElementById('receiptsList');
-  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">🧾</div>No sales recorded yet.</div>`; return; }
+  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">▤</div>No sales recorded yet.</div>`; return; }
   el.innerHTML = list.map(s => {
     const items = parseJSONField(s.items, []);
-    return `<div class="list-row" style="opacity:${s.is_refunded?0.6:1}">
-      <div class="info"><div class="name">${escapeHtml(s.receipt_number||'—')} ${s.is_refunded?'<span class="badge badge-red">Refunded</span>':''}</div>
+    return `<div class="list-row" style="opacity:${s.is_refunded?0.6:1};cursor:pointer" onclick='openReceiptDetail(${JSON.stringify(s).replace(/'/g,"&apos;")})'>
+      <div class="info"><div class="name">${escapeHtml(s.receipt_number||'—')} ${s.is_refunded?'<span class="badge badge-red">Refunded</span>':''} ${s.is_exchanged?'<span class="badge badge-orange">Exchanged</span>':''}</div>
       <div class="meta">${new Date(s.created_at||s.created).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})} · ${escapeHtml(s.customer_name||'Walk-in')} · ${items.length} item${items.length===1?'':'s'}</div></div>
       <div style="font-weight:700">${money(s.total)}</div>
-      <div class="actions">
-        ${!s.is_refunded ? `<button onclick="refundSale('${s.id}')" title="Refund">↩️</button>` : ''}
-        <button onclick="deleteSale('${s.id}')" title="Delete">🗑</button>
-      </div>
     </div>`;
   }).join('');
+}
+function openReceiptDetail(s){
+  const items = parseJSONField(s.items, []);
+  const itemsHtml = items.map(it => `<div style="padding:8px 0;border-bottom:1px solid var(--border)">
+    <div style="display:flex;justify-content:space-between"><span>${it.quantity}× ${escapeHtml(it.productName)}</span><b>${money((it.unitPrice||0)*(it.quantity||0))}</b></div>
+    ${it.customDetails ? `<div style="font-size:11px;color:var(--muted);white-space:pre-line;margin-top:3px">${escapeHtml(it.customDetails)}</div>` : ''}
+  </div>`).join('');
+  openModal(`
+    <div class="modal-header"><h3>${escapeHtml(s.receipt_number)}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px">${new Date(s.created_at||s.created).toLocaleString()}</p>
+    ${s.is_refunded ? '<div class="error-banner">This sale was refunded.</div>' : ''}
+    <div>${itemsHtml}</div>
+    <div class="divider"></div>
+    <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--muted)">Subtotal</span><span>${money(s.subtotal)}</span></div>
+    ${s.discount_amount>0 ? `<div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--red)">Discount</span><span style="color:var(--red)">-${money(s.discount_amount)}</span></div>`:''}
+    ${s.tip>0 ? `<div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--muted)">Tip</span><span>${money(s.tip)}</span></div>`:''}
+    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:18px;font-family:'DM Serif Display',serif"><span>Total</span><span>${money(s.total)}</span></div>
+    <p style="font-size:12.5px;color:var(--muted)">Paid via ${escapeHtml(s.payment_method||'—')} ${s.customer_name?'· '+escapeHtml(s.customer_name):''}</p>
+    <div id="receiptSendStatus"></div>
+    <div class="modal-actions">
+      ${s.customer_email ? `<button class="btn btn-purple" onclick="sendReceiptEmail('${s.id}','${escapeHtml(s.customer_email)}','${escapeHtml(s.receipt_number)}')">Email Receipt</button>` : ''}
+      ${!s.is_refunded ? `<button class="btn btn-outline" onclick="refundSale('${s.id}')">Refund</button>` : ''}
+      <button class="btn btn-danger" onclick="deleteSale('${s.id}')">Delete</button>
+    </div>
+  `);
+}
+async function sendReceiptEmail(saleId, email, receiptNum){
+  const statusEl = document.getElementById('receiptSendStatus');
+  statusEl.innerHTML = `<p style="font-size:12px;color:var(--muted)">Sending…</p>`;
+  const s = DATA.sales.find(x=>x.id===saleId); if(!s) return;
+  const items = parseJSONField(s.items, []);
+  const rows = items.map(it => `<tr><td style="padding:4px 0">${it.quantity}× ${it.productName}</td><td style="text-align:right">${money((it.unitPrice||0)*(it.quantity||0))}</td></tr>`).join('');
+  const html = `<div style="font-family:sans-serif;max-width:400px;margin:auto;">
+    <h2>JakeBitt3DPrints</h2><p>Receipt ${receiptNum}<br/>${new Date(s.created_at||s.created).toLocaleString()}</p>
+    <table style="width:100%;border-collapse:collapse;">${rows}<tr><td colspan="2"><hr/></td></tr>
+    <tr><td>Subtotal</td><td style="text-align:right">${money(s.subtotal)}</td></tr>
+    <tr><td><b>Total</b></td><td style="text-align:right"><b>${money(s.total)}</b></td></tr></table>
+    <p>Paid via ${s.payment_method||''}</p>
+    <p>Thank you for supporting JakeBitt3DPrints!<br/><a href="https://jakebitt3dprints.com">jakebitt3dprints.com</a></p></div>`;
+  try{
+    const res = await fetch('https://api.resend.com/emails', {
+      method:'POST', headers:{'Authorization':`Bearer ${SETTINGS.resendKey}`, 'Content-Type':'application/json'},
+      body: JSON.stringify({from:`${SETTINGS.resendName} <${SETTINGS.resendEmail}>`, to:[email], subject:`Receipt ${receiptNum} — JakeBitt3DPrints`, html})
+    });
+    if(res.ok){ statusEl.innerHTML = `<div class="success-banner">Receipt sent!</div>`; }
+    else { const body = await res.text(); statusEl.innerHTML = `<div class="error-banner">Resend error: ${escapeHtml(body.slice(0,150))}</div>`; }
+  }catch(e){ statusEl.innerHTML = `<div class="error-banner">${e.message}</div>`; }
 }
 async function refundSale(id){
   if(!confirm('Refund this sale? It will be excluded from revenue totals.')) return;
   await pbUpdate('sales', id, {is_refunded:true, refunded_at: new Date().toISOString()});
-  await refreshAll();
+  closeModal(); await refreshAll();
 }
 async function deleteSale(id){
   if(!confirm('Permanently delete this receipt?')) return;
-  await pbDelete('sales', id); await refreshAll();
+  await pbDelete('sales', id); closeModal(); await refreshAll();
 }
 
 /* =================== CUSTOMERS =================== */
@@ -871,15 +1468,331 @@ function renderCustomers(){
   let list = DATA.customers;
   if(search) list = list.filter(c => (c.name||'').toLowerCase().includes(search));
   const el = document.getElementById('customersList');
-  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">👥</div>No customers yet.</div>`; return; }
+  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">☺</div>No customers yet.</div>`; return; }
   el.innerHTML = list.map(c => {
     const spent = DATA.sales.filter(s => (s.customer_name||'').toLowerCase() === (c.name||'').toLowerCase() && !s.is_refunded).reduce((s,x)=>s+(x.total||0),0);
+    const visits = DATA.sales.filter(s => (s.customer_name||'').toLowerCase() === (c.name||'').toLowerCase()).length;
     return `<div class="list-row">
-      <div class="info"><div class="name">${escapeHtml(c.name)}</div><div class="meta">${escapeHtml(c.phone||'')} ${c.email?'· '+escapeHtml(c.email):''}</div></div>
+      <div class="info"><div class="name">${escapeHtml(c.name)}</div><div class="meta">${escapeHtml(c.phone||'')} ${c.email?'· '+escapeHtml(c.email):''} · ${visits} visit${visits===1?'':'s'}</div></div>
       <div style="font-weight:700;color:var(--green)">${money(spent)}</div>
+      <div class="actions"><button onclick='openCustomerModal(${JSON.stringify(c).replace(/'/g,"&apos;")})'>✎</button><button onclick="deleteCustomer('${c.id}')">🗑</button></div>
     </div>`;
   }).join('');
 }
+function openCustomerModal(c){
+  c = c || {};
+  openModal(`
+    <div class="modal-header"><h3>${c.id?'Edit Customer':'Add Customer'}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>Name *</label><input id="custName" value="${escapeHtml(c.name||'')}"></div>
+    <div class="field"><label>Phone</label><input id="custPhone" value="${escapeHtml(c.phone||'')}"></div>
+    <div class="field"><label>Email</label><input id="custEmail" value="${escapeHtml(c.email||'')}"></div>
+    <div class="field"><label>Notes</label><textarea id="custNotes" rows="2">${escapeHtml(c.notes||'')}</textarea></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveCustomer('${c.id||''}')">Save</button>
+      ${c.id ? `<button class="btn btn-danger" onclick="deleteCustomer('${c.id}')">Delete</button>` : ''}
+    </div>
+  `);
+}
+async function saveCustomer(id){
+  const name = document.getElementById('custName').value;
+  if(!name){ alert('Name is required.'); return; }
+  const fields = {name, phone:document.getElementById('custPhone').value, email:document.getElementById('custEmail').value, notes:document.getElementById('custNotes').value};
+  try{
+    if(id) await pbUpdate('customers', id, fields); else await pbCreate('customers', {...fields, local_id:uid()});
+    closeModal(); await refreshAll();
+  }catch(e){ alert(e.message); }
+}
+async function deleteCustomer(id){
+  if(!confirm('Delete this customer?')) return;
+  await pbDelete('customers', id); closeModal(); await refreshAll();
+}
+
+/* =================== CASH DRAWER =================== */
+const DENOMS = [{v:100,l:'$100'},{v:50,l:'$50'},{v:20,l:'$20'},{v:10,l:'$10'},{v:5,l:'$5'},{v:1,l:'$1'},{v:0.25,l:'25¢'},{v:0.10,l:'10¢'},{v:0.05,l:'5¢'},{v:0.01,l:'1¢'}];
+let drawerCounts = {};
+function initCashDrawer(){
+  try{ drawerCounts = JSON.parse(localStorage.getItem('jb_drawer')||'{}'); }catch(e){ drawerCounts = {}; }
+  renderCashDrawer();
+}
+function renderCashDrawer(){
+  const wrap = document.getElementById('cashDenomRows');
+  wrap.innerHTML = DENOMS.map(d => `
+    <div class="cash-denom-row">
+      <div class="denom-label">${d.l}</div>
+      <div class="qty-stepper">
+        <button onclick="changeDenom(${d.v},-1)">−</button>
+        <span id="denomCount-${d.v}">${drawerCounts[d.v]||0}</span>
+        <button onclick="changeDenom(${d.v},1)">+</button>
+      </div>
+      <div style="margin-left:auto;color:var(--muted);font-size:13px">${money(d.v*(drawerCounts[d.v]||0))}</div>
+    </div>`).join('');
+  const total = DENOMS.reduce((s,d)=>s+d.v*(drawerCounts[d.v]||0),0);
+  document.getElementById('drawerTotal').textContent = money(total);
+}
+function changeDenom(v, delta){
+  drawerCounts[v] = Math.max(0, (drawerCounts[v]||0)+delta);
+  localStorage.setItem('jb_drawer', JSON.stringify(drawerCounts));
+  renderCashDrawer();
+}
+function quickFillCash(v){ document.getElementById('ccCashGiven').value = v; calcDrawerChange(); }
+function calcDrawerChange(){
+  const total = parseFloat(document.getElementById('ccSaleTotal').value)||0;
+  const given = parseFloat(document.getElementById('ccCashGiven').value)||0;
+  const box = document.getElementById('ccResult');
+  if(given<=0){ box.innerHTML=''; return; }
+  const change = Math.round((given-total)*100)/100;
+  if(change<0){ box.innerHTML = `<div class="error-banner">Short by ${money(-change)}</div>`; return; }
+  if(change===0){ box.innerHTML = `<div class="success-banner">Exact change — nothing to give back!</div>`; return; }
+  let remaining = change; const breakdown = [];
+  const sortedDenoms = [...DENOMS].sort((a,b)=>b.v-a.v);
+  for(const d of sortedDenoms){
+    const have = drawerCounts[d.v]||0;
+    const need = Math.floor(remaining/d.v + 1e-9);
+    const use = Math.min(have, need);
+    if(use>0){ breakdown.push({...d, count:use}); remaining = Math.round((remaining - use*d.v)*100)/100; }
+  }
+  if(remaining>0.001){
+    for(const d of sortedDenoms){
+      const need = Math.floor(remaining/d.v + 1e-9);
+      if(need>0){
+        const existing = breakdown.find(b=>b.v===d.v);
+        if(existing) existing.count += need; else breakdown.push({...d, count:need});
+        remaining = Math.round((remaining - need*d.v)*100)/100;
+      }
+    }
+  }
+  box.innerHTML = `<div class="success-banner">Change due: <b>${money(change)}</b></div>` +
+    `<div style="margin-top:8px">${breakdown.map(b=>`<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span>${b.count}× ${b.l}</span><span>${money(b.v*b.count)}</span></div>`).join('')}</div>` +
+    `<button class="btn btn-green" style="margin-top:10px" onclick='applyDrawerChange(${JSON.stringify(breakdown)})'>Apply to Drawer</button>`;
+}
+function applyDrawerChange(breakdown){
+  breakdown.forEach(b => { drawerCounts[b.v] = Math.max(0, (drawerCounts[b.v]||0) - b.count); });
+  localStorage.setItem('jb_drawer', JSON.stringify(drawerCounts));
+  renderCashDrawer();
+  document.getElementById('ccResult').innerHTML = `<div class="success-banner">Applied to drawer.</div>`;
+}
+
+/* =================== ORDER NOTES =================== */
+const ORDER_STATUSES = ['Pending','Printing','Done','Delivered'];
+function renderOrderStatusPills(){
+  const counts = {}; ORDER_STATUSES.forEach(s=>counts[s]=DATA.orders.filter(o=>o.status===s).length);
+  document.getElementById('orderStatusPills').innerHTML = `<button class="pill ${orderStatusFilter==='All'?'active':''}" onclick="setOrderFilter('All')">All (${DATA.orders.length})</button>` +
+    ORDER_STATUSES.map(s => `<button class="pill ${orderStatusFilter===s?'active':''}" onclick="setOrderFilter('${s}')">${s} (${counts[s]||0})</button>`).join('');
+}
+function setOrderFilter(s){ orderStatusFilter = s; renderOrderStatusPills(); renderOrders(); }
+function renderOrders(){
+  renderOrderStatusPills();
+  let list = DATA.orders;
+  if(orderStatusFilter !== 'All') list = list.filter(o => o.status === orderStatusFilter);
+  const el = document.getElementById('ordersList');
+  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">✎</div>No orders found.</div>`; return; }
+  const statusColor = {Pending:'yellow',Printing:'blue',Done:'green',Delivered:'purple'};
+  el.innerHTML = list.map(o => `
+    <div class="list-row">
+      <div class="info"><div class="name">${escapeHtml(o.customer_name)} <span class="badge badge-${statusColor[o.status]||'blue'}">${escapeHtml(o.status||'Pending')}</span></div>
+      <div class="meta">${escapeHtml(o.item||'')} · ${escapeHtml(o.color||'')} ${escapeHtml(o.material||'')} · ×${o.quantity||1} ${o.price?'· '+money(o.price):''}</div></div>
+      <div class="actions"><button onclick='openOrderModal(${JSON.stringify(o).replace(/'/g,"&apos;")})'>✎</button><button onclick="deleteOrder('${o.id}')">🗑</button></div>
+    </div>`).join('');
+}
+function openOrderModal(o){
+  o = o || {};
+  openModal(`
+    <div class="modal-header"><h3>${o.id?'Edit Order':'New Order'}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>Customer Name *</label><input id="ordCustomer" value="${escapeHtml(o.customer_name||'')}"></div>
+    <div class="field"><label>Item *</label><input id="ordItem" value="${escapeHtml(o.item||'')}"></div>
+    <div class="field-row">
+      <div class="field"><label>Color</label><input id="ordColor" value="${escapeHtml(o.color||'')}"></div>
+      <div class="field"><label>Material</label><input id="ordMaterial" value="${escapeHtml(o.material||'PLA')}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Quantity</label><input type="number" id="ordQty" value="${o.quantity||1}" min="1"></div>
+      <div class="field"><label>Price ($)</label><input type="number" id="ordPrice" value="${o.price||''}" step="0.01"></div>
+    </div>
+    <div class="field"><label>Status</label><select id="ordStatus">${ORDER_STATUSES.map(s=>`<option ${o.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+    <div class="field"><label>Notes</label><textarea id="ordNotes" rows="2">${escapeHtml(o.notes||'')}</textarea></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveOrder('${o.id||''}')">Save</button>
+      ${o.id ? `<button class="btn btn-danger" onclick="deleteOrder('${o.id}')">Delete</button>` : ''}
+    </div>
+  `);
+}
+async function saveOrder(id){
+  const customer_name = document.getElementById('ordCustomer').value;
+  const item = document.getElementById('ordItem').value;
+  if(!customer_name || !item){ alert('Customer and item are required.'); return; }
+  const fields = {
+    customer_name, item, color:document.getElementById('ordColor').value, material:document.getElementById('ordMaterial').value,
+    quantity: parseInt(document.getElementById('ordQty').value)||1, price: parseFloat(document.getElementById('ordPrice').value)||null,
+    status: document.getElementById('ordStatus').value, notes: document.getElementById('ordNotes').value
+  };
+  try{
+    if(id) await pbUpdate('order_notes', id, fields); else await pbCreate('order_notes', {...fields, local_id:uid()});
+    closeModal(); await refreshAll();
+  }catch(e){ alert(e.message); }
+}
+async function deleteOrder(id){
+  if(!confirm('Delete this order?')) return;
+  await pbDelete('order_notes', id); closeModal(); await refreshAll();
+}
+
+/* =================== TASKS & NOTES =================== */
+function setTaskTab(t){
+  taskTab = t;
+  document.querySelectorAll('[data-tasktab]').forEach(p=>p.classList.toggle('active', p.dataset.tasktab===t));
+  document.getElementById('taskTabTodo').classList.toggle('hidden', t!=='todo');
+  document.getElementById('taskTabNotes').classList.toggle('hidden', t!=='notes');
+}
+function renderTodos(){
+  const done = DATA.todos.filter(t=>t.is_done).length;
+  const total = DATA.todos.length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('todoProgress').innerHTML = total ? `
+    <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>${done} of ${total} done</span><b style="color:var(--accent)">${pct}%</b></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:var(--green)"></div></div>` : '';
+  const priorityOrder = {Urgent:0,High:1,Medium:2,Low:3};
+  const list = [...DATA.todos].sort((a,b)=>{
+    if(!!a.is_done !== !!b.is_done) return a.is_done ? 1 : -1;
+    return (priorityOrder[a.priority]??2) - (priorityOrder[b.priority]??2);
+  });
+  const el = document.getElementById('todoList');
+  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">☑</div>No tasks yet.</div>`; return; }
+  const prColor = {Urgent:'red',High:'orange',Medium:'blue',Low:'green'};
+  el.innerHTML = list.map(t => `
+    <div class="list-row" style="opacity:${t.is_done?0.55:1}">
+      <button onclick="toggleTodo('${t.id}',${!t.is_done})" style="width:26px;height:26px;border-radius:50%;background:${t.is_done?'var(--green)':'var(--bg-alt)'};border:2px solid ${t.is_done?'var(--green)':'var(--border)'};color:#fff;flex-shrink:0">${t.is_done?'✓':''}</button>
+      <div class="info"><div class="name" style="text-decoration:${t.is_done?'line-through':'none'}">${escapeHtml(t.title)} <span class="badge badge-${prColor[t.priority]||'blue'}">${escapeHtml(t.priority||'Medium')}</span></div>
+      <div class="meta">${escapeHtml(t.category||'General')} ${t.due_date?'· Due '+new Date(t.due_date).toLocaleDateString():''}</div></div>
+      <div class="actions"><button onclick='openTodoModal(${JSON.stringify(t).replace(/'/g,"&apos;")})'>✎</button><button onclick="deleteTodo('${t.id}')">🗑</button></div>
+    </div>`).join('');
+}
+function openTodoModal(t){
+  t = t || {};
+  openModal(`
+    <div class="modal-header"><h3>${t.id?'Edit Task':'New Task'}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>Task *</label><input id="todoTitle" value="${escapeHtml(t.title||'')}"></div>
+    <div class="field-row">
+      <div class="field"><label>Priority</label><select id="todoPriority">${['Low','Medium','High','Urgent'].map(p=>`<option ${t.priority===p?'selected':''}>${p}</option>`).join('')}</select></div>
+      <div class="field"><label>Category</label><input id="todoCategory" value="${escapeHtml(t.category||'General')}"></div>
+    </div>
+    <div class="field"><label>Due Date</label><input type="date" id="todoDue" value="${t.due_date?new Date(t.due_date).toISOString().slice(0,10):''}"></div>
+    <div class="field"><label>Notes</label><textarea id="todoNotes" rows="2">${escapeHtml(t.notes||'')}</textarea></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveTodo('${t.id||''}')">Save</button>
+      ${t.id ? `<button class="btn btn-danger" onclick="deleteTodo('${t.id}')">Delete</button>` : ''}
+    </div>
+  `);
+}
+async function saveTodo(id){
+  const title = document.getElementById('todoTitle').value;
+  if(!title){ alert('Task title is required.'); return; }
+  const due = document.getElementById('todoDue').value;
+  const fields = {
+    title, priority: document.getElementById('todoPriority').value, category: document.getElementById('todoCategory').value,
+    due_date: due ? new Date(due).toISOString() : '', notes: document.getElementById('todoNotes').value
+  };
+  try{
+    if(id) await pbUpdate('business_todos', id, fields); else await pbCreate('business_todos', {...fields, is_done:false, local_id:uid()});
+    closeModal(); await refreshAll();
+  }catch(e){ alert(e.message); }
+}
+async function toggleTodo(id, isDone){ await pbUpdate('business_todos', id, {is_done:isDone}); await refreshAll(); }
+async function deleteTodo(id){ if(!confirm('Delete this task?')) return; await pbDelete('business_todos', id); closeModal(); await refreshAll(); }
+
+function renderNotes(){
+  const el = document.getElementById('notesGrid');
+  if(DATA.notes.length===0){ el.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="big">✎</div>No notes yet.</div>`; return; }
+  const sorted = [...DATA.notes].sort((a,b)=> (b.is_pinned?1:0)-(a.is_pinned?1:0));
+  el.innerHTML = sorted.map(n => `
+    <div class="card" style="border-left:4px solid ${n.color_hex||'#3b82f6'};cursor:pointer" onclick='openNoteModal(${JSON.stringify(n).replace(/'/g,"&apos;")})'>
+      <div style="display:flex;justify-content:space-between"><b style="font-size:14px">${escapeHtml(n.title||'Untitled')}</b>${n.is_pinned?'<span>📌</span>':''}</div>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:6px;max-height:60px;overflow:hidden">${escapeHtml(n.content||'')}</p>
+    </div>`).join('');
+}
+function openNoteModal(n){
+  n = n || {};
+  const colors = ['#3b82f6','#16a34a','#dc2626','#ca8a04','#7c3aed','#0891b2','#db2777'];
+  openModal(`
+    <div class="modal-header"><h3>${n.id?'Edit Note':'New Note'}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>Color</label><div class="swatch-row" id="noteColorSwatches">${colors.map(c=>`<div class="swatch ${((n.color_hex||'#3b82f6')===c)?'selected':''}" style="background:${c}" onclick="selectNoteColor(this,'${c}')"></div>`).join('')}</div></div>
+    <input type="hidden" id="noteColorHex" value="${n.color_hex||'#3b82f6'}">
+    <div class="field"><label>Title</label><input id="noteTitle" value="${escapeHtml(n.title||'')}"></div>
+    <div class="field"><label>Content</label><textarea id="noteContent" rows="5">${escapeHtml(n.content||'')}</textarea></div>
+    <div class="checkbox-row"><input type="checkbox" id="notePinned" ${n.is_pinned?'checked':''}><label>Pin to top</label></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveNote('${n.id||''}')">Save</button>
+      ${n.id ? `<button class="btn btn-danger" onclick="deleteNote('${n.id}')">Delete</button>` : ''}
+    </div>
+  `);
+}
+function selectNoteColor(el, c){
+  document.querySelectorAll('#noteColorSwatches .swatch').forEach(s=>s.classList.remove('selected'));
+  el.classList.add('selected'); document.getElementById('noteColorHex').value = c;
+}
+async function saveNote(id){
+  const fields = {title:document.getElementById('noteTitle').value, content:document.getElementById('noteContent').value,
+    color_hex:document.getElementById('noteColorHex').value, is_pinned:document.getElementById('notePinned').checked};
+  try{
+    if(id) await pbUpdate('business_notes', id, fields); else await pbCreate('business_notes', {...fields, local_id:uid()});
+    closeModal(); await refreshAll();
+  }catch(e){ alert(e.message); }
+}
+async function deleteNote(id){ if(!confirm('Delete this note?')) return; await pbDelete('business_notes', id); closeModal(); await refreshAll(); }
+
+/* =================== EXPENSES =================== */
+const EXPENSE_CATS = ['Filament','Shipping','Event Fee','Supplies','Equipment','Marketing','Software','Other'];
+function renderExpenseCatPills(){
+  document.getElementById('expenseCatPills').innerHTML = `<button class="pill ${expenseCatFilter==='All'?'active':''}" onclick="setExpenseCat('All')">All</button>` +
+    EXPENSE_CATS.map(c => `<button class="pill ${expenseCatFilter===c?'active':''}" onclick="setExpenseCat('${c}')">${c}</button>`).join('');
+}
+function setExpenseCat(c){ expenseCatFilter = c; renderExpenseCatPills(); renderExpenses(); }
+function renderExpenses(){
+  renderExpenseCatPills();
+  const total = DATA.expenses.reduce((s,e)=>s+(e.amount||0),0);
+  const now = new Date();
+  const monthTotal = DATA.expenses.filter(e => { const d=new Date(e.date||e.created); return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear(); }).reduce((s,e)=>s+(e.amount||0),0);
+  document.getElementById('expTotal').textContent = money(total);
+  document.getElementById('expMonth').textContent = money(monthTotal);
+  document.getElementById('expCount').textContent = DATA.expenses.length;
+  let list = DATA.expenses;
+  if(expenseCatFilter!=='All') list = list.filter(e=>e.category===expenseCatFilter);
+  list = [...list].sort((a,b)=> new Date(b.date||b.created) - new Date(a.date||a.created));
+  const el = document.getElementById('expensesList');
+  if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">−</div>No expenses logged yet.</div>`; return; }
+  el.innerHTML = list.map(e => `
+    <div class="list-row">
+      <div class="info"><div class="name">${escapeHtml(e.title)}</div><div class="meta"><span class="badge badge-blue">${escapeHtml(e.category||'Other')}</span> ${new Date(e.date||e.created).toLocaleDateString()}</div></div>
+      <div style="font-weight:700;color:var(--red)">${money(e.amount)}</div>
+      <div class="actions"><button onclick='openExpenseModal(${JSON.stringify(e).replace(/'/g,"&apos;")})'>✎</button><button onclick="deleteExpense('${e.id}')">🗑</button></div>
+    </div>`).join('');
+}
+function openExpenseModal(e){
+  e = e || {};
+  openModal(`
+    <div class="modal-header"><h3>${e.id?'Edit Expense':'New Expense'}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>What did you buy? *</label><input id="expTitle" value="${escapeHtml(e.title||'')}"></div>
+    <div class="field-row">
+      <div class="field"><label>Amount ($) *</label><input type="number" id="expAmount" value="${e.amount||''}" step="0.01"></div>
+      <div class="field"><label>Category</label><select id="expCategory">${EXPENSE_CATS.map(c=>`<option ${e.category===c?'selected':''}>${c}</option>`).join('')}</select></div>
+    </div>
+    <div class="field"><label>Date</label><input type="date" id="expDate" value="${e.date?new Date(e.date).toISOString().slice(0,10):new Date().toISOString().slice(0,10)}"></div>
+    <div class="field"><label>Notes</label><textarea id="expNotes" rows="2">${escapeHtml(e.notes||'')}</textarea></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveExpense('${e.id||''}')">Save</button>
+      ${e.id ? `<button class="btn btn-danger" onclick="deleteExpense('${e.id}')">Delete</button>` : ''}
+    </div>
+  `);
+}
+async function saveExpense(id){
+  const title = document.getElementById('expTitle').value;
+  const amount = parseFloat(document.getElementById('expAmount').value);
+  if(!title || isNaN(amount)){ alert('Title and amount are required.'); return; }
+  const fields = {title, amount, category:document.getElementById('expCategory').value, date:new Date(document.getElementById('expDate').value).toISOString(), notes:document.getElementById('expNotes').value};
+  try{
+    if(id) await pbUpdate('expenses', id, fields); else await pbCreate('expenses', {...fields, local_id:uid()});
+    closeModal(); await refreshAll();
+  }catch(e){ alert(e.message); }
+}
+async function deleteExpense(id){ if(!confirm('Delete this expense?')) return; await pbDelete('expenses', id); closeModal(); await refreshAll(); }
 
 /* =================== FILAMENT =================== */
 function renderFilament(){
@@ -888,15 +1801,16 @@ function renderFilament(){
   document.getElementById('filSpools').textContent = DATA.filament.length;
   document.getElementById('filWeight').textContent = Math.round(totalWeight)+'g';
   document.getElementById('filValue').textContent = money(totalValue);
+  document.getElementById('filLow').textContent = DATA.filament.filter(f=>f.weight_total>0 && (f.weight_remaining/f.weight_total)<0.2).length;
   const el = document.getElementById('filamentList');
-  if(DATA.filament.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">🧵</div>No spools added yet.</div>`; return; }
+  if(DATA.filament.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">◐</div>No spools added yet.</div>`; return; }
   el.innerHTML = DATA.filament.map(f => {
     const pct = f.weight_total ? Math.round((f.weight_remaining/f.weight_total)*100) : 0;
     const color = pct>50?'var(--green)':pct>20?'var(--yellow)':'var(--red)';
     return `<div class="list-row">
       <div style="width:36px;height:36px;border-radius:8px;background:${f.color_hex||'#3b82f6'}"></div>
       <div class="info"><div class="name">${escapeHtml(f.brand||'')} ${escapeHtml(f.color||'')}</div>
-      <div class="meta">${escapeHtml(f.material||'')} · ${Math.round(f.weight_remaining||0)}g / ${Math.round(f.weight_total||0)}g</div></div>
+      <div class="meta">${escapeHtml(f.material||'')} · ${Math.round(f.weight_remaining||0)}g / ${Math.round(f.weight_total||0)}g · $${(f.cost_per_kg||0).toFixed(0)}/kg</div></div>
       <div style="font-weight:700;color:${color}">${pct}%</div>
       <div class="actions">
         <button onclick='openSpoolModal(${JSON.stringify(f).replace(/'/g,"&apos;")})'>✎</button>
@@ -922,6 +1836,7 @@ function openSpoolModal(f){
       <div class="field"><label>Remaining (g)</label><input type="number" id="spoolWeightRemaining" value="${f.weight_remaining||1000}"></div>
     </div>
     <div class="field"><label>Cost per kg ($)</label><input type="number" id="spoolCostKg" value="${f.cost_per_kg||25}" step="0.01"></div>
+    <div class="field"><label>Notes</label><input id="spoolNotes" value="${escapeHtml(f.notes||'')}"></div>
     <div class="modal-actions">
       <button class="btn" onclick="saveSpool('${f.id||''}')">Save</button>
       ${f.id ? `<button class="btn btn-danger" onclick="deleteSpool('${f.id}')">Delete</button>` : ''}
@@ -934,10 +1849,10 @@ async function saveSpool(id){
     color: document.getElementById('spoolColor').value, color_hex: document.getElementById('spoolColorHex').value,
     weight_total: parseFloat(document.getElementById('spoolWeightTotal').value)||0,
     weight_remaining: parseFloat(document.getElementById('spoolWeightRemaining').value)||0,
-    cost_per_kg: parseFloat(document.getElementById('spoolCostKg').value)||0, notes:''
+    cost_per_kg: parseFloat(document.getElementById('spoolCostKg').value)||0, notes: document.getElementById('spoolNotes').value
   };
   try{
-    if(id) await pbUpdate('filament_spools', id, fields); else await pbCreate('filament_spools', {...fields, local_id: crypto.randomUUID()});
+    if(id) await pbUpdate('filament_spools', id, fields); else await pbCreate('filament_spools', {...fields, local_id: uid()});
     closeModal(); await refreshAll();
   }catch(e){ alert(e.message); }
 }
@@ -945,6 +1860,72 @@ async function deleteSpool(id){
   if(!confirm('Delete this spool?')) return;
   await pbDelete('filament_spools', id); closeModal(); await refreshAll();
 }
+
+/* =================== SETTINGS: Payment Methods & Discount Presets =================== */
+function renderPaymentMethodsSettings(){
+  const el = document.getElementById('paymentMethodsList');
+  if(DATA.paymentMethods.length===0){ el.innerHTML = `<p style="font-size:13px;color:var(--muted)">No payment methods yet.</p>`; return; }
+  const sorted = [...DATA.paymentMethods].sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));
+  el.innerHTML = sorted.map(m => `
+    <div class="settings-row">
+      <div class="label-block"><div class="title">${escapeHtml(m.name)}</div></div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <label class="toggle-switch"><input type="checkbox" ${m.active!==false?'checked':''} onchange="togglePaymentMethod('${m.id}',this.checked)"><span class="toggle-track"></span></label>
+        <button class="icon-btn" style="width:30px;height:30px" onclick="deletePaymentMethod('${m.id}')">🗑</button>
+      </div>
+    </div>`).join('');
+}
+function openPaymentMethodModal(){
+  openModal(`
+    <div class="modal-header"><h3>Add Payment Method</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>Name (e.g. Apple Cash)</label><input id="pmName"></div>
+    <div class="modal-actions"><button class="btn" onclick="savePaymentMethod()">Add</button></div>
+  `);
+}
+async function savePaymentMethod(){
+  const name = document.getElementById('pmName').value;
+  if(!name) return;
+  const maxOrder = Math.max(0, ...DATA.paymentMethods.map(m=>m.sort_order||0));
+  try{ await pbCreate('payment_methods', {name, icon:'dollarsign.circle.fill', active:true, sort_order:maxOrder+1, local_id:uid()}); closeModal(); await refreshAll(); }
+  catch(e){ alert(e.message); }
+}
+async function togglePaymentMethod(id, active){ await pbUpdate('payment_methods', id, {active}); await refreshAll(); }
+async function deletePaymentMethod(id){ if(!confirm('Delete this payment method?')) return; await pbDelete('payment_methods', id); await refreshAll(); }
+
+function renderDiscountPresetsSettings(){
+  const el = document.getElementById('discountPresetsList');
+  if(DATA.discountPresets.length===0){ el.innerHTML = `<p style="font-size:13px;color:var(--muted)">No presets yet.</p>`; return; }
+  el.innerHTML = DATA.discountPresets.map(d => `
+    <div class="settings-row">
+      <div class="label-block"><div class="title">${escapeHtml(d.name)}</div><div class="sub">${d.minimum_subtotal>0?'Needs '+money(d.minimum_subtotal)+'+ subtotal':'No minimum'}</div></div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <label class="toggle-switch"><input type="checkbox" ${d.active!==false?'checked':''} onchange="toggleDiscountPreset('${d.id}',this.checked)"><span class="toggle-track"></span></label>
+        <button class="icon-btn" style="width:30px;height:30px" onclick="deleteDiscountPreset('${d.id}')">🗑</button>
+      </div>
+    </div>`).join('');
+}
+function openDiscountPresetModal(){
+  openModal(`
+    <div class="modal-header"><h3>Add Discount Preset</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>Name shown on button (e.g. "$5 off $30+") *</label><input id="dpName"></div>
+    <div class="field"><label>Type</label><select id="dpType"><option value="dollar">Dollar amount off</option><option value="percent">Percent off</option></select></div>
+    <div class="field"><label>Value *</label><input type="number" id="dpValue" step="0.01"></div>
+    <div class="field"><label>Minimum subtotal ($, 0 = none)</label><input type="number" id="dpMin" value="0" step="0.01"></div>
+    <div class="modal-actions"><button class="btn" onclick="saveDiscountPreset()">Add</button></div>
+  `);
+}
+async function saveDiscountPreset(){
+  const name = document.getElementById('dpName').value;
+  const value = parseFloat(document.getElementById('dpValue').value);
+  if(!name || isNaN(value)){ alert('Name and value are required.'); return; }
+  const maxOrder = Math.max(0, ...DATA.discountPresets.map(d=>d.sort_order||0));
+  const fields = {name, is_percent: document.getElementById('dpType').value==='percent', value,
+    minimum_subtotal: parseFloat(document.getElementById('dpMin').value)||0, active:true, sort_order:maxOrder+1, local_id:uid()};
+  try{ await pbCreate('discount_presets', fields); closeModal(); await refreshAll(); }
+  catch(e){ alert(e.message); }
+}
+async function toggleDiscountPreset(id, active){ await pbUpdate('discount_presets', id, {active}); await refreshAll(); }
+async function deleteDiscountPreset(id){ if(!confirm('Delete this preset?')) return; await pbDelete('discount_presets', id); await refreshAll(); }
 
 /* =================== CALCULATOR =================== */
 function calcUpdate(){
@@ -955,10 +1936,12 @@ function calcUpdate(){
   const watts = parseFloat(document.getElementById('calcWatts').value)||0;
   const fail = parseFloat(document.getElementById('calcFail').value)||0;
   const margin = parseFloat(document.getElementById('calcMargin').value)||0;
+  const labor = parseFloat(document.getElementById('calcLabor').value)||0;
 
   const filamentCost = (weight/1000)*costKg;
   const elecCost = (watts/1000)*hours*elec;
-  const baseCost = filamentCost + elecCost;
+  const laborCost = hours*labor;
+  const baseCost = filamentCost + elecCost + laborCost;
   const failCost = baseCost * (fail/100);
   const totalCost = baseCost + failCost;
   const price = margin>=100 ? totalCost*2 : totalCost/(1-margin/100);
@@ -966,6 +1949,7 @@ function calcUpdate(){
 
   document.getElementById('calcFilamentCost').textContent = money(filamentCost);
   document.getElementById('calcElecCost').textContent = money(elecCost);
+  document.getElementById('calcLaborCost').textContent = money(laborCost);
   document.getElementById('calcFailCost').textContent = money(failCost);
   document.getElementById('calcTotalCost').textContent = money(totalCost);
   document.getElementById('calcPrice').textContent = money(price);
