@@ -430,6 +430,66 @@
     }
     .sp-icon.snapchat:hover { background-color: #facc15; }
 
+    /* ── SCAN POPUP (QR business-card trigger) ── */
+    .scan-overlay{
+      position:fixed; inset:0; z-index:1000;
+      display:none; align-items:center; justify-content:center;
+      padding:calc(20px + var(--safe-t)) 20px calc(20px + var(--safe-b));
+      background:rgba(15,23,42,.55);
+      -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+      opacity:0; transition:opacity .25s ease;
+    }
+    :root[data-theme="dark"] .scan-overlay{ background:rgba(2,6,23,.72); }
+    .scan-overlay.show{ display:flex; opacity:1; }
+    .scan-popup{
+      position:relative; width:100%; max-width:400px;
+      background:var(--bg-alt); border:1px solid var(--border);
+      border-radius:var(--radius); box-shadow:var(--shadow-lg);
+      padding:30px 24px 26px; max-height:90dvh; overflow-y:auto;
+      transform:translateY(16px) scale(.98); transition:transform .25s ease;
+    }
+    .scan-overlay.show .scan-popup{ transform:translateY(0) scale(1); }
+    .scan-close{
+      position:absolute; top:12px; right:14px;
+      width:34px; height:34px; border-radius:50%;
+      border:1px solid var(--border); background:var(--bg);
+      color:var(--muted); font-size:1.1rem; cursor:pointer; line-height:1;
+      display:flex; align-items:center; justify-content:center;
+      transition:background-color .15s ease, transform .12s ease;
+    }
+    .scan-close:hover{ background:rgba(148,163,184,.18); }
+    .scan-close:active{ transform:scale(.9); }
+    .scan-badge{
+      display:inline-block; font-size:.72rem; font-weight:700;
+      letter-spacing:.14em; text-transform:uppercase;
+      color:var(--accent); margin-bottom:12px;
+    }
+    .scan-title{
+      font-family:var(--font-head); font-size:1.6rem; line-height:1.2;
+      letter-spacing:-.01em; color:var(--text); margin-bottom:8px;
+    }
+    .scan-sub{ font-size:.93rem; color:var(--muted); line-height:1.6; margin-bottom:22px; }
+    .scan-links{ display:flex; flex-direction:column; gap:9px; }
+    .scan-link{
+      display:flex; align-items:center; gap:13px;
+      text-decoration:none; color:var(--text);
+      background:var(--bg); border:1px solid var(--border);
+      padding:12px 14px; border-radius:14px; font-weight:600; font-size:.92rem;
+      transition:border-color .15s ease, transform .12s ease, background-color .15s ease;
+    }
+    .scan-link:hover{ border-color:var(--accent); transform:translateX(3px); }
+    .scan-link:active{ transform:scale(.98); }
+    .scan-link .ico{
+      width:36px; height:36px; flex-shrink:0; border-radius:10px;
+      display:flex; align-items:center; justify-content:center; font-size:1.05rem;
+      background:var(--bg-alt); border:1px solid var(--border);
+    }
+    .scan-link .meta{ display:flex; flex-direction:column; gap:1px; }
+    .scan-link .meta small{ font-weight:400; font-size:.78rem; color:var(--muted); }
+    .scan-link .ico.youtube{ color:#ff0000; }
+    .scan-link .ico.instagram i{ background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .scan-link .ico.tiktok i{ background:linear-gradient(45deg,#25f4ee,#fe2c55); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
     /* ── FOOTER ── */
     footer {
       /* Stretch full viewport width */
@@ -631,6 +691,42 @@
     </div>
   </footer>
 
+  <!-- ── SCAN POPUP (fires only from business-card QR: ?src=card) ── -->
+  <div class="scan-overlay" id="scanPopup" role="dialog" aria-modal="true" aria-labelledby="scanTitle">
+    <div class="scan-popup">
+      <button type="button" class="scan-close" id="scanClose" aria-label="Close">&times;</button>
+      <span class="scan-badge">Thanks for scanning</span>
+      <h2 class="scan-title" id="scanTitle">Great meeting you!</h2>
+      <p class="scan-sub">Thanks for stopping by my table today. Here's the easiest way to keep in touch and see what I'm making.</p>
+      <div class="scan-links">
+        <a class="scan-link" href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener">
+          <span class="ico instagram"><i class="fab fa-instagram"></i></span>
+          <span class="meta">Instagram<small>Latest prints &amp; drops</small></span>
+        </a>
+        <a class="scan-link" href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener">
+          <span class="ico tiktok"><i class="fab fa-tiktok"></i></span>
+          <span class="meta">TikTok<small>Behind the scenes</small></span>
+        </a>
+        <a class="scan-link" href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener">
+          <span class="ico youtube"><i class="fab fa-youtube"></i></span>
+          <span class="meta">YouTube<small>Prints in action</small></span>
+        </a>
+        <a class="scan-link" href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener">
+          <span class="ico facebook"><i class="fab fa-facebook"></i></span>
+          <span class="meta">Facebook<small>Updates &amp; events</small></span>
+        </a>
+        <a class="scan-link" href="shop">
+          <span class="ico"><i class="fa-solid fa-bag-shopping"></i></span>
+          <span class="meta">Shop<small>Browse everything</small></span>
+        </a>
+        <a class="scan-link" href="mailto:contact@jakebitt3dprints.com">
+          <span class="ico"><i class="fa-solid fa-envelope"></i></span>
+          <span class="meta">Email me<small>Custom orders &amp; questions</small></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <script>
   (function() {
 
@@ -700,5 +796,32 @@
 
   })();
   </script>
+
+  <!-- ── SCAN POPUP LOGIC (QR business-card trigger) ── -->
+  <script>
+  (function() {
+    var overlay = document.getElementById('scanPopup');
+    if (!overlay) return;
+    var closeBtn = document.getElementById('scanClose');
+
+    function open()  { overlay.classList.add('show'); document.body.style.overflow = 'hidden'; }
+    function close() { overlay.classList.remove('show'); document.body.style.overflow = ''; }
+
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', function(e){ if (e.target === overlay) close(); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+
+    // Only trigger when arriving from the business-card QR
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('src') === 'card') {
+      open();
+      // Strip the param so refresh/reshare looks clean and won't re-trigger
+      params.delete('src');
+      var clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+      window.history.replaceState({}, '', clean);
+    }
+  })();
+  </script>
+
 </body>
 </html>
