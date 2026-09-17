@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>JakeBitt3DPrints — Admin Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -223,6 +224,7 @@ tr:last-child td{border-bottom:none;}
     <div class="nav-item" data-tab="receipts" onclick="showTab('receipts')"><span class="icon">▤</span>Receipts</div>
     <div class="nav-item" data-tab="customers" onclick="showTab('customers')"><span class="icon">☺</span>Customers</div>
     <div class="nav-item" data-tab="cashdrawer" onclick="showTab('cashdrawer')"><span class="icon">$</span>Cash Drawer</div>
+    <div class="nav-item" data-tab="inventory" onclick="showTab('inventory')"><span class="icon">▥</span>Inventory &amp; Labels</div>
 
     <div class="nav-group-label">Business</div>
     <div class="nav-item" data-tab="orders" onclick="showTab('orders')"><span class="icon">✎</span>Order Notes</div>
@@ -443,6 +445,21 @@ tr:last-child td{border-bottom:none;}
       </div>
     </section>
 
+    <!-- ===== INVENTORY ===== -->
+    <section class="section" id="section-inventory">
+      <div class="section-header"><h2>Inventory &amp; Labels</h2>
+        <div class="actions-row"><button class="btn btn-outline btn-sm" onclick="openOptionSheets()">Option code sheets</button></div></div>
+      <div class="grid grid-4" style="margin-bottom:16px">
+        <div class="card stat-card"><div class="stat-icon" style="background:#0891b2">▥</div><div class="stat-value" id="invUnits">—</div><div class="stat-label">Units on hand</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--green)">$</div><div class="stat-value" id="invRetail">—</div><div class="stat-label">Retail value</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--orange)">!</div><div class="stat-value" id="invLow">—</div><div class="stat-label">Low stock</div></div>
+        <div class="card stat-card"><div class="stat-icon" style="background:var(--red)">✕</div><div class="stat-value" id="invOut">—</div><div class="stat-label">Out</div></div>
+      </div>
+      <div class="toolbar"><div class="search-box">🔍<input id="invSearch" placeholder="Search name or SKU…" oninput="renderInventory()"></div></div>
+      <div class="pill-row" id="invPills" style="margin-bottom:12px"></div>
+      <div id="inventoryList"><div class="spinner"></div></div>
+    </section>
+
     <!-- ===== ORDER NOTES ===== -->
     <section class="section" id="section-orders">
       <div class="section-header">
@@ -582,7 +599,7 @@ tr:last-child td{border-bottom:none;}
       <div class="card" style="margin-bottom:16px">
         <h3 style="font-size:15px;margin-bottom:6px">Email Receipts (Resend)</h3>
         <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Get a free API key at resend.com, verify your sending domain, then paste it here to email receipts directly.</p>
-        <div class="field"><label>API Key</label><input type="password" id="settingResendKey" onchange="saveSettingsLocal()"></div>
+        <div class="field"><label>API Key</label><input type="password" id="settingResendKey" placeholder="re_..." onchange="saveSettingsLocal()"></div>
         <div class="field-row">
           <div class="field"><label>From Email</label><input id="settingResendEmail" onchange="saveSettingsLocal()"></div>
           <div class="field"><label>From Name</label><input id="settingResendName" onchange="saveSettingsLocal()"></div>
@@ -631,7 +648,12 @@ function loadSettings(){
   const raw = localStorage.getItem(SETTINGS_KEY);
   const defaults = {
     dark:true, accent:'#3b82f6', tips:false, revenueGoal:500,
-    resendKey:'re_CXobCd6t_9FhDH2gYRxYVeN26cu4g6GrF',
+    // ★ FIXED: previously had the Resend API key hardcoded here as a fallback
+    // default. That's exactly why it got auto-revoked — GitHub and Resend both
+    // scan public repos for exposed keys and kill them on sight. It's blank now;
+    // enter your key once in Settings and it's saved only in this browser's
+    // localStorage, never in the file itself, so pushing this to GitHub is safe.
+    resendKey:'',
     resendEmail:'receipts@receipts.jakebitt3dprints.com', resendName:'JakeBitt3DPrints'
   };
   try{ return {...defaults, ...(raw?JSON.parse(raw):{})}; }catch(e){ return defaults; }
@@ -705,13 +727,20 @@ async function pbFetch(path, opts={}){
   return res;
 }
 async function pbList(collection, sort=''){
-  const q = sort ? `?perPage=500&sort=${sort}` : '?perPage=500';
+  // Pages through everything — the old version stopped at 500 records.
+  let all = [], page = 1;
   try{
-    const res = await pbFetch(`/api/collections/${collection}/records${q}`);
-    if(!res.ok) return [];
-    const data = await res.json();
-    return data.items || [];
-  }catch(e){ return []; }
+    while(true){
+      const q = `?perPage=500&page=${page}${sort?'&sort='+sort:''}`;
+      const res = await pbFetch(`/api/collections/${collection}/records${q}`);
+      if(!res.ok) break;
+      const data = await res.json();
+      all = all.concat(data.items || []);
+      if(page >= (data.totalPages||1) || !(data.items||[]).length) break;
+      page++;
+    }
+  }catch(e){}
+  return all;
 }
 async function pbCreate(collection, fields){
   const res = await pbFetch(`/api/collections/${collection}/records`, {
@@ -780,7 +809,7 @@ async function refreshAll(){
     renderDashboard(); renderGallery(); renderEvents(); renderSellGrid(); renderProducts();
     renderReceipts(); renderCustomers(); renderFilament(); populatePaymentSelect();
     renderOrders(); renderTodos(); renderNotes(); renderExpenses(); renderDiscountPresetPills();
-    renderPaymentMethodsSettings(); renderDiscountPresetsSettings();
+    renderPaymentMethodsSettings(); renderDiscountPresetsSettings(); renderInventory();
     statusEl.textContent = 'Synced ' + new Date().toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
   }catch(e){ console.error(e); statusEl.textContent = 'Sync error'; }
 }
@@ -793,7 +822,7 @@ function toggleTheme(){
 }
 
 const TAB_TITLES = {dashboard:'Dashboard',gallery:'Gallery',events:'Events',sell:'Sell',products:'Products',
-  receipts:'Receipts',customers:'Customers',cashdrawer:'Cash Drawer',orders:'Order Notes',tasks:'Tasks & Notes',
+  receipts:'Receipts',customers:'Customers',cashdrawer:'Cash Drawer',inventory:'Inventory & Labels',orders:'Order Notes',tasks:'Tasks & Notes',
   expenses:'Expenses',filament:'Filament Tracker',calc:'Print Calculator',settings:'Settings'};
 function showTab(name){
   document.querySelectorAll('.nav-item').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
@@ -1010,16 +1039,71 @@ function renderEvents(){
     const d = new Date(e.start);
     const isPast = new Date(e.end||e.start) < now;
     const tags = parseJSONField(e.tags, []);
-    return `<div class="list-row" style="opacity:${isPast?0.6:1}">
+    return `<div class="list-row" style="opacity:${isPast?0.6:1};cursor:pointer" onclick='openEventDetail(${JSON.stringify(e).replace(/'/g,"&apos;")})'>
       <div style="width:4px;height:44px;border-radius:3px;background:${e.color||'#3b82f6'}"></div>
       <div class="info"><div class="name">${escapeHtml(e.title||'Untitled')} ${e.visible===false?'<span class="badge badge-red">Hidden</span>':''}</div>
       <div class="meta">${d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})} ${e.location?'· '+escapeHtml(e.location):''} ${tags.length?'· '+tags.join(', '):''}</div></div>
-      <div class="actions">
+      <div class="actions" onclick="event.stopPropagation()">
+        <button title="${e.visible===false?'Show on website':'Hide from website'}" onclick="toggleEventVisible('${e.id}', ${e.visible===false})">${e.visible===false?'◎':'◉'}</button>
         <button onclick='openEventModal(${JSON.stringify(e).replace(/'/g,"&apos;")})'>✎</button>
         <button onclick="deleteEvent('${e.id}')">🗑</button>
       </div>
     </div>`;
   }).join('');
+}
+async function toggleEventVisible(id, makeVisible){
+  await pbUpdate('events', id, {visible: !!makeVisible}); await refreshAll();
+}
+const WMO = {0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',80:'Rain showers',81:'Showers',82:'Heavy showers',95:'Thunderstorm',96:'Thunderstorm w/ hail',99:'Thunderstorm w/ hail'};
+async function openEventDetail(e){
+  const start = new Date(e.start), end = new Date(e.end||e.start);
+  const dayStart = new Date(start); dayStart.setHours(0,0,0,0);
+  const dayEnd = new Date(end); dayEnd.setHours(23,59,59,999);
+  const sales = DATA.sales.filter(s => !s.is_refunded && new Date(s.created_at||s.created) >= dayStart && new Date(s.created_at||s.created) <= dayEnd);
+  const exp = DATA.expenses.filter(x => new Date(x.date||x.created) >= dayStart && new Date(x.date||x.created) <= dayEnd);
+  const rev = sales.reduce((a,b)=>a+(b.total||0),0), spent = exp.reduce((a,b)=>a+(b.amount||0),0);
+  const top = {}; sales.forEach(s => parseJSONField(s.items,[]).forEach(it => { top[baseProductName(it.productName)] = (top[baseProductName(it.productName)]||0) + (it.quantity||0); }));
+  const topRows = Object.entries(top).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([n,q])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span>${escapeHtml(n)}</span><b>×${q}</b></div>`).join('');
+  const mapsUrl = e.lat && e.lng ? `https://maps.apple.com/?ll=${e.lat},${e.lng}&q=${encodeURIComponent(e.title||'')}` : (e.location ? `https://maps.apple.com/?q=${encodeURIComponent(e.location)}` : null);
+  openModal(`
+    <div class="modal-header"><h3>${escapeHtml(e.title||'Untitled')} ${e.visible===false?'<span class="badge badge-red">Hidden</span>':''}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">${start.toLocaleString(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'})}${e.end?' → '+end.toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):''}</p>
+    ${e.location?`<div class="card" style="padding:12px;margin-bottom:10px"><b style="font-size:13px">Where</b><div style="font-size:13px;margin-top:4px">${escapeHtml(e.location)}</div>${mapsUrl?`<a href="${mapsUrl}" target="_blank" style="font-size:12px;color:var(--accent)">Open in Maps ↗</a>`:''}</div>`:''}
+    <div class="card" style="padding:12px;margin-bottom:10px"><b style="font-size:13px">Forecast for that day</b><div id="evWeather" style="font-size:13px;margin-top:4px;color:var(--muted)">Loading…</div></div>
+    <div class="card" style="padding:12px;margin-bottom:10px"><b style="font-size:13px">How it went</b>
+      ${sales.length||exp.length ? `<div class="grid grid-3" style="margin-top:8px;gap:8px">
+        <div><div style="font-size:11px;color:var(--muted)">Revenue</div><b>${money(rev)}</b><div style="font-size:11px;color:var(--muted)">${sales.length} sales</div></div>
+        <div><div style="font-size:11px;color:var(--muted)">Expenses</div><b>${money(spent)}</b></div>
+        <div><div style="font-size:11px;color:var(--muted)">Profit</div><b style="color:var(--green)">${money(rev-spent)}</b></div></div>${topRows?'<div style="margin-top:8px;font-size:11px;color:var(--muted)">Top sellers</div>'+topRows:''}`
+      : `<div style="font-size:12px;color:var(--muted);margin-top:4px">${start < new Date() ? 'No sales logged on these days.' : 'Sales during the event will show here.'}</div>`}
+    </div>
+    <div class="field"><label>Notes (saved to the event description)</label><textarea id="evDetailNotes" rows="4">${escapeHtml(e.description||'')}</textarea></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="saveEventNotes('${e.id}')">Save Notes</button>
+      <button class="btn btn-outline" onclick='openEventModal(${JSON.stringify(e).replace(/'/g,"&apos;")})'>Edit Event</button>
+    </div>`);
+  loadEventWeather(e, start);
+}
+async function saveEventNotes(id){
+  try{ await pbUpdate('events', id, {description: document.getElementById('evDetailNotes').value}); closeModal(); await refreshAll(); }catch(err){ alert(err.message); }
+}
+async function loadEventWeather(e, start){
+  const el = document.getElementById('evWeather'); if(!el) return;
+  const days = Math.round((new Date(start).setHours(0,0,0,0) - new Date().setHours(0,0,0,0)) / 86400000);
+  if(days < 0){ el.textContent = 'This event already happened.'; return; }
+  if(days > 15){ el.textContent = 'Forecasts only reach 16 days out — check back closer to the date.'; return; }
+  let lat = e.lat, lon = e.lng;
+  if(!lat && e.location){
+    try{ const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(e.location)}&count=1`); const j = await r.json(); if(j.results&&j.results[0]){ lat=j.results[0].latitude; lon=j.results[0].longitude; } }catch(err){}
+  }
+  if(!lat){ el.textContent = 'Add an address (or coordinates) to the event to see a forecast.'; return; }
+  const d = new Date(start); const day = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  try{
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&start_date=${day}&end_date=${day}`);
+    const j = await r.json(); const dd = j.daily;
+    const code = dd.weather_code[0], hi = Math.round(dd.temperature_2m_max[0]), lo = Math.round(dd.temperature_2m_min[0]), rain = dd.precipitation_probability_max[0], wind = Math.round(dd.wind_speed_10m_max[0]);
+    el.innerHTML = `<b style="color:var(--text)">${WMO[code]||'—'}</b> · High ${hi}° / Low ${lo}° · Rain ${rain}% · Wind ${wind} mph${rain>=40?'<div style="color:var(--orange);margin-top:4px">Decent chance of rain — pack canopy sides.</div>':''}${wind>=15?'<div style="color:var(--orange)">Windy — weigh down the tent.</div>':''}`;
+  }catch(err){ el.textContent = "Couldn't load the forecast."; }
 }
 function openEventModal(e){
   e = e || {};
@@ -1097,7 +1181,17 @@ function openProductModal(p){
 
     <div class="modal-section-title">Inventory</div>
     <div class="checkbox-row"><input type="checkbox" id="prodTrackInv" ${p.track_inventory?'checked':''}><label>Track inventory</label></div>
-    <div class="field"><label>Stock Count</label><input type="number" id="prodStock" value="${p.stock_count||0}"></div>
+    <div class="field-row">
+      <div class="field"><label>Stock Count</label><input type="number" id="prodStock" value="${p.stock_count||0}"></div>
+      <div class="field"><label>Alert me at</label><input type="number" id="prodLowStock" value="${p.low_stock_alert||5}"></div>
+      <div class="field"><label>Restock up to</label><input type="number" id="prodRestock" value="${p.restock_target||''}"></div>
+    </div>
+    <div class="field"><label>Supplier / where you buy it</label><input id="prodSupplier" value="${escapeHtml(p.supplier||'')}"></div>
+
+    <div class="modal-section-title">Size / Price Options</div>
+    <div class="field"><label>One per line: <code>Small = 6</code>, <code>Large = 10</code></label>
+      <textarea id="prodVariants" rows="3">${(parseJSONField(p.variants,[])).map(v=>`${v.name} = ${v.price}`).join('\n')}</textarea>
+      <input type="hidden" id="prodVariantIds" value="${escapeHtml(JSON.stringify(parseJSONField(p.variants,[]).map(v=>({name:v.name,id:v.id}))))}"></div>
 
     <div class="modal-section-title">Bundle</div>
     <div class="checkbox-row"><input type="checkbox" id="prodIsBundle" ${p.is_bundle?'checked':''}><label>This is a bundle</label></div>
@@ -1110,7 +1204,8 @@ function openProductModal(p){
 
     <div class="modal-section-title">Customization Attributes</div>
     <div class="checkbox-row"><input type="checkbox" id="prodCustomizable" ${p.customizable?'checked':''}><label>Customizable (colors, switches, etc.)</label></div>
-    <div id="prodAttrsList">${attrs.map((a,i)=>`<div class="field-row" style="align-items:flex-end"><div class="field"><label>Attribute</label><input class="attr-name" value="${escapeHtml(a.name)}"></div><div class="field"><label>Options</label><input class="attr-opts" value="${(a.options||[]).join(', ')}"></div><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button></div>`).join('')}</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:8px">Choices are comma-separated. Add an extra charge in parentheses, e.g. <code>Red, Blue, Glow (+2)</code>. Untick "required" for optional add-ons.</p>
+    <div id="prodAttrsList">${attrs.map((a,i)=>attrRowHTML(a)).join('')}</div>
     <button class="btn btn-outline btn-sm" onclick="addAttrRow()" type="button">+ Add Attribute</button>
 
     <div class="field" style="margin-top:14px"><label>Notes</label><textarea id="prodNotes" rows="2">${escapeHtml(p.notes||'')}</textarea></div>
@@ -1120,22 +1215,45 @@ function openProductModal(p){
     </div>
   `, true);
 }
+function attrRowHTML(a){
+  a = a || {name:'', options:[], priceDeltas:{}, required:true};
+  const optText = (a.options||[]).map(o => { const d = (a.priceDeltas||{})[o]; return d ? `${o} (+${d})` : o; }).join(', ');
+  return `<div class="field-row attr-row" data-attr-id="${a.id||''}" style="align-items:flex-end">
+    <div class="field" style="flex:0.8"><label>Attribute</label><input class="attr-name" value="${escapeHtml(a.name||'')}" placeholder="e.g. Base Color"></div>
+    <div class="field" style="flex:1.6"><label>Choices</label><input class="attr-opts" value="${escapeHtml(optText)}" placeholder="Red, Blue, Glow (+2)"></div>
+    <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);padding-bottom:12px;white-space:nowrap"><input type="checkbox" class="attr-req" style="width:auto" ${a.required===false?'':'checked'}> required</label>
+    <button class="btn btn-danger btn-sm" style="margin-bottom:12px" onclick="this.parentElement.remove()">✕</button></div>`;
+}
 function addAttrRow(){
-  const wrap = document.getElementById('prodAttrsList');
-  const div = document.createElement('div');
-  div.className = 'field-row'; div.style.alignItems = 'flex-end';
-  div.innerHTML = `<div class="field"><label>Attribute</label><input class="attr-name" placeholder="e.g. Base Color"></div><div class="field"><label>Options</label><input class="attr-opts" placeholder="Red, Blue, Black"></div><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>`;
-  wrap.appendChild(div);
+  document.getElementById('prodAttrsList').insertAdjacentHTML('beforeend', attrRowHTML());
+}
+function parseAttrRows(){
+  return [...document.querySelectorAll('#prodAttrsList .attr-row')].map(row => {
+    const name = row.querySelector('.attr-name').value.trim();
+    const options = [], priceDeltas = {};
+    row.querySelector('.attr-opts').value.split(',').map(s=>s.trim()).filter(Boolean).forEach(tok => {
+      const m = tok.match(/^(.*?)\s*\(\s*\+?\s*\$?\s*([0-9.]+)\s*\)\s*$/);
+      if(m){ options.push(m[1].trim()); priceDeltas[m[1].trim()] = parseFloat(m[2]); } else options.push(tok);
+    });
+    const id = row.dataset.attrId || uid().toUpperCase();
+    return { id, name, options, priceDeltas, required: row.querySelector('.attr-req').checked };
+  }).filter(a => a.name && a.options.length);
 }
 async function saveProduct(id){
   const name = document.getElementById('prodName').value;
   const price = parseFloat(document.getElementById('prodPrice').value);
   if(!name || isNaN(price)){ alert('Name and price are required.'); return; }
-  const attrs = [...document.querySelectorAll('#prodAttrsList .field-row')].map(row => ({
-    name: row.querySelector('.attr-name').value,
-    options: row.querySelector('.attr-opts').value.split(',').map(s=>s.trim()).filter(Boolean)
-  })).filter(a=>a.name && a.options.length);
+  const attrs = parseAttrRows();
+  const prevIds = {}; parseJSONField(document.getElementById('prodVariantIds').value, []).forEach(v => { prevIds[(v.name||'').toLowerCase()] = v.id; });
+  const variants = document.getElementById('prodVariants').value.split('\n').map(l => {
+    const m = l.match(/^\s*(.+?)\s*=\s*\$?\s*([0-9.]+)\s*$/);
+    return m ? {id: prevIds[m[1].toLowerCase()] || uid().toUpperCase(), name: m[1], price: parseFloat(m[2])} : null;
+  }).filter(Boolean);
   const fields = {
+    low_stock_alert: parseInt(document.getElementById('prodLowStock').value)||5,
+    restock_target: parseInt(document.getElementById('prodRestock').value)||0,
+    supplier: document.getElementById('prodSupplier').value,
+    variants: JSON.stringify(variants),
     name, price, cost: parseFloat(document.getElementById('prodCost').value)||0,
     category: document.getElementById('prodCategory').value || 'General',
     active: document.getElementById('prodActive').checked,
@@ -1432,6 +1550,10 @@ function openReceiptDetail(s){
 }
 async function sendReceiptEmail(saleId, email, receiptNum){
   const statusEl = document.getElementById('receiptSendStatus');
+  if(!SETTINGS.resendKey){
+    statusEl.innerHTML = `<div class="error-banner">Add your Resend API key in Settings → Email Receipts first.</div>`;
+    return;
+  }
   statusEl.innerHTML = `<p style="font-size:12px;color:var(--muted)">Sending…</p>`;
   const s = DATA.sales.find(x=>x.id===saleId); if(!s) return;
   const items = parseJSONField(s.items, []);
@@ -1472,12 +1594,32 @@ function renderCustomers(){
   el.innerHTML = list.map(c => {
     const spent = DATA.sales.filter(s => (s.customer_name||'').toLowerCase() === (c.name||'').toLowerCase() && !s.is_refunded).reduce((s,x)=>s+(x.total||0),0);
     const visits = DATA.sales.filter(s => (s.customer_name||'').toLowerCase() === (c.name||'').toLowerCase()).length;
-    return `<div class="list-row">
+    return `<div class="list-row" style="cursor:pointer" onclick='openCustomerDetail(${JSON.stringify(c).replace(/'/g,"&apos;")})'>
       <div class="info"><div class="name">${escapeHtml(c.name)}</div><div class="meta">${escapeHtml(c.phone||'')} ${c.email?'· '+escapeHtml(c.email):''} · ${visits} visit${visits===1?'':'s'}</div></div>
       <div style="font-weight:700;color:var(--green)">${money(spent)}</div>
-      <div class="actions"><button onclick='openCustomerModal(${JSON.stringify(c).replace(/'/g,"&apos;")})'>✎</button><button onclick="deleteCustomer('${c.id}')">🗑</button></div>
+      <div class="actions" onclick="event.stopPropagation()"><button onclick='openCustomerModal(${JSON.stringify(c).replace(/'/g,"&apos;")})'>✎</button><button onclick="deleteCustomer('${c.id}')">🗑</button></div>
     </div>`;
   }).join('');
+}
+function customerSales(c){
+  const n=(c.name||'').trim().toLowerCase(), e=(c.email||'').trim().toLowerCase(), p=(c.phone||'').replace(/\D/g,'');
+  return DATA.sales.filter(s => (e && (s.customer_email||'').trim().toLowerCase()===e) || (p && (s.customer_phone||'').replace(/\D/g,'')===p) || (n && (s.customer_name||'').trim().toLowerCase()===n))
+    .sort((a,b)=> new Date(b.created_at||b.created) - new Date(a.created_at||a.created));
+}
+function openCustomerDetail(c){
+  const hist = customerSales(c);
+  const spent = hist.filter(s=>!s.is_refunded).reduce((a,b)=>a+(b.total||0),0);
+  const fav = {}; hist.filter(s=>!s.is_refunded).forEach(s=>parseJSONField(s.items,[]).forEach(it=>{ fav[baseProductName(it.productName)]=(fav[baseProductName(it.productName)]||0)+(it.quantity||0); }));
+  const favRows = Object.entries(fav).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([n,q])=>`<div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0"><span>${escapeHtml(n)}</span><b>×${q}</b></div>`).join('');
+  openModal(`
+    <div class="modal-header"><h3>${escapeHtml(c.name||'')}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">${c.phone?`<a href="tel:${escapeHtml(c.phone.replace(/\D/g,''))}" style="color:var(--accent)">${escapeHtml(c.phone)}</a>`:''} ${c.email?`· <a href="mailto:${escapeHtml(c.email)}" style="color:var(--accent)">${escapeHtml(c.email)}</a>`:''}</p>
+    <div class="grid grid-2" style="margin-bottom:12px"><div class="card" style="padding:12px"><div style="font-size:11px;color:var(--muted)">Total spent</div><b style="font-size:18px;color:var(--green)">${money(spent)}</b></div>
+      <div class="card" style="padding:12px"><div style="font-size:11px;color:var(--muted)">Visits</div><b style="font-size:18px">${hist.length}</b>${hist[0]?`<div style="font-size:11px;color:var(--muted)">last ${new Date(hist[0].created_at||hist[0].created).toLocaleDateString()}</div>`:''}</div></div>
+    ${favRows?`<div class="card" style="padding:12px;margin-bottom:12px"><b style="font-size:13px">Usually buys</b>${favRows}</div>`:''}
+    ${c.notes?`<div class="card" style="padding:12px;margin-bottom:12px"><b style="font-size:13px">Notes</b><div style="font-size:13px;margin-top:4px">${escapeHtml(c.notes)}</div></div>`:''}
+    <div class="card" style="padding:12px"><b style="font-size:13px">Receipts</b>${hist.length?hist.map(s=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);cursor:pointer;font-size:13px" onclick='openReceiptDetail(${JSON.stringify(s).replace(/'/g,"&apos;")})'><span>${escapeHtml(s.receipt_number||'—')} <span style="color:var(--muted);font-size:11px">${new Date(s.created_at||s.created).toLocaleDateString()}</span></span><b style="${s.is_refunded?'text-decoration:line-through;color:var(--red)':''}">${money(s.total)}</b></div>`).join(''):'<div style="font-size:12px;color:var(--muted);margin-top:4px">No purchases yet.</div>'}</div>
+    <div class="modal-actions"><button class="btn btn-outline" onclick='openCustomerModal(${JSON.stringify(c).replace(/'/g,"&apos;")})'>Edit</button></div>`);
 }
 function openCustomerModal(c){
   c = c || {};
@@ -1570,6 +1712,84 @@ function applyDrawerChange(breakdown){
   localStorage.setItem('jb_drawer', JSON.stringify(drawerCounts));
   renderCashDrawer();
   document.getElementById('ccResult').innerHTML = `<div class="success-banner">Applied to drawer.</div>`;
+}
+
+
+/* =================== INVENTORY & LABELS =================== */
+let invFilter = 'All';
+function productCode(p, variant, options){
+  const opts = Object.keys(options||{}).sort().map(k=>`${k}=${options[k]}`).join(';');
+  return `JB1|${(p.local_id||'').toUpperCase()}|${variant?variant.id:'-'}|${opts}`;
+}
+function optionCode(attr, value){ return `JBO|${attr}|${value}`; }
+function renderInventory(){
+  const tracked = DATA.products.filter(p=>p.track_inventory);
+  const isLow = p => p.track_inventory && (p.stock_count||0) <= (p.low_stock_alert||5);
+  document.getElementById('invUnits').textContent = tracked.reduce((a,p)=>a+Math.max(0,p.stock_count||0),0);
+  document.getElementById('invRetail').textContent = money(tracked.reduce((a,p)=>a+(p.stock_count||0)*(p.price||0),0));
+  document.getElementById('invLow').textContent = DATA.products.filter(p=>isLow(p)&&(p.stock_count||0)>0).length;
+  document.getElementById('invOut').textContent = tracked.filter(p=>(p.stock_count||0)<=0).length;
+  document.getElementById('invPills').innerHTML = ['All','Tracked','Low','Out'].map(f=>`<button class="pill ${invFilter===f?'active':''}" onclick="invFilter='${f}';renderInventory()">${f}</button>`).join('');
+  const q = (document.getElementById('invSearch').value||'').toLowerCase();
+  let list = DATA.products.slice();
+  if(invFilter==='Tracked') list = list.filter(p=>p.track_inventory);
+  if(invFilter==='Low') list = list.filter(p=>isLow(p)&&(p.stock_count||0)>0);
+  if(invFilter==='Out') list = list.filter(p=>p.track_inventory&&(p.stock_count||0)<=0);
+  if(q) list = list.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.sku||'').toLowerCase().includes(q));
+  list.sort((a,b)=>((a.track_inventory?0:1)-(b.track_inventory?0:1))||((a.stock_count||0)-(b.stock_count||0)));
+  const el = document.getElementById('inventoryList');
+  if(!list.length){ el.innerHTML = `<div class="empty-state"><div class="big">▥</div>Nothing here.</div>`; return; }
+  el.innerHTML = list.map(p=>{
+    const low = isLow(p), out = p.track_inventory && (p.stock_count||0)<=0;
+    return `<div class="list-row">
+      <div class="info"><div class="name">${escapeHtml(p.name)} ${p.track_inventory?`<span class="badge ${out?'badge-red':(low?'badge-orange':'badge-green')}">${out?'Out':(p.stock_count+' in stock')}</span>`:'<span class="badge badge-blue">Not tracked</span>'}</div>
+      <div class="meta">${escapeHtml(p.category||'')}${p.sku?' · SKU '+escapeHtml(p.sku):''}${p.supplier?' · '+escapeHtml(p.supplier):''}${(low&&p.restock_target>p.stock_count)?' · <b style="color:var(--orange)">order '+(p.restock_target-p.stock_count)+'</b>':''}</div></div>
+      ${p.track_inventory?`<div class="qty-stepper"><button onclick="adjustStock('${p.id}',-1)">−</button><span>${p.stock_count||0}</span><button onclick="adjustStock('${p.id}',1)">+</button></div>`:''}
+      <div class="actions"><button title="Labels" onclick="openLabels('${p.id}')">▦</button><button onclick='openProductModal(${JSON.stringify(p).replace(/'/g,"&apos;")})'>✎</button></div>
+    </div>`;
+  }).join('');
+}
+async function adjustStock(id, d){
+  const p = DATA.products.find(x=>x.id===id); if(!p) return;
+  const v = Math.max(0,(p.stock_count||0)+d); p.stock_count = v; renderInventory(); renderDashboard();
+  try{ await pbUpdate('products', id, {stock_count: v}); }catch(e){ alert(e.message); }
+}
+function qrInto(el, text, size){ el.innerHTML=''; new QRCode(el, {text, width:size||140, height:size||140, correctLevel: QRCode.CorrectLevel.M}); }
+function labelCells(p){
+  const cells = [];
+  const variants = parseJSONField(p.variants,[]), attrs = parseJSONField(p.custom_attributes,[]);
+  if(variants.length) variants.forEach(v=>cells.push({payload:productCode(p,v), title:p.name, sub:`${v.name} — ${money(v.price)}`}));
+  else cells.push({payload:productCode(p), title:p.name, sub:money(p.price)});
+  attrs.forEach(a=>(a.options||[]).forEach(o=>cells.push({payload:optionCode(a.name,o), title:a.name, sub:o})));
+  return cells;
+}
+function openLabels(id){
+  const p = DATA.products.find(x=>x.id===id); if(!p) return;
+  if(!p.local_id){ alert('This product has no local_id yet — open it in the app once (or save it here) so labels can link back to it.'); return; }
+  const cells = labelCells(p);
+  openModal(`<div class="modal-header"><h3>Labels — ${escapeHtml(p.name)}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:10px">Scan these from the app's Sell screen. Product codes add the item; option codes fill in color/switch/etc. Print on sticker paper.</p>
+    <div id="labelGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px"></div>
+    <div class="modal-actions"><button class="btn" onclick="printLabels('${escapeHtml(p.name)}')">Print Sheet</button></div>`, true);
+  const grid = document.getElementById('labelGrid');
+  cells.forEach(c=>{ const d=document.createElement('div'); d.className='label-cell'; d.style.cssText='background:#fff;color:#000;border:1px solid #ccc;border-radius:8px;padding:8px;text-align:center'; d.innerHTML=`<div class="qr" style="display:flex;justify-content:center"></div><div style="font-size:12px;font-weight:600;margin-top:6px">${escapeHtml(c.title)}</div><div style="font-size:11px;color:#666">${escapeHtml(c.sub)}</div>`; grid.appendChild(d); qrInto(d.querySelector('.qr'), c.payload, 130); });
+}
+function openOptionSheets(){
+  const m = {}; DATA.products.forEach(p=>parseJSONField(p.custom_attributes,[]).forEach(a=>(a.options||[]).forEach(o=>{ (m[a.name]=m[a.name]||new Set()).add(o); })));
+  const names = Object.keys(m).sort();
+  if(!names.length){ alert('No product options set up yet.'); return; }
+  openModal(`<div class="modal-header"><h3>Option Code Sheets</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:10px">One sheet per option type. At the register: scan the product, then scan the option.</p>
+    <div id="labelGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px"></div>
+    <div class="modal-actions"><button class="btn" onclick="printLabels('Option codes')">Print Sheet</button></div>`, true);
+  const grid = document.getElementById('labelGrid');
+  names.forEach(n=>[...m[n]].forEach(o=>{ const d=document.createElement('div'); d.style.cssText='background:#fff;color:#000;border:1px solid #ccc;border-radius:8px;padding:8px;text-align:center'; d.innerHTML=`<div class="qr" style="display:flex;justify-content:center"></div><div style="font-size:12px;font-weight:600;margin-top:6px">${escapeHtml(n)}</div><div style="font-size:11px;color:#666">${escapeHtml(o)}</div>`; grid.appendChild(d); qrInto(d.querySelector('.qr'), optionCode(n,o), 130); }));
+}
+function printLabels(title){
+  const grid = document.getElementById('labelGrid'); if(!grid) return;
+  const w = window.open('', '_blank'); if(!w) return;
+  w.document.write(`<html><head><title>${escapeHtml(title)}</title><style>body{font-family:sans-serif;margin:16px}h2{font-size:18px}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.g>div{border:1px solid #bbb;border-radius:8px;padding:8px;text-align:center;page-break-inside:avoid}img{width:140px;height:140px}</style></head><body><h2>${escapeHtml(title)}</h2><div class="g">${[...grid.children].map(c=>{const img=c.querySelector('img'); const src=img?img.src:(c.querySelector('canvas')?c.querySelector('canvas').toDataURL():''); return `<div><img src="${src}">${c.children[1].outerHTML}${c.children[2].outerHTML}</div>`;}).join('')}</div><script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
 }
 
 /* =================== ORDER NOTES =================== */
