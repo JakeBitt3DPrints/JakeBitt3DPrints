@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-34HRY5BP01"></script>
   <script>
@@ -10,14 +12,22 @@
     gtag('config', 'G-34HRY5BP01');
   </script>
 
-  <meta charset="UTF-8" />
   <title>Shop | JakeBitt3DPrints</title>
   <meta name="description" content="Shop coming soon — unique 3D printed designs and custom order options from JakeBitt3DPrints." />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <link rel="canonical" href="https://jakebitt3dprints.com/shop" />
 
-  <!-- View Transitions API for smooth page fades -->
-  <meta name="view-transition" content="same-origin">
+  <!-- Link previews (Facebook, iMessage, Discord, etc.) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="JakeBitt3DPrints" />
+  <meta property="og:title" content="Shop | JakeBitt3DPrints" />
+  <meta property="og:description" content="Shop coming soon — unique 3D printed designs and custom order options from JakeBitt3DPrints." />
+  <meta property="og:url" content="https://jakebitt3dprints.com/shop" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Browser UI colour (mobile address bar); updated by the theme script -->
+  <meta name="theme-color" id="themeColor" content="#f5f5f5" />
 
   <!-- THEME: inline bg on html before any paint — eliminates white flash -->
   <style>html { background: #f5f5f5; } html[data-theme="dark"] { background: #111827; }</style>
@@ -28,6 +38,7 @@
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (stored === 'dark' || (!stored && prefersDark)) {
           document.documentElement.setAttribute('data-theme', 'dark');
+          document.getElementById('themeColor').setAttribute('content', '#111827');
         }
       } catch(e) {}
     })();
@@ -44,6 +55,7 @@
   <style>
     /* ── TOKENS ── */
     :root {
+      color-scheme: light;
       --bg:          #f5f5f5;
       --bg-alt:      #ffffff;
       --text:        #111111;
@@ -65,6 +77,7 @@
       --safe-r: env(safe-area-inset-right,  0px);
     }
     :root[data-theme="dark"] {
+      color-scheme: dark;
       --bg:          #111827;
       --bg-alt:      #020617;
       --text:        #f9fafb;
@@ -84,7 +97,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html {
-      overflow-x: hidden;
+      overflow-x: hidden; overflow-x: clip;
       max-width: 100%;
     }
 
@@ -92,11 +105,11 @@
       font-family: var(--font-body);
       background: var(--bg);
       color: var(--text);
-      min-height: 100dvh;
+      min-height: 100vh; min-height: 100dvh;
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      overflow-x: hidden; overflow-x: clip;
       max-width: 100%;
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
@@ -106,6 +119,8 @@
     button, a, [role="button"] { touch-action: manipulation; }
 
     /* ── PAGE FADE TRANSITION ── */
+    /* Cross-page View Transitions (Chrome/Edge 126+, Safari 18.2+) */
+    @view-transition { navigation: auto; }
     @keyframes vt-fade-in  { from { opacity: 0; } to { opacity: 1; } }
     @keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
     ::view-transition-old(root) { animation: vt-fade-out 0.22s ease forwards; }
@@ -152,6 +167,8 @@
       align-items: center;
       gap: 12px;
       flex-shrink: 0;
+      text-decoration: none;
+      color: inherit;
     }
     .brand-logo {
       width: 44px; height: 44px;
@@ -257,12 +274,7 @@
 
     /* ── FOOTER ── */
     footer {
-      width: 100vw;
-      position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
+      width: 100%;
       background-color: var(--footer-bg);
       border-top: 1px solid var(--border);
       padding: 16px calc(20px + var(--safe-r)) calc(16px + var(--safe-b)) calc(20px + var(--safe-l));
@@ -326,6 +338,20 @@
       nav a { padding: 6px 8px; font-size: 0.78rem; }
       .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
+
+    /* ── REDUCED MOTION ── (only affects people who turned this on in their OS) */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+      }
+      ::view-transition-group(*),
+      ::view-transition-old(*),
+      ::view-transition-new(*) { animation: none !important; }
+    }
   </style>
 </head>
 
@@ -334,22 +360,22 @@
 
     <!-- BRAND BAR -->
     <header class="brand-bar animate d1">
-      <div class="brand-left">
+      <a class="brand-left" href="/" aria-label="JakeBitt3DPrints home">
         <div class="brand-logo">
-          <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="JakeBitt3DPrints logo">
+          <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="" width="34" height="34" decoding="async">
         </div>
         <div class="brand-text">
           <div class="brand-name">JakeBitt3DPrints</div>
           <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
         </div>
-      </div>
+      </a>
       <div class="nav-wrap">
         <nav aria-label="Main navigation">
           <a href="/">Home</a>
-          <a href="gallery">Gallery</a>
-          <a href="shop" class="active">Shop</a>
-          <a href="calendar">Calendar</a>
-          <a href="contact">Contact</a>
+          <a href="/gallery">Gallery</a>
+          <a href="/shop" class="active" aria-current="page">Shop</a>
+          <a href="/calendar">Calendar</a>
+          <a href="/contact">Contact</a>
         </nav>
       </div>
     </header>
@@ -371,17 +397,17 @@
   <!-- FOOTER — full width -->
   <footer>
     <div class="footer-inner animate d3">
-      <div class="footer-left">&copy; 2025 JakeBitt3DPrints. All rights reserved.</div>
+      <div class="footer-left">&copy; <span id="year">2026</span> JakeBitt3DPrints. All rights reserved.</div>
       <div class="footer-right">
         <div class="social-links" aria-label="Social media links">
-          <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-          <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-          <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-          <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
+          <a href="https://www.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+          <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+          <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat" aria-hidden="true"></i></a>
         </div>
-        <button type="button" class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-          <span id="themeIcon">🌙</span>
+        <button type="button" class="theme-btn" id="themeToggle">
+          <span id="themeIcon" aria-hidden="true">🌙</span>
           <span id="themeLabel">Dark mode</span>
         </button>
       </div>
@@ -391,65 +417,91 @@
   <script>
   (function() {
 
+    /* ── FOOTER YEAR ── */
+    var yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
     /* ── THEME TOGGLE ── */
-    var root   = document.documentElement;
-    var toggle = document.getElementById('themeToggle');
-    var tIcon  = document.getElementById('themeIcon');
-    var tLabel = document.getElementById('themeLabel');
+    var root      = document.documentElement;
+    var toggle    = document.getElementById('themeToggle');
+    var tIcon     = document.getElementById('themeIcon');
+    var tLabel    = document.getElementById('themeLabel');
+    var metaColor = document.getElementById('themeColor');
+
+    function getStoredTheme() { try { return localStorage.getItem('theme'); } catch (e) { return null; } }
+    function setStoredTheme(v) { try { localStorage.setItem('theme', v); } catch (e) {} }
 
     function syncTheme() {
       var dark = root.getAttribute('data-theme') === 'dark';
       tIcon.textContent  = dark ? '☀️' : '🌙';
       tLabel.textContent = dark ? 'Light mode' : 'Dark mode';
+      if (metaColor) metaColor.setAttribute('content', dark ? '#111827' : '#f5f5f5');
+    }
+    function applyTheme(dark) {
+      if (dark) root.setAttribute('data-theme', 'dark');
+      else root.removeAttribute('data-theme');
+      syncTheme();
     }
     syncTheme();
 
     toggle.addEventListener('click', function() {
-      var dark = root.getAttribute('data-theme') === 'dark';
-      if (dark) {
-        root.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
-      } else {
-        root.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-      }
-      syncTheme();
+      var dark = root.getAttribute('data-theme') !== 'dark';
+      applyTheme(dark);
+      setStoredTheme(dark ? 'dark' : 'light');
     });
+
+    // Follow the device's light/dark setting live, until the visitor picks one manually
+    try {
+      var themeMq = window.matchMedia('(prefers-color-scheme: dark)');
+      var onSystemTheme = function(e) { if (!getStoredTheme()) applyTheme(e.matches); };
+      if (themeMq.addEventListener) themeMq.addEventListener('change', onSystemTheme);
+      else if (themeMq.addListener) themeMq.addListener(onSystemTheme);
+    } catch (e) {}
 
     /* ── SMOOTH PAGE TRANSITIONS ── */
-    var links = document.querySelectorAll('nav a');
+    // Browsers with cross-page View Transitions fade natively via the @view-transition CSS rule,
+    // so this JS fallback only runs in browsers that don't have it.
+    (function() {
+      if ('CSSViewTransitionRule' in window) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    links.forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        var href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
-        if (link.target === '_blank') return;
+      document.querySelectorAll('nav a, .brand-left').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          // Let Cmd/Ctrl/Shift/middle-click open new tabs/windows as normal
+          if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+          var href = link.getAttribute('href');
+          if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) return;
+          if (link.target === '_blank') return;
+          var url;
+          try { url = new URL(href, window.location.href); } catch (err) { return; }
+          if (url.origin !== window.location.origin) return;
 
-        var url;
-        try { url = new URL(href, window.location.href); } catch(err) { return; }
-        if (url.origin !== window.location.origin) return;
-
-        if (document.startViewTransition) {
           e.preventDefault();
-          document.startViewTransition(function() {
-            window.location.href = href;
-          });
-          return;
-        }
-
-        e.preventDefault();
-        var shell = document.querySelector('.site-shell');
-        if (shell) {
-          shell.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
-          shell.style.opacity    = '0';
-          shell.style.transform  = 'translateY(-8px)';
-        }
-        document.querySelector('footer').style.transition = 'opacity 0.22s ease';
-        document.querySelector('footer').style.opacity    = '0';
-        setTimeout(function() { window.location.href = href; }, 230);
+          var shell  = document.querySelector('.site-shell');
+          var footer = document.querySelector('footer');
+          if (shell) {
+            shell.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+            shell.style.opacity    = '0';
+            shell.style.transform  = 'translateY(-8px)';
+          }
+          if (footer) {
+            footer.style.transition = 'opacity 0.22s ease';
+            footer.style.opacity    = '0';
+          }
+          setTimeout(function() { window.location.href = url.href; }, 230);
+        });
       });
-    });
 
+      // When the visitor hits Back, Safari/Firefox restore the page exactly as it was
+      // (faded out). Undo the fade so the page isn't blank.
+      window.addEventListener('pageshow', function(e) {
+        if (!e.persisted) return;
+        var shell  = document.querySelector('.site-shell');
+        var footer = document.querySelector('footer');
+        if (shell)  { shell.style.opacity = ''; shell.style.transform = ''; }
+        if (footer) { footer.style.opacity = ''; }
+      });
+    })();
   })();
   </script>
 </body>

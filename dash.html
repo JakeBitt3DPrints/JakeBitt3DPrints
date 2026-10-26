@@ -765,6 +765,20 @@ function fileUrl(collection, id, filename, thumb=''){
   return `${PB_URL}/api/files/${collection}/${id}/${filename}${thumb ? '?thumb='+thumb : ''}`;
 }
 function money(n){ return '$' + (Number(n)||0).toFixed(2); }
+// ---- Date helpers ----
+// Date-only fields (expense date, task due date) are saved as midnight UTC. Shown in local time
+// that's the evening BEFORE in the US, so they displayed a day early. A value stored exactly at
+// midnight UTC is treated as a plain calendar date; anything else is a real moment in time.
+function pbDate(v){ if(typeof v==='string' && /^\d{4}-\d{2}-\d{2} \d/.test(v)) v=v.replace(' ','T'); return new Date(v); }
+function isDateOnly(d){ return d.getUTCHours()===0 && d.getUTCMinutes()===0 && d.getUTCSeconds()===0 && d.getUTCMilliseconds()===0; }
+function fmtDay(v, opts){ if(!v) return ''; const d=pbDate(v); if(isNaN(d)) return ''; return d.toLocaleDateString(undefined, isDateOnly(d) ? {...(opts||{}), timeZone:'UTC'} : (opts||{})); }
+function pad2(n){ return String(n).padStart(2,'0'); }
+function dayInputValue(v){ const d=pbDate(v); if(isNaN(d)) return ''; return isDateOnly(d) ? d.toISOString().slice(0,10) : `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
+function todayInputValue(){ const d=new Date(); return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
+// datetime-local inputs need LOCAL time; toISOString() gave UTC, so editing an event in the
+// dashboard shifted it 4–5 hours later on every save.
+function localDateTimeValue(v){ const d=pbDate(v); if(isNaN(d)) return ''; return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`; }
+function dayParts(v){ const d=pbDate(v); return isDateOnly(d) ? {y:d.getUTCFullYear(), m:d.getUTCMonth()} : {y:d.getFullYear(), m:d.getMonth()}; }
 function parseJSONField(v, fallback){ try{ return typeof v==='string' ? JSON.parse(v) : (v||fallback); }catch(e){ return fallback; } }
 function escapeHtml(s){ const d=document.createElement('div'); d.textContent = s||''; return d.innerHTML; }
 function uid(){ return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r=Math.random()*16|0; return (c==='x'?r:(r&0x3|0x8)).toString(16); }); }
@@ -838,11 +852,11 @@ function openModal(html, lg){ document.getElementById('modalBody').className = '
 function renderDashboard(){
   document.getElementById('statGallery').textContent = DATA.gallery.length;
   const now = new Date();
-  const upcoming = DATA.events.filter(e => new Date(e.end || e.start) >= now).sort((a,b)=> new Date(a.start)-new Date(b.start));
+  const upcoming = DATA.events.filter(e => pbDate(e.end || e.start) >= now).sort((a,b)=> pbDate(a.start)-pbDate(b.start));
   document.getElementById('statEvents').textContent = upcoming.length;
 
   const cutoff = new Date(now.getTime() - 30*24*60*60*1000);
-  const sales30 = DATA.sales.filter(s => !s.is_refunded && new Date(s.created_at || s.created) >= cutoff);
+  const sales30 = DATA.sales.filter(s => !s.is_refunded && pbDate(s.created_at || s.created) >= cutoff);
   const revenue = sales30.reduce((sum,s)=> sum + (s.total||0), 0);
   document.getElementById('statRevenue').textContent = money(revenue);
   document.getElementById('statAvg').textContent = sales30.length ? money(revenue/sales30.length) : '$0.00';
@@ -853,7 +867,7 @@ function renderDashboard(){
   document.getElementById('statOrders').textContent = openOrders;
   const filValue = DATA.filament.reduce((s,f)=>s+((f.weight_remaining||0)/1000)*(f.cost_per_kg||0),0);
   document.getElementById('statFilamentValue').textContent = money(filValue);
-  const exp30 = DATA.expenses.filter(e => new Date(e.date||e.created) >= cutoff).reduce((s,e)=>s+(e.amount||0),0);
+  const exp30 = DATA.expenses.filter(e => pbDate(e.date||e.created) >= cutoff).reduce((s,e)=>s+(e.amount||0),0);
   document.getElementById('statExpenses').textContent = money(exp30);
   document.getElementById('statTasks').textContent = DATA.todos.filter(t=>!t.is_done).length;
 
@@ -867,18 +881,18 @@ function renderDashboard(){
       <div class="list-row">
         <div style="width:4px;height:36px;border-radius:3px;background:${e.color||'#3b82f6'}"></div>
         <div class="info"><div class="name">${escapeHtml(e.title||'Untitled')}</div>
-        <div class="meta">${new Date(e.start).toLocaleDateString(undefined,{month:'short',day:'numeric'})} ${e.location ? '· '+escapeHtml(e.location) : ''}</div></div>
+        <div class="meta">${pbDate(e.start).toLocaleDateString(undefined,{month:'short',day:'numeric'})} ${e.location ? '· '+escapeHtml(e.location) : ''}</div></div>
       </div>`).join('');
   }
 
-  const recentSales = [...DATA.sales].sort((a,b)=> new Date(b.created_at||b.created) - new Date(a.created_at||a.created)).slice(0,6);
+  const recentSales = [...DATA.sales].sort((a,b)=> pbDate(b.created_at||b.created) - pbDate(a.created_at||a.created)).slice(0,6);
   const rsEl = document.getElementById('dashRecentSales');
   if(recentSales.length===0){ rsEl.innerHTML = `<div class="empty-state">No sales recorded yet.</div>`; }
   else {
     rsEl.innerHTML = recentSales.map(s => `
       <div class="list-row">
         <div class="info"><div class="name">${escapeHtml(s.receipt_number||'—')} ${s.is_refunded?'<span class="badge badge-red">Refunded</span>':''}</div>
-        <div class="meta">${new Date(s.created_at||s.created).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})} · ${escapeHtml(s.customer_name||'Walk-in')}</div></div>
+        <div class="meta">${pbDate(s.created_at||s.created).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})} · ${escapeHtml(s.customer_name||'Walk-in')}</div></div>
         <div style="font-weight:700">${money(s.total)}</div>
       </div>`).join('');
   }
@@ -920,7 +934,7 @@ function drawRevenueChart(){
   const days = [];
   for(let i=13;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); d.setHours(0,0,0,0); days.push({date:d, total:0}); }
   DATA.sales.filter(s=>!s.is_refunded).forEach(s => {
-    const d = new Date(s.created_at||s.created); d.setHours(0,0,0,0);
+    const d = pbDate(s.created_at||s.created); d.setHours(0,0,0,0);
     const match = days.find(x=>x.date.getTime()===d.getTime());
     if(match) match.total += s.total||0;
   });
@@ -971,7 +985,7 @@ function renderGallery(){
       ${g.featured ? '<div class="star">★</div>' : ''}
       <img src="${url}" loading="lazy" onerror="this.style.opacity=0.2">
       <div class="tile-info"><div class="name">${escapeHtml(g.title||'Untitled')}</div>
-      <div class="cats">${cats.join(', ')||'No category'} ${g.visible===false?' · Hidden':''}</div></div>
+      <div class="cats">${escapeHtml(cats.join(', '))||'No category'} ${g.visible===false?' · Hidden':''}</div></div>
     </div>`;
   }).join('');
 }
@@ -1030,19 +1044,19 @@ function renderEvents(){
   const showPast = document.getElementById('showPastEvents').checked;
   const now = new Date();
   let list = DATA.events;
-  if(!showPast) list = list.filter(e => new Date(e.end || e.start) >= now);
+  if(!showPast) list = list.filter(e => pbDate(e.end || e.start) >= now);
   if(search) list = list.filter(e => (e.title||'').toLowerCase().includes(search) || (e.location||'').toLowerCase().includes(search));
-  list.sort((a,b)=> new Date(a.start) - new Date(b.start));
+  list.sort((a,b)=> pbDate(a.start) - pbDate(b.start));
   const el = document.getElementById('eventsList');
   if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">◷</div>No events found.</div>`; return; }
   el.innerHTML = list.map(e => {
-    const d = new Date(e.start);
-    const isPast = new Date(e.end||e.start) < now;
+    const d = pbDate(e.start);
+    const isPast = pbDate(e.end||e.start) < now;
     const tags = parseJSONField(e.tags, []);
     return `<div class="list-row" style="opacity:${isPast?0.6:1};cursor:pointer" onclick='openEventDetail(${JSON.stringify(e).replace(/'/g,"&apos;")})'>
       <div style="width:4px;height:44px;border-radius:3px;background:${e.color||'#3b82f6'}"></div>
       <div class="info"><div class="name">${escapeHtml(e.title||'Untitled')} ${e.visible===false?'<span class="badge badge-red">Hidden</span>':''}</div>
-      <div class="meta">${d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})} ${e.location?'· '+escapeHtml(e.location):''} ${tags.length?'· '+tags.join(', '):''}</div></div>
+      <div class="meta">${d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})} ${e.location?'· '+escapeHtml(e.location):''} ${tags.length?'· '+escapeHtml(tags.join(', ')):''}</div></div>
       <div class="actions" onclick="event.stopPropagation()">
         <button title="${e.visible===false?'Show on website':'Hide from website'}" onclick="toggleEventVisible('${e.id}', ${e.visible===false})">${e.visible===false?'◎':'◉'}</button>
         <button onclick='openEventModal(${JSON.stringify(e).replace(/'/g,"&apos;")})'>✎</button>
@@ -1056,11 +1070,11 @@ async function toggleEventVisible(id, makeVisible){
 }
 const WMO = {0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',80:'Rain showers',81:'Showers',82:'Heavy showers',95:'Thunderstorm',96:'Thunderstorm w/ hail',99:'Thunderstorm w/ hail'};
 async function openEventDetail(e){
-  const start = new Date(e.start), end = new Date(e.end||e.start);
+  const start = pbDate(e.start), end = pbDate(e.end||e.start);
   const dayStart = new Date(start); dayStart.setHours(0,0,0,0);
   const dayEnd = new Date(end); dayEnd.setHours(23,59,59,999);
-  const sales = DATA.sales.filter(s => !s.is_refunded && new Date(s.created_at||s.created) >= dayStart && new Date(s.created_at||s.created) <= dayEnd);
-  const exp = DATA.expenses.filter(x => new Date(x.date||x.created) >= dayStart && new Date(x.date||x.created) <= dayEnd);
+  const sales = DATA.sales.filter(s => !s.is_refunded && pbDate(s.created_at||s.created) >= dayStart && pbDate(s.created_at||s.created) <= dayEnd);
+  const exp = DATA.expenses.filter(x => pbDate(x.date||x.created) >= dayStart && pbDate(x.date||x.created) <= dayEnd);
   const rev = sales.reduce((a,b)=>a+(b.total||0),0), spent = exp.reduce((a,b)=>a+(b.amount||0),0);
   const top = {}; sales.forEach(s => parseJSONField(s.items,[]).forEach(it => { top[baseProductName(it.productName)] = (top[baseProductName(it.productName)]||0) + (it.quantity||0); }));
   const topRows = Object.entries(top).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([n,q])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span>${escapeHtml(n)}</span><b>×${q}</b></div>`).join('');
@@ -1107,7 +1121,7 @@ async function loadEventWeather(e, start){
 }
 function openEventModal(e){
   e = e || {};
-  const startVal = e.start ? new Date(e.start).toISOString().slice(0,16) : '';
+  const startVal = e.start ? localDateTimeValue(e.start) : '';
   const tags = parseJSONField(e.tags, []);
   openModal(`
     <div class="modal-header"><h3>${e.id?'Edit Event':'Add Event'}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
@@ -1116,7 +1130,7 @@ function openEventModal(e){
     <div class="field"><label>Start Date/Time *</label><input type="datetime-local" id="evStart" value="${startVal}"></div>
     <div class="field"><label>Description</label><textarea id="evDesc" rows="2">${escapeHtml(e.description||'')}</textarea></div>
     <div class="field"><label>Color</label><input type="color" id="evColor" value="${e.color||'#3b82f6'}" style="height:40px;padding:4px"></div>
-    <div class="field"><label>Tags (comma separated)</label><input id="evTags" value="${tags.join(', ')}"></div>
+    <div class="field"><label>Tags (comma separated)</label><input id="evTags" value="${escapeHtml(tags.join(', '))}"></div>
     <div class="checkbox-row"><input type="checkbox" id="evVisible" ${e.visible!==false?'checked':''}><label>Visible on website</label></div>
     <div class="modal-actions">
       <button class="btn" onclick="saveEvent('${e.id||''}')">Save</button>
@@ -1495,10 +1509,10 @@ function renderReceipts(){
   const search = document.getElementById('receiptSearch').value.toLowerCase();
   let list = DATA.sales;
   if(search) list = list.filter(s => (s.receipt_number||'').toLowerCase().includes(search) || (s.customer_name||'').toLowerCase().includes(search));
-  list.sort((a,b)=> new Date(b.created_at||b.created) - new Date(a.created_at||a.created));
+  list.sort((a,b)=> pbDate(b.created_at||b.created) - pbDate(a.created_at||a.created));
 
   const now = new Date(); const cutoff = new Date(now.getTime()-30*24*60*60*1000);
-  const in30 = DATA.sales.filter(s=> new Date(s.created_at||s.created) >= cutoff);
+  const in30 = DATA.sales.filter(s=> pbDate(s.created_at||s.created) >= cutoff);
   const validSales = in30.filter(s=>!s.is_refunded);
   const revenue = validSales.reduce((s,x)=>s+(x.total||0),0);
   document.getElementById('recRevenue').textContent = money(revenue);
@@ -1518,7 +1532,7 @@ function renderReceipts(){
     const items = parseJSONField(s.items, []);
     return `<div class="list-row" style="opacity:${s.is_refunded?0.6:1};cursor:pointer" onclick='openReceiptDetail(${JSON.stringify(s).replace(/'/g,"&apos;")})'>
       <div class="info"><div class="name">${escapeHtml(s.receipt_number||'—')} ${s.is_refunded?'<span class="badge badge-red">Refunded</span>':''} ${s.is_exchanged?'<span class="badge badge-orange">Exchanged</span>':''}</div>
-      <div class="meta">${new Date(s.created_at||s.created).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})} · ${escapeHtml(s.customer_name||'Walk-in')} · ${items.length} item${items.length===1?'':'s'}</div></div>
+      <div class="meta">${pbDate(s.created_at||s.created).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})} · ${escapeHtml(s.customer_name||'Walk-in')} · ${items.length} item${items.length===1?'':'s'}</div></div>
       <div style="font-weight:700">${money(s.total)}</div>
     </div>`;
   }).join('');
@@ -1531,7 +1545,7 @@ function openReceiptDetail(s){
   </div>`).join('');
   openModal(`
     <div class="modal-header"><h3>${escapeHtml(s.receipt_number)}</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
-    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px">${new Date(s.created_at||s.created).toLocaleString()}</p>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px">${pbDate(s.created_at||s.created).toLocaleString()}</p>
     ${s.is_refunded ? '<div class="error-banner">This sale was refunded.</div>' : ''}
     <div>${itemsHtml}</div>
     <div class="divider"></div>
@@ -1559,7 +1573,7 @@ async function sendReceiptEmail(saleId, email, receiptNum){
   const items = parseJSONField(s.items, []);
   const rows = items.map(it => `<tr><td style="padding:4px 0">${it.quantity}× ${it.productName}</td><td style="text-align:right">${money((it.unitPrice||0)*(it.quantity||0))}</td></tr>`).join('');
   const html = `<div style="font-family:sans-serif;max-width:400px;margin:auto;">
-    <h2>JakeBitt3DPrints</h2><p>Receipt ${receiptNum}<br/>${new Date(s.created_at||s.created).toLocaleString()}</p>
+    <h2>JakeBitt3DPrints</h2><p>Receipt ${receiptNum}<br/>${pbDate(s.created_at||s.created).toLocaleString()}</p>
     <table style="width:100%;border-collapse:collapse;">${rows}<tr><td colspan="2"><hr/></td></tr>
     <tr><td>Subtotal</td><td style="text-align:right">${money(s.subtotal)}</td></tr>
     <tr><td><b>Total</b></td><td style="text-align:right"><b>${money(s.total)}</b></td></tr></table>
@@ -1604,7 +1618,7 @@ function renderCustomers(){
 function customerSales(c){
   const n=(c.name||'').trim().toLowerCase(), e=(c.email||'').trim().toLowerCase(), p=(c.phone||'').replace(/\D/g,'');
   return DATA.sales.filter(s => (e && (s.customer_email||'').trim().toLowerCase()===e) || (p && (s.customer_phone||'').replace(/\D/g,'')===p) || (n && (s.customer_name||'').trim().toLowerCase()===n))
-    .sort((a,b)=> new Date(b.created_at||b.created) - new Date(a.created_at||a.created));
+    .sort((a,b)=> pbDate(b.created_at||b.created) - pbDate(a.created_at||a.created));
 }
 function openCustomerDetail(c){
   const hist = customerSales(c);
@@ -1618,7 +1632,7 @@ function openCustomerDetail(c){
       <div class="card" style="padding:12px"><div style="font-size:11px;color:var(--muted)">Visits</div><b style="font-size:18px">${hist.length}</b>${hist[0]?`<div style="font-size:11px;color:var(--muted)">last ${new Date(hist[0].created_at||hist[0].created).toLocaleDateString()}</div>`:''}</div></div>
     ${favRows?`<div class="card" style="padding:12px;margin-bottom:12px"><b style="font-size:13px">Usually buys</b>${favRows}</div>`:''}
     ${c.notes?`<div class="card" style="padding:12px;margin-bottom:12px"><b style="font-size:13px">Notes</b><div style="font-size:13px;margin-top:4px">${escapeHtml(c.notes)}</div></div>`:''}
-    <div class="card" style="padding:12px"><b style="font-size:13px">Receipts</b>${hist.length?hist.map(s=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);cursor:pointer;font-size:13px" onclick='openReceiptDetail(${JSON.stringify(s).replace(/'/g,"&apos;")})'><span>${escapeHtml(s.receipt_number||'—')} <span style="color:var(--muted);font-size:11px">${new Date(s.created_at||s.created).toLocaleDateString()}</span></span><b style="${s.is_refunded?'text-decoration:line-through;color:var(--red)':''}">${money(s.total)}</b></div>`).join(''):'<div style="font-size:12px;color:var(--muted);margin-top:4px">No purchases yet.</div>'}</div>
+    <div class="card" style="padding:12px"><b style="font-size:13px">Receipts</b>${hist.length?hist.map(s=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);cursor:pointer;font-size:13px" onclick='openReceiptDetail(${JSON.stringify(s).replace(/'/g,"&apos;")})'><span>${escapeHtml(s.receipt_number||'—')} <span style="color:var(--muted);font-size:11px">${pbDate(s.created_at||s.created).toLocaleDateString()}</span></span><b style="${s.is_refunded?'text-decoration:line-through;color:var(--red)':''}">${money(s.total)}</b></div>`).join(''):'<div style="font-size:12px;color:var(--muted);margin-top:4px">No purchases yet.</div>'}</div>
     <div class="modal-actions"><button class="btn btn-outline" onclick='openCustomerModal(${JSON.stringify(c).replace(/'/g,"&apos;")})'>Edit</button></div>`);
 }
 function openCustomerModal(c){
@@ -1881,7 +1895,7 @@ function renderTodos(){
     <div class="list-row" style="opacity:${t.is_done?0.55:1}">
       <button onclick="toggleTodo('${t.id}',${!t.is_done})" style="width:26px;height:26px;border-radius:50%;background:${t.is_done?'var(--green)':'var(--bg-alt)'};border:2px solid ${t.is_done?'var(--green)':'var(--border)'};color:#fff;flex-shrink:0">${t.is_done?'✓':''}</button>
       <div class="info"><div class="name" style="text-decoration:${t.is_done?'line-through':'none'}">${escapeHtml(t.title)} <span class="badge badge-${prColor[t.priority]||'blue'}">${escapeHtml(t.priority||'Medium')}</span></div>
-      <div class="meta">${escapeHtml(t.category||'General')} ${t.due_date?'· Due '+new Date(t.due_date).toLocaleDateString():''}</div></div>
+      <div class="meta">${escapeHtml(t.category||'General')} ${t.due_date?'· Due '+fmtDay(t.due_date):''}</div></div>
       <div class="actions"><button onclick='openTodoModal(${JSON.stringify(t).replace(/'/g,"&apos;")})'>✎</button><button onclick="deleteTodo('${t.id}')">🗑</button></div>
     </div>`).join('');
 }
@@ -1894,7 +1908,7 @@ function openTodoModal(t){
       <div class="field"><label>Priority</label><select id="todoPriority">${['Low','Medium','High','Urgent'].map(p=>`<option ${t.priority===p?'selected':''}>${p}</option>`).join('')}</select></div>
       <div class="field"><label>Category</label><input id="todoCategory" value="${escapeHtml(t.category||'General')}"></div>
     </div>
-    <div class="field"><label>Due Date</label><input type="date" id="todoDue" value="${t.due_date?new Date(t.due_date).toISOString().slice(0,10):''}"></div>
+    <div class="field"><label>Due Date</label><input type="date" id="todoDue" value="${t.due_date?dayInputValue(t.due_date):''}"></div>
     <div class="field"><label>Notes</label><textarea id="todoNotes" rows="2">${escapeHtml(t.notes||'')}</textarea></div>
     <div class="modal-actions">
       <button class="btn" onclick="saveTodo('${t.id||''}')">Save</button>
@@ -1969,18 +1983,18 @@ function renderExpenses(){
   renderExpenseCatPills();
   const total = DATA.expenses.reduce((s,e)=>s+(e.amount||0),0);
   const now = new Date();
-  const monthTotal = DATA.expenses.filter(e => { const d=new Date(e.date||e.created); return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear(); }).reduce((s,e)=>s+(e.amount||0),0);
+  const monthTotal = DATA.expenses.filter(e => { const p=dayParts(e.date||e.created); return p.m===now.getMonth() && p.y===now.getFullYear(); }).reduce((s,e)=>s+(e.amount||0),0);
   document.getElementById('expTotal').textContent = money(total);
   document.getElementById('expMonth').textContent = money(monthTotal);
   document.getElementById('expCount').textContent = DATA.expenses.length;
   let list = DATA.expenses;
   if(expenseCatFilter!=='All') list = list.filter(e=>e.category===expenseCatFilter);
-  list = [...list].sort((a,b)=> new Date(b.date||b.created) - new Date(a.date||a.created));
+  list = [...list].sort((a,b)=> pbDate(b.date||b.created) - pbDate(a.date||a.created));
   const el = document.getElementById('expensesList');
   if(list.length===0){ el.innerHTML = `<div class="empty-state"><div class="big">−</div>No expenses logged yet.</div>`; return; }
   el.innerHTML = list.map(e => `
     <div class="list-row">
-      <div class="info"><div class="name">${escapeHtml(e.title)}</div><div class="meta"><span class="badge badge-blue">${escapeHtml(e.category||'Other')}</span> ${new Date(e.date||e.created).toLocaleDateString()}</div></div>
+      <div class="info"><div class="name">${escapeHtml(e.title)}</div><div class="meta"><span class="badge badge-blue">${escapeHtml(e.category||'Other')}</span> ${fmtDay(e.date||e.created)}</div></div>
       <div style="font-weight:700;color:var(--red)">${money(e.amount)}</div>
       <div class="actions"><button onclick='openExpenseModal(${JSON.stringify(e).replace(/'/g,"&apos;")})'>✎</button><button onclick="deleteExpense('${e.id}')">🗑</button></div>
     </div>`).join('');
@@ -1994,7 +2008,7 @@ function openExpenseModal(e){
       <div class="field"><label>Amount ($) *</label><input type="number" id="expAmount" value="${e.amount||''}" step="0.01"></div>
       <div class="field"><label>Category</label><select id="expCategory">${EXPENSE_CATS.map(c=>`<option ${e.category===c?'selected':''}>${c}</option>`).join('')}</select></div>
     </div>
-    <div class="field"><label>Date</label><input type="date" id="expDate" value="${e.date?new Date(e.date).toISOString().slice(0,10):new Date().toISOString().slice(0,10)}"></div>
+    <div class="field"><label>Date</label><input type="date" id="expDate" value="${e.date?dayInputValue(e.date):todayInputValue()}"></div>
     <div class="field"><label>Notes</label><textarea id="expNotes" rows="2">${escapeHtml(e.notes||'')}</textarea></div>
     <div class="modal-actions">
       <button class="btn" onclick="saveExpense('${e.id||''}')">Save</button>

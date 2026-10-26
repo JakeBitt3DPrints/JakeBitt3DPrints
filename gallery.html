@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-34HRY5BP01"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -9,12 +11,23 @@
     gtag('config', 'G-34HRY5BP01');
   </script>
 
-  <meta charset="UTF-8" />
   <title>Gallery | JakeBitt3DPrints</title>
   <meta name="description" content="Explore our 3D printing gallery of custom displays, stands, organizers and more!" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="view-transition" content="same-origin">
+
+  <link rel="canonical" href="https://jakebitt3dprints.com/gallery" />
+
+  <!-- Link previews (Facebook, iMessage, Discord, etc.) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="JakeBitt3DPrints" />
+  <meta property="og:title" content="Gallery | JakeBitt3DPrints" />
+  <meta property="og:description" content="Explore our 3D printing gallery of custom displays, stands, organizers and more!" />
+  <meta property="og:url" content="https://jakebitt3dprints.com/gallery" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Browser UI colour (mobile address bar); updated by the theme script -->
+  <meta name="theme-color" id="themeColor" content="#f5f5f5" />
 
   <style>html { background: #f5f5f5; } html[data-theme="dark"] { background: #111827; }</style>
   <script>
@@ -24,6 +37,7 @@
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (stored === 'dark' || (!stored && prefersDark)) {
           document.documentElement.setAttribute('data-theme', 'dark');
+          document.getElementById('themeColor').setAttribute('content', '#111827');
         }
       } catch(e) {}
     })();
@@ -36,6 +50,7 @@
 
   <style>
     :root {
+      color-scheme: light;
       --bg:              #f5f5f5;
       --bg-alt:          #ffffff;
       --text:            #111111;
@@ -57,6 +72,7 @@
       --safe-r: env(safe-area-inset-right,  0px);
     }
     :root[data-theme="dark"] {
+      color-scheme: dark;
       --bg:              #111827;
       --bg-alt:          #020617;
       --text:            #f9fafb;
@@ -73,19 +89,21 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { overflow-x: hidden; max-width: 100%; }
+    html { overflow-x: hidden; overflow-x: clip; max-width: 100%; }
     body {
       font-family: var(--font-body);
       background: var(--bg); color: var(--text);
-      min-height: 100dvh; display: flex; flex-direction: column;
+      min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden; max-width: 100%;
+      overflow-x: hidden; overflow-x: clip; max-width: 100%;
       touch-action: manipulation; -webkit-tap-highlight-color: transparent;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
     button, a, [role="button"] { touch-action: manipulation; }
 
     /* ── ANIMATIONS ── */
+    /* Cross-page View Transitions (Chrome/Edge 126+, Safari 18.2+) */
+    @view-transition { navigation: auto; }
     @keyframes vt-fade-in  { from { opacity: 0; } to { opacity: 1; } }
     @keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
     ::view-transition-old(root) { animation: vt-fade-out 0.22s ease forwards; }
@@ -123,7 +141,7 @@
 
     /* ── BRAND BAR ── */
     .brand-bar { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
-    .brand-left { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .brand-left { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
     .brand-logo {
       width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center; background: var(--bg-alt);
@@ -569,8 +587,7 @@
 
     /* ── FOOTER ── */
     footer {
-      width: 100vw; position: relative; left: 50%; right: 50%;
-      margin-left: -50vw; margin-right: -50vw;
+      width: 100%;
       background-color: var(--footer-bg); border-top: 1px solid var(--border);
       padding: 16px calc(20px + var(--safe-r)) calc(16px + var(--safe-b)) calc(20px + var(--safe-l));
       transition: background-color 0.3s ease, border-color 0.3s ease;
@@ -627,6 +644,20 @@
       .gallery-grid { grid-template-columns: repeat(2,1fr); }
       .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
+
+    /* ── REDUCED MOTION ── (only affects people who turned this on in their OS) */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+      }
+      ::view-transition-group(*),
+      ::view-transition-old(*),
+      ::view-transition-new(*) { animation: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -634,22 +665,22 @@
 
   <!-- BRAND BAR -->
   <header class="brand-bar animate d1">
-    <div class="brand-left">
+    <a class="brand-left" href="/" aria-label="JakeBitt3DPrints home">
       <div class="brand-logo">
-        <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="JakeBitt3DPrints logo">
+        <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="" width="34" height="34" decoding="async">
       </div>
       <div class="brand-text">
         <div class="brand-name">JakeBitt3DPrints</div>
         <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
       </div>
-    </div>
+    </a>
     <div class="nav-wrap">
       <nav aria-label="Main navigation">
         <a href="/">Home</a>
-        <a href="gallery" class="active">Gallery</a>
-        <a href="shop">Shop</a>
-        <a href="calendar">Calendar</a>
-        <a href="contact">Contact</a>
+        <a href="/gallery" class="active" aria-current="page">Gallery</a>
+        <a href="/shop">Shop</a>
+        <a href="/calendar">Calendar</a>
+        <a href="/contact">Contact</a>
       </nav>
     </div>
   </header>
@@ -660,7 +691,7 @@
     <h1 class="page-title">Gallery</h1>
 
     <div class="wip-banner">
-      <i class="fas fa-wrench"></i>
+      <i class="fas fa-wrench" aria-hidden="true"></i>
       <div>
         <div class="wip-banner-title">Still a work in progress</div>
         <div class="wip-banner-body">We're continually adding new prints and improving the gallery. Check back soon for more!</div>
@@ -669,10 +700,10 @@
 
     <!-- FILTER TOGGLE -->
     <button class="filter-toggle-btn" id="filterToggleBtn">
-      <i class="fas fa-sliders"></i>
+      <i class="fas fa-sliders" aria-hidden="true"></i>
       <span>Filter</span>
       <span class="filter-count-badge" id="filterCountBadge">0</span>
-      <i class="fas fa-chevron-down chevron"></i>
+      <i class="fas fa-chevron-down chevron" aria-hidden="true"></i>
     </button>
 
     <!-- FILTER PANEL -->
@@ -733,7 +764,7 @@
             <div class="filter-section-label">Featured</div>
             <div class="filter-pills">
               <button class="filter-pill" id="featuredPill" data-featured="false">
-                <i class="fas fa-star"></i> Featured only
+                <i class="fas fa-star" aria-hidden="true"></i> Featured only
               </button>
             </div>
           </div>
@@ -760,7 +791,7 @@
 
         <div class="admin-panel-header">
           <div class="admin-panel-title">Gallery Admin</div>
-          <button class="btn-ghost-sm" id="adminPanelClose"><i class="fas fa-xmark"></i> Close</button>
+          <button class="btn-ghost-sm" id="adminPanelClose"><i class="fas fa-xmark" aria-hidden="true"></i> Close</button>
         </div>
 
         <div class="admin-tabs">
@@ -774,14 +805,14 @@
 
             <div class="drop-zone" id="dropZone">
               <input type="file" id="fileInput" accept="image/*">
-              <div class="drop-zone-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+              <div class="drop-zone-icon"><i class="fas fa-cloud-arrow-up" aria-hidden="true"></i></div>
               <div class="drop-zone-text"><strong>Click to upload</strong> or drag &amp; drop<br><span style="font-size:0.78rem">JPG, PNG, WEBP, GIF, transparent PNG</span></div>
             </div>
 
             <div class="upload-preview" id="uploadPreview">
               <div class="upload-preview-overflow">
-                <img id="previewImg" src="" alt="Preview">
-                <button class="upload-preview-clear" id="previewClear"><i class="fas fa-xmark"></i></button>
+                <img id="previewImg" alt="Preview">
+                <button class="upload-preview-clear" id="previewClear" aria-label="Remove image"><i class="fas fa-xmark" aria-hidden="true"></i></button>
               </div>
             </div>
 
@@ -869,7 +900,7 @@
             </div>
 
             <button class="btn-upload" id="uploadBtn">
-              <i class="fas fa-cloud-arrow-up"></i>
+              <i class="fas fa-cloud-arrow-up" aria-hidden="true"></i>
               <span id="uploadBtnText">Upload Image</span>
             </button>
           </div>
@@ -879,16 +910,16 @@
         <div class="admin-tab-content" id="tab-manage">
           <!-- Search (admin only) -->
           <div class="admin-search-wrap">
-            <i class="fas fa-magnifying-glass admin-search-icon"></i>
+            <i class="fas fa-magnifying-glass admin-search-icon" aria-hidden="true"></i>
             <input type="text" class="form-input admin-search" id="adminSearch" placeholder="Search images by title…">
           </div>
 
           <div class="manage-controls">
-            <button class="manage-select-all" id="manageSelectAll"><i class="fas fa-check-double"></i> Select all</button>
+            <button class="manage-select-all" id="manageSelectAll"><i class="fas fa-check-double" aria-hidden="true"></i> Select all</button>
             <div class="bulk-actions" id="bulkActions">
-              <button class="bulk-btn" id="bulkShow"><i class="fas fa-eye"></i> Show</button>
-              <button class="bulk-btn" id="bulkHide"><i class="fas fa-eye-slash"></i> Hide</button>
-              <button class="bulk-btn danger" id="bulkDelete"><i class="fas fa-trash"></i> Delete</button>
+              <button class="bulk-btn" id="bulkShow"><i class="fas fa-eye" aria-hidden="true"></i> Show</button>
+              <button class="bulk-btn" id="bulkHide"><i class="fas fa-eye-slash" aria-hidden="true"></i> Hide</button>
+              <button class="bulk-btn danger" id="bulkDelete"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
             </div>
           </div>
 
@@ -906,37 +937,37 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner animate d4">
-    <div class="footer-left">&copy; 2025 JakeBitt3DPrints. All rights reserved.</div>
+    <div class="footer-left">&copy; <span id="year">2026</span> JakeBitt3DPrints. All rights reserved.</div>
     <div class="footer-right">
       <div class="social-links">
-        <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-        <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-        <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
+        <a href="https://www.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+        <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+        <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+        <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+        <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat" aria-hidden="true"></i></a>
       </div>
       <button type="button" class="theme-btn" id="themeToggle">
-        <span id="themeIcon">🌙</span><span id="themeLabel">Dark mode</span>
+        <span id="themeIcon" aria-hidden="true">🌙</span><span id="themeLabel">Dark mode</span>
       </button>
       <button type="button" class="admin-footer-btn" id="adminTriggerBtn">
-        <i class="fas fa-lock" id="adminLockIcon"></i><span>Admin</span>
+        <i class="fas fa-lock" id="adminLockIcon" aria-hidden="true"></i><span>Admin</span>
       </button>
     </div>
   </div>
 </footer>
 
 <!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
-  <button class="lb-close" id="lbClose"><i class="fas fa-xmark"></i></button>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="lb-close" id="lbClose" aria-label="Close"><i class="fas fa-xmark" aria-hidden="true"></i></button>
   <div class="lb-img-wrap" id="lbImgWrap">
-    <img class="lb-img" id="lbImg" src="" alt="">
+    <img class="lb-img" id="lbImg" alt="">
   </div>
   <div class="lb-title" id="lbTitle"></div>
   <div class="lb-dots" id="lbDots"></div>
   <div class="lb-controls">
-    <button class="lb-arrow" id="lbPrev"><i class="fas fa-chevron-left"></i></button>
+    <button class="lb-arrow" id="lbPrev" aria-label="Previous photo"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
     <div class="lb-counter" id="lbCounter"></div>
-    <button class="lb-arrow" id="lbNext"><i class="fas fa-chevron-right"></i></button>
+    <button class="lb-arrow" id="lbNext" aria-label="Next photo"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
   </div>
 </div>
 
@@ -1090,50 +1121,96 @@
     try { return JSON.parse(c); } catch(e) { return []; }
   }
 
-  /* ── THEME ── */
-  var root = document.documentElement;
-  var toggle = document.getElementById('themeToggle');
-  var tIcon  = document.getElementById('themeIcon');
-  var tLabel = document.getElementById('themeLabel');
+  /* ── FOOTER YEAR ── */
+  var yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* ── THEME TOGGLE ── */
+  var root      = document.documentElement;
+  var toggle    = document.getElementById('themeToggle');
+  var tIcon     = document.getElementById('themeIcon');
+  var tLabel    = document.getElementById('themeLabel');
+  var metaColor = document.getElementById('themeColor');
+
+  function getStoredTheme() { try { return localStorage.getItem('theme'); } catch (e) { return null; } }
+  function setStoredTheme(v) { try { localStorage.setItem('theme', v); } catch (e) {} }
+
   function syncTheme() {
     var dark = root.getAttribute('data-theme') === 'dark';
     tIcon.textContent  = dark ? '☀️' : '🌙';
     tLabel.textContent = dark ? 'Light mode' : 'Dark mode';
+    if (metaColor) metaColor.setAttribute('content', dark ? '#111827' : '#f5f5f5');
+  }
+  function applyTheme(dark) {
+    if (dark) root.setAttribute('data-theme', 'dark');
+    else root.removeAttribute('data-theme');
+    syncTheme();
   }
   syncTheme();
+
   toggle.addEventListener('click', function() {
-    var dark = root.getAttribute('data-theme') === 'dark';
-    if (dark) { root.removeAttribute('data-theme'); localStorage.setItem('theme','light'); }
-    else       { root.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); }
-    syncTheme();
+    var dark = root.getAttribute('data-theme') !== 'dark';
+    applyTheme(dark);
+    setStoredTheme(dark ? 'dark' : 'light');
   });
 
-  /* ── PAGE TRANSITIONS ── */
-  document.querySelectorAll('nav a').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      var href = link.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('mailto:')) return;
-      if (link.target === '_blank') return;
-      var url; try { url = new URL(href, location.href); } catch(x) { return; }
-      if (url.origin !== location.origin) return;
-      if (document.startViewTransition) {
+  // Follow the device's light/dark setting live, until the visitor picks one manually
+  try {
+    var themeMq = window.matchMedia('(prefers-color-scheme: dark)');
+    var onSystemTheme = function(e) { if (!getStoredTheme()) applyTheme(e.matches); };
+    if (themeMq.addEventListener) themeMq.addEventListener('change', onSystemTheme);
+    else if (themeMq.addListener) themeMq.addListener(onSystemTheme);
+  } catch (e) {}
+
+  /* ── SMOOTH PAGE TRANSITIONS ── */
+  // Browsers with cross-page View Transitions fade natively via the @view-transition CSS rule,
+  // so this JS fallback only runs in browsers that don't have it.
+  (function() {
+    if ('CSSViewTransitionRule' in window) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    document.querySelectorAll('nav a, .brand-left').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        // Let Cmd/Ctrl/Shift/middle-click open new tabs/windows as normal
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        var href = link.getAttribute('href');
+        if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) return;
+        if (link.target === '_blank') return;
+        var url;
+        try { url = new URL(href, window.location.href); } catch (err) { return; }
+        if (url.origin !== window.location.origin) return;
+
         e.preventDefault();
-        document.startViewTransition(function() { location.href = href; });
-        return;
-      }
-      e.preventDefault();
-      var s = document.querySelector('.site-shell');
-      if (s) { s.style.transition='opacity 0.22s ease'; s.style.opacity='0'; }
-      var f = document.querySelector('footer');
-      if (f) { f.style.transition='opacity 0.22s ease'; f.style.opacity='0'; }
-      setTimeout(function() { location.href = href; }, 230);
+        var shell  = document.querySelector('.site-shell');
+        var footer = document.querySelector('footer');
+        if (shell) {
+          shell.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+          shell.style.opacity    = '0';
+          shell.style.transform  = 'translateY(-8px)';
+        }
+        if (footer) {
+          footer.style.transition = 'opacity 0.22s ease';
+          footer.style.opacity    = '0';
+        }
+        setTimeout(function() { window.location.href = url.href; }, 230);
+      });
     });
-  });
+
+    // When the visitor hits Back, Safari/Firefox restore the page exactly as it was
+    // (faded out). Undo the fade so the page isn't blank.
+    window.addEventListener('pageshow', function(e) {
+      if (!e.persisted) return;
+      var shell  = document.querySelector('.site-shell');
+      var footer = document.querySelector('footer');
+      if (shell)  { shell.style.opacity = ''; shell.style.transform = ''; }
+      if (footer) { footer.style.opacity = ''; }
+    });
+  })();
 
   /* ── FETCH ── */
   function fetchImages() {
     return fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=-featured,sort_order,created&perPage=200')
-      .then(function(r) { return r.json(); })
+      .then(function(r) { if (!r.ok) throw new Error('Gallery request failed ' + r.status); return r.json(); })
       .then(function(data) {
         allImages = (data.items || []).filter(function(r) { return r.visible !== false; });
         updateCounts();
@@ -1277,7 +1354,14 @@
 
       item.appendChild(img);
       item.appendChild(label);
+      // Keyboard + screen-reader friendly: focusable, opens on Enter/Space
+      item.tabIndex = 0;
+      item.setAttribute('role', 'button');
+      item.setAttribute('aria-label', 'View ' + (record.title || 'photo'));
       item.addEventListener('click', function() { openLightbox(idx); });
+      item.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(idx); }
+      });
       grid.appendChild(item);
     });
   }
@@ -1313,6 +1397,9 @@
     syncLb();
   }
   function syncLb() {
+    var single = filtered.length <= 1;
+    document.getElementById('lbPrev').disabled = single;
+    document.getElementById('lbNext').disabled = single;
     lbDots.forEach(function(d,i) { d.classList.toggle('active', i === lbCurrent); });
     lbCount.textContent = (lbCurrent+1) + ' / ' + filtered.length;
     lbTitle.textContent = filtered[lbCurrent] ? (filtered[lbCurrent].title || '') : '';
@@ -1338,7 +1425,7 @@
   function closeLightbox() {
     lb.classList.remove('open');
     document.body.style.overflow = '';
-    setTimeout(function() { lbImg.src=''; }, 300);
+    setTimeout(function() { lbImg.removeAttribute('src'); }, 300);
   }
 
   document.getElementById('lbClose').addEventListener('click', closeLightbox);
@@ -1346,6 +1433,10 @@
   document.getElementById('lbPrev').addEventListener('click', function() { updateLb(lbCurrent-1); });
   document.getElementById('lbNext').addEventListener('click', function() { updateLb(lbCurrent+1); });
   document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      if (document.getElementById('editOverlay').classList.contains('open')) { closeEditOverlay(); return; }
+      if (document.getElementById('adminLoginOverlay').classList.contains('open')) { closeLogin(); return; }
+    }
     if (!lb.classList.contains('open')) return;
     if (e.key === 'ArrowLeft')  updateLb(lbCurrent-1);
     if (e.key === 'ArrowRight') updateLb(lbCurrent+1);
@@ -1527,6 +1618,13 @@
     wrap.classList.add('visible');
   }
 
+  // PNG/WebP/GIF can have transparency — JPEG would turn see-through areas black,
+  // so keep those as PNG and use JPEG only for photos.
+  function outputTypeFor(file) {
+    return /^image\/(png|webp|gif)$/i.test((file && file.type) || '') ? 'image/png' : 'image/jpeg';
+  }
+  function extFor(type) { return type === 'image/png' ? '.png' : '.jpg'; }
+
   function canvasToBlob(crop, callback) {
     if (!imgBitmap) { callback(selectedFile); return; }
     var canvas  = document.createElement('canvas');
@@ -1554,9 +1652,10 @@
     canvas.width = dstW; canvas.height = dstH;
     var ctx = canvas.getContext('2d');
     ctx.drawImage(imgBitmap, sx, sy, sw, sh, 0, 0, dstW, dstH);
+    var outType = outputTypeFor(selectedFile);
     canvas.toBlob(function(blob) {
       callback(blob || selectedFile);
-    }, 'image/jpeg', 0.92);
+    }, outType, 0.92);
   }
 
   /* ── FILE PICKER ── */
@@ -1593,7 +1692,7 @@
   document.getElementById('previewClear').addEventListener('click', clearFile);
   function clearFile() {
     selectedFile = null; imgBitmap = null;
-    previewImg.src = '';
+    previewImg.removeAttribute('src');
     preview.classList.remove('visible');
     document.getElementById('cropPreviewWrap').classList.remove('visible');
     dropZone.style.display = '';
@@ -1622,14 +1721,16 @@
 
     var title    = document.getElementById('uploadTitle').value.trim();
     var featured = document.getElementById('uploadFeatured').checked;
-    var maxOrder = allImages.reduce(function(m,r) { return Math.max(m, r.sort_order||0); }, 0);
+    // Include hidden images too, so a new upload never shares a sort number with one
+    var maxOrder = allImages.concat(allManageItems).reduce(function(m,r) { return Math.max(m, r.sort_order||0); }, 0);
     var btn      = document.getElementById('uploadBtn');
     btn.disabled = true;
     document.getElementById('uploadBtnText').textContent = 'Uploading…';
 
     canvasToBlob(selectedCrop, function(blob) {
       var fd = new FormData();
-      var ext = selectedCrop === 'original' ? (selectedFile.name.match(/\.[^.]+$/)||['.jpg'])[0] : '.jpg';
+      // Name the file after what it actually is (the canvas output), not the original upload
+      var ext = blob === selectedFile ? ((selectedFile.name.match(/\.[^.]+$/)||['.jpg'])[0]) : extFor(blob.type || outputTypeFor(selectedFile));
       fd.append('image',      blob, (title || 'image') + ext);
       fd.append('title',      title || selectedFile.name.replace(/\.[^.]+$/,''));
       fd.append('categories', JSON.stringify(allCats));
@@ -1727,10 +1828,14 @@
       var info = document.createElement('div');
       info.className = 'manage-item-info';
       var cats = getCategories(record);
-      info.innerHTML =
-        '<div class="manage-item-title">' + (record.title || 'Untitled') + (record.featured ? ' ★' : '') + '</div>' +
-        '<div class="manage-item-meta">' + (cats.join(', ') || 'No category') +
-        ' · ' + (record.visible !== false ? 'Visible' : 'Hidden') + '</div>';
+      var titleEl = document.createElement('div');
+      titleEl.className = 'manage-item-title';
+      titleEl.textContent = (record.title || 'Untitled') + (record.featured ? ' ★' : '');
+      var metaEl = document.createElement('div');
+      metaEl.className = 'manage-item-meta';
+      metaEl.textContent = (cats.join(', ') || 'No category') + ' · ' + (record.visible !== false ? 'Visible' : 'Hidden');
+      info.appendChild(titleEl);
+      info.appendChild(metaEl);
 
       var actions = document.createElement('div');
       actions.className = 'manage-item-actions';
@@ -1820,7 +1925,7 @@
     Promise.all(ids.map(function(id) {
       return fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + id, {
         method: 'DELETE', headers: { 'Authorization': authToken }
-      });
+      }).then(function(r) { if (!r.ok) throw new Error(); });
     }))
     .then(function() { loadManageList(); return fetchImages(); })
     .then(function() { applyFilters(); })
@@ -1833,7 +1938,7 @@
       return fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + id, {
         method: 'PATCH', headers: authHeaders(true),
         body: JSON.stringify(data)
-      });
+      }).then(function(r) { if (!r.ok) throw new Error(); });
     }))
     .then(function() { loadManageList(); return fetchImages(); })
     .then(function() { applyFilters(); })
@@ -1880,22 +1985,25 @@
 
   /* ── MOVE ── */
   function moveItem(record, dir) {
-    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=sort_order,created&perPage=200', {
+    // Uses the same order the list (and the public gallery) shows, so "up" really means up.
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=-featured,sort_order,created&perPage=200', {
       headers: { 'Authorization': authToken }
     })
-    .then(function(r) { return r.json(); })
+    .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
     .then(function(data) {
       var items   = data.items || [];
       var idx     = items.findIndex(function(r) { return r.id === record.id; });
       var swapIdx = idx + dir;
-      if (swapIdx < 0 || swapIdx >= items.length) return Promise.resolve();
-      var swap    = items[swapIdx];
-      var myOrd   = record.sort_order != null ? record.sort_order : idx;
-      var swOrd   = swap.sort_order   != null ? swap.sort_order   : swapIdx;
-      return Promise.all([
-        fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + record.id, { method:'PATCH', headers:authHeaders(true), body:JSON.stringify({sort_order:swOrd}) }),
-        fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + swap.id,   { method:'PATCH', headers:authHeaders(true), body:JSON.stringify({sort_order:myOrd}) })
-      ]);
+      if (idx < 0 || swapIdx < 0 || swapIdx >= items.length) return Promise.resolve();
+      var tmp = items[idx]; items[idx] = items[swapIdx]; items[swapIdx] = tmp;
+      // Renumber 1…n. Before, two images sharing a sort number (e.g. both 0) just swapped
+      // the same value and nothing moved. Only images whose number changes get saved.
+      return Promise.all(items.map(function(it, i) {
+        if (it.sort_order === i + 1) return null;
+        return fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + it.id, {
+          method: 'PATCH', headers: authHeaders(true), body: JSON.stringify({ sort_order: i + 1 })
+        }).then(function(r) { if (!r.ok) throw new Error(); });
+      }).filter(Boolean));
     })
     .then(function() { loadManageList(); return fetchImages(); })
     .then(function() { applyFilters(); })
@@ -1998,8 +2106,7 @@
       fd.append('crop_style', document.getElementById('editCrop').value);
       fd.append('featured',   document.getElementById('editFeatured').checked ? 'true' : 'false');
       if (imageBlob) {
-        var ext = (editNewFile.name.match(/\.[^.]+$/)||['.jpg'])[0];
-        fd.append('image', imageBlob, 'image' + ext);
+        fd.append('image', imageBlob, 'image' + extFor(imageBlob.type || outputTypeFor(editNewFile)));
       }
 
       fetch(PB_URL + '/api/collections/' + COLLECTION + '/records/' + editRecord.id, {
@@ -2042,7 +2149,10 @@
         }
         canvas.width=dstW; canvas.height=dstH;
         canvas.getContext('2d').drawImage(bm,sx,sy,sw,sh,0,0,dstW,dstH);
-        canvas.toBlob(function(blob) { doSave(blob); }, 'image/jpeg', 0.92);
+        canvas.toBlob(function(blob) { doSave(blob); }, outputTypeFor(editNewFile), 0.92);
+      }).catch(function() {
+        showStatus('editStatus','editStatusText','error','Could not read that image file.');
+        btn.disabled = false; document.getElementById('editSaveBtnText').textContent = 'Save Changes';
       });
     } else {
       doSave(null);

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-34HRY5BP01"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -9,12 +11,23 @@
     gtag('config', 'G-34HRY5BP01');
   </script>
 
-  <meta charset="UTF-8" />
   <title>Calendar & Events | JakeBitt3DPrints</title>
   <meta name="description" content="Find out when and where JakeBitt3DPrints will be set up next!" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="view-transition" content="same-origin">
+
+  <link rel="canonical" href="https://jakebitt3dprints.com/calendar" />
+
+  <!-- Link previews (Facebook, iMessage, Discord, etc.) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="JakeBitt3DPrints" />
+  <meta property="og:title" content="Calendar & Events | JakeBitt3DPrints" />
+  <meta property="og:description" content="Find out when and where JakeBitt3DPrints will be set up next!" />
+  <meta property="og:url" content="https://jakebitt3dprints.com/calendar" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Browser UI colour (mobile address bar); updated by the theme script -->
+  <meta name="theme-color" id="themeColor" content="#f5f5f5" />
 
   <style>html { background: #f5f5f5; } html[data-theme="dark"] { background: #111827; }</style>
   <script>
@@ -24,6 +37,7 @@
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (stored === 'dark' || (!stored && prefersDark)) {
           document.documentElement.setAttribute('data-theme', 'dark');
+          document.getElementById('themeColor').setAttribute('content', '#111827');
         }
       } catch(e) {}
     })();
@@ -35,7 +49,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <!-- FullCalendar -->
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
   <!-- Leaflet -->
@@ -45,6 +58,7 @@
   <style>
     /* ── TOKENS ── */
     :root {
+      color-scheme: light;
       --bg:              #f5f5f5;
       --bg-alt:          #ffffff;
       --text:            #111111;
@@ -66,6 +80,7 @@
       --safe-r: env(safe-area-inset-right,  0px);
     }
     :root[data-theme="dark"] {
+      color-scheme: dark;
       --bg:              #111827;
       --bg-alt:          #020617;
       --text:            #f9fafb;
@@ -82,19 +97,21 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { overflow-x: hidden; max-width: 100%; }
+    html { overflow-x: hidden; overflow-x: clip; max-width: 100%; }
     body {
       font-family: var(--font-body);
       background: var(--bg); color: var(--text);
-      min-height: 100dvh; display: flex; flex-direction: column;
+      min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden; max-width: 100%;
+      overflow-x: hidden; overflow-x: clip; max-width: 100%;
       touch-action: manipulation; -webkit-tap-highlight-color: transparent;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
     button, a, [role="button"] { touch-action: manipulation; }
 
     /* ── ANIMATIONS ── */
+    /* Cross-page View Transitions (Chrome/Edge 126+, Safari 18.2+) */
+    @view-transition { navigation: auto; }
     @keyframes vt-fade-in  { from { opacity: 0; } to { opacity: 1; } }
     @keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
     ::view-transition-old(root) { animation: vt-fade-out 0.22s ease forwards; }
@@ -115,7 +132,7 @@
 
     /* ── BRAND BAR ── */
     .brand-bar { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
-    .brand-left { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .brand-left { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
     .brand-logo {
       width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center; background: var(--bg-alt);
@@ -523,8 +540,7 @@
 
     /* ── FOOTER ── */
     footer {
-      width: 100vw; position: relative; left: 50%; right: 50%;
-      margin-left: -50vw; margin-right: -50vw;
+      width: 100%;
       background-color: var(--footer-bg); border-top: 1px solid var(--border);
       padding: 16px calc(20px + var(--safe-r)) calc(16px + var(--safe-b)) calc(20px + var(--safe-l));
       transition: background-color 0.3s ease, border-color 0.3s ease;
@@ -579,6 +595,20 @@
       nav a { padding: 6px 8px; font-size: 0.78rem; }
       .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
+
+    /* ── REDUCED MOTION ── (only affects people who turned this on in their OS) */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+      }
+      ::view-transition-group(*),
+      ::view-transition-old(*),
+      ::view-transition-new(*) { animation: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -586,22 +616,22 @@
 
   <!-- BRAND BAR -->
   <header class="brand-bar animate d1">
-    <div class="brand-left">
+    <a class="brand-left" href="/" aria-label="JakeBitt3DPrints home">
       <div class="brand-logo">
-        <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="JakeBitt3DPrints logo">
+        <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="" width="34" height="34" decoding="async">
       </div>
       <div class="brand-text">
         <div class="brand-name">JakeBitt3DPrints</div>
         <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
       </div>
-    </div>
+    </a>
     <div class="nav-wrap">
       <nav aria-label="Main navigation">
         <a href="/">Home</a>
-        <a href="gallery">Gallery</a>
-        <a href="shop">Shop</a>
-        <a href="calendar" class="active">Calendar</a>
-        <a href="contact">Contact</a>
+        <a href="/gallery">Gallery</a>
+        <a href="/shop">Shop</a>
+        <a href="/calendar" class="active" aria-current="page">Calendar</a>
+        <a href="/contact">Contact</a>
       </nav>
     </div>
   </header>
@@ -614,15 +644,15 @@
     <!-- Subscribe -->
     <div class="subscribe-row">
       <a href="https://event.jakebitt3dprints.com/calendarsubscription" target="_blank" rel="noopener" class="subscribe-btn">
-        <i class="fas fa-calendar-plus"></i> Subscribe to Calendar
+        <i class="fas fa-calendar-plus" aria-hidden="true"></i> Subscribe to Calendar
       </a>
       <span class="subscribe-hint">Get notified of new events automatically</span>
     </div>
 
     <!-- Filter/Settings toggle -->
     <button class="filter-toggle-btn" id="filterToggleBtn">
-      <i class="fas fa-sliders"></i> Filter &amp; Settings
-      <i class="fas fa-chevron-down chevron"></i>
+      <i class="fas fa-sliders" aria-hidden="true"></i> Filter &amp; Settings
+      <i class="fas fa-chevron-down chevron" aria-hidden="true"></i>
     </button>
     <div class="filter-panel" id="filterPanel">
       <div class="filter-panel-overflow">
@@ -636,7 +666,7 @@
           <div>
             <div class="filter-section-label">Display</div>
             <div class="filter-pills">
-              <button class="filter-pill" id="showPastToggle"><i class="fas fa-clock-rotate-left"></i> Show Past Events</button>
+              <button class="filter-pill" id="showPastToggle"><i class="fas fa-clock-rotate-left" aria-hidden="true"></i> Show Past Events</button>
             </div>
           </div>
         </div>
@@ -669,7 +699,7 @@
 
         <div class="admin-panel-header">
           <div class="admin-panel-title">Events Admin</div>
-          <button class="btn-ghost-sm" id="adminPanelClose"><i class="fas fa-xmark"></i> Close</button>
+          <button class="btn-ghost-sm" id="adminPanelClose"><i class="fas fa-xmark" aria-hidden="true"></i> Close</button>
         </div>
 
         <div class="admin-tabs">
@@ -683,7 +713,7 @@
 
             <div class="status-msg info" id="duplicateNotice">
               <div class="status-msg-inner"><div class="status-msg-inner-pad">
-                <i class="fas fa-copy"></i> Editing a duplicated event — adjust dates below, then Add Event.
+                <i class="fas fa-copy" aria-hidden="true"></i> Editing a duplicated event — adjust dates below, then Add Event.
                 <button class="btn-ghost-sm" id="cancelDuplicateBtn" style="margin-left:8px;padding:4px 10px;font-size:0.76rem;">Cancel</button>
               </div></div>
             </div>
@@ -726,7 +756,7 @@
             <div class="geocode-row">
               <div class="form-group" style="flex:0 0 auto;">
                 <label class="form-label">&nbsp;</label>
-                <button class="btn-ghost-sm" id="addGeocodeBtn" type="button"><i class="fas fa-location-crosshairs"></i> Find Coordinates from Address</button>
+                <button class="btn-ghost-sm" id="addGeocodeBtn" type="button"><i class="fas fa-location-crosshairs" aria-hidden="true"></i> Find Coordinates from Address</button>
               </div>
             </div>
             <div class="status-msg" id="addGeocodeStatus">
@@ -760,7 +790,7 @@
                 <div class="color-preview" id="addColorPreview" style="background:#2563eb;"></div>
                 <input type="color" id="addColorPicker" value="#2563eb">
                 <button class="btn-ghost-sm" id="addColorBtn" style="padding:6px 14px;font-size:0.82rem;">
-                  <i class="fas fa-palette"></i> Pick color
+                  <i class="fas fa-palette" aria-hidden="true"></i> Pick color
                 </button>
                 <span id="addColorHex" style="font-size:0.8rem;color:var(--muted);">#2563eb</span>
               </div>
@@ -791,7 +821,7 @@
             </div>
 
             <button class="btn-primary-sm" id="addEventBtn" style="align-self:flex-start;flex:0;padding:10px 28px;">
-              <span id="addBtnText"><i class="fas fa-plus"></i> Add Event</span>
+              <span id="addBtnText"><i class="fas fa-plus" aria-hidden="true"></i> Add Event</span>
             </button>
           </div>
         </div>
@@ -799,7 +829,7 @@
         <!-- MANAGE TAB -->
         <div class="admin-tab-content" id="tab-manage">
           <div class="manage-controls">
-            <button class="filter-pill" id="manageShowPastToggle"><i class="fas fa-clock-rotate-left"></i> Show Past Events</button>
+            <button class="filter-pill" id="manageShowPastToggle"><i class="fas fa-clock-rotate-left" aria-hidden="true"></i> Show Past Events</button>
           </div>
           <div class="manage-list" id="manageList">
             <div class="manage-empty">Loading…</div>
@@ -815,20 +845,20 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner animate d4">
-    <div class="footer-left">&copy; 2025 JakeBitt3DPrints. All rights reserved.</div>
+    <div class="footer-left">&copy; <span id="year">2026</span> JakeBitt3DPrints. All rights reserved.</div>
     <div class="footer-right">
       <div class="social-links">
-        <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-        <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-        <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
+        <a href="https://www.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+        <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+        <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+        <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+        <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat" aria-hidden="true"></i></a>
       </div>
       <button type="button" class="theme-btn" id="themeToggle">
-        <span id="themeIcon">🌙</span><span id="themeLabel">Dark mode</span>
+        <span id="themeIcon" aria-hidden="true">🌙</span><span id="themeLabel">Dark mode</span>
       </button>
       <button type="button" class="admin-footer-btn" id="adminTriggerBtn">
-        <i class="fas fa-lock" id="adminLockIcon"></i><span>Admin</span>
+        <i class="fas fa-lock" id="adminLockIcon" aria-hidden="true"></i><span>Admin</span>
       </button>
     </div>
   </div>
@@ -838,7 +868,7 @@
 <div class="overlay" id="detailOverlay" role="dialog" aria-modal="true">
   <div class="overlay-box">
     <div class="overlay-inner">
-      <img class="event-detail-img" id="detailImg" src="" alt="" style="display:none;">
+      <img class="event-detail-img" id="detailImg" alt="" style="display:none;">
       <div class="overlay-title" id="detailTitle"></div>
       <div class="event-detail-tags" id="detailTags"></div>
       <div class="event-detail-meta" id="detailMeta"></div>
@@ -846,13 +876,13 @@
       <div class="overlay-btns">
         <button class="btn-ghost-sm" id="detailClose">Close</button>
         <button class="btn-ghost-sm" id="detailDirections" style="display:none;">
-          <i class="fas fa-map-marker-alt"></i> Directions
+          <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Directions
         </button>
         <button class="btn-ghost-sm" id="detailDownloadIcs">
-          <i class="fas fa-download"></i> Download Event
+          <i class="fas fa-download" aria-hidden="true"></i> Download Event
         </button>
         <a class="btn-ghost-sm" href="https://event.jakebitt3dprints.com/calendarsubscription" target="_blank" rel="noopener" style="text-decoration:none;">
-          <i class="fas fa-calendar-plus"></i> Subscribe to All
+          <i class="fas fa-calendar-plus" aria-hidden="true"></i> Subscribe to All
         </a>
       </div>
     </div>
@@ -916,7 +946,7 @@
 
       <div class="geocode-row">
         <div class="form-group" style="flex:0 0 auto;">
-          <button class="btn-ghost-sm" id="editGeocodeBtn" type="button"><i class="fas fa-location-crosshairs"></i> Find Coordinates from Address</button>
+          <button class="btn-ghost-sm" id="editGeocodeBtn" type="button"><i class="fas fa-location-crosshairs" aria-hidden="true"></i> Find Coordinates from Address</button>
         </div>
       </div>
       <div class="status-msg" id="editGeocodeStatus">
@@ -950,7 +980,7 @@
           <div class="color-preview" id="editColorPreview" style="background:#2563eb;"></div>
           <input type="color" id="editColorPicker" value="#2563eb">
           <button class="btn-ghost-sm" id="editColorBtn" style="padding:6px 14px;font-size:0.82rem;">
-            <i class="fas fa-palette"></i> Pick color
+            <i class="fas fa-palette" aria-hidden="true"></i> Pick color
           </button>
           <span id="editColorHex" style="font-size:0.8rem;color:var(--muted);">#2563eb</span>
         </div>
@@ -1038,19 +1068,35 @@
     if (json) h['Content-Type'] = 'application/json';
     return h;
   }
+  // PocketBase returns dates like "2026-11-07 14:00:00.000Z" (space, not "T"). Some browsers
+  // (older iOS Safari) can't parse that, so normalise it before handing it to Date.
+  function toDate(v) {
+    if (v instanceof Date) return new Date(v.getTime());
+    if (typeof v === 'string' && /^\d{4}-\d{2}-\d{2} \d/.test(v)) v = v.replace(' ', 'T');
+    return new Date(v);
+  }
+  function escapeHtml(v) {
+    return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+  function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+  // YYYY-MM-DD in the visitor's own timezone (slicing the UTC string gave the wrong day)
+  function localDateStr(v) {
+    var d = toDate(v);
+    return d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate());
+  }
   function fmtDate(str) {
     if (!str) return '';
-    var d = new Date(str);
+    var d = toDate(str);
     return d.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
   }
   function fmtTime(str) {
     if (!str) return '';
-    var d = new Date(str);
+    var d = toDate(str);
     return d.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
   }
   function toLocalInput(str) {
     if (!str) return '';
-    var d = new Date(str);
+    var d = toDate(str);
     var pad = function(n) { return n < 10 ? '0' + n : n; };
     return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) +
            'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
@@ -1070,7 +1116,7 @@
   }
   function shiftDate(dateStr, amount) {
     if (!dateStr) return dateStr;
-    var d = new Date(dateStr);
+    var d = toDate(dateStr);
     switch(amount) {
       case '1d': d.setDate(d.getDate()+1); break;
       case '2d': d.setDate(d.getDate()+2); break;
@@ -1080,51 +1126,97 @@
     return d.toISOString();
   }
 
-  /* ── THEME ── */
-  var root   = document.documentElement;
-  var toggle = document.getElementById('themeToggle');
-  var tIcon  = document.getElementById('themeIcon');
-  var tLabel = document.getElementById('themeLabel');
+  /* ── FOOTER YEAR ── */
+  var yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* ── THEME TOGGLE ── */
+  var root      = document.documentElement;
+  var toggle    = document.getElementById('themeToggle');
+  var tIcon     = document.getElementById('themeIcon');
+  var tLabel    = document.getElementById('themeLabel');
+  var metaColor = document.getElementById('themeColor');
+
+  function getStoredTheme() { try { return localStorage.getItem('theme'); } catch (e) { return null; } }
+  function setStoredTheme(v) { try { localStorage.setItem('theme', v); } catch (e) {} }
+
   function syncTheme() {
     var dark = root.getAttribute('data-theme') === 'dark';
     tIcon.textContent  = dark ? '☀️' : '🌙';
     tLabel.textContent = dark ? 'Light mode' : 'Dark mode';
+    if (metaColor) metaColor.setAttribute('content', dark ? '#111827' : '#f5f5f5');
   }
-  syncTheme();
-  toggle.addEventListener('click', function() {
-    var dark = root.getAttribute('data-theme') === 'dark';
-    if (dark) { root.removeAttribute('data-theme'); localStorage.setItem('theme','light'); }
-    else       { root.setAttribute('data-theme','dark'); localStorage.setItem('theme','dark'); }
+  function applyTheme(dark) {
+    if (dark) root.setAttribute('data-theme', 'dark');
+    else root.removeAttribute('data-theme');
     syncTheme();
     setTimeout(function() { if (leafletMap) leafletMap.invalidateSize(); if (addMiniMap) addMiniMap.invalidateSize(); if (editMiniMap) editMiniMap.invalidateSize(); }, 350);
+  }
+  syncTheme();
+
+  toggle.addEventListener('click', function() {
+    var dark = root.getAttribute('data-theme') !== 'dark';
+    applyTheme(dark);
+    setStoredTheme(dark ? 'dark' : 'light');
   });
 
-  /* ── PAGE TRANSITIONS ── */
-  document.querySelectorAll('nav a').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      var href = link.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('mailto:')) return;
-      if (link.target === '_blank') return;
-      var url; try { url = new URL(href, location.href); } catch(x) { return; }
-      if (url.origin !== location.origin) return;
-      if (document.startViewTransition) {
+  // Follow the device's light/dark setting live, until the visitor picks one manually
+  try {
+    var themeMq = window.matchMedia('(prefers-color-scheme: dark)');
+    var onSystemTheme = function(e) { if (!getStoredTheme()) applyTheme(e.matches); };
+    if (themeMq.addEventListener) themeMq.addEventListener('change', onSystemTheme);
+    else if (themeMq.addListener) themeMq.addListener(onSystemTheme);
+  } catch (e) {}
+
+  /* ── SMOOTH PAGE TRANSITIONS ── */
+  // Browsers with cross-page View Transitions fade natively via the @view-transition CSS rule,
+  // so this JS fallback only runs in browsers that don't have it.
+  (function() {
+    if ('CSSViewTransitionRule' in window) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    document.querySelectorAll('nav a, .brand-left').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        // Let Cmd/Ctrl/Shift/middle-click open new tabs/windows as normal
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        var href = link.getAttribute('href');
+        if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) return;
+        if (link.target === '_blank') return;
+        var url;
+        try { url = new URL(href, window.location.href); } catch (err) { return; }
+        if (url.origin !== window.location.origin) return;
+
         e.preventDefault();
-        document.startViewTransition(function() { location.href = href; });
-        return;
-      }
-      e.preventDefault();
-      var s = document.querySelector('.site-shell');
-      if (s) { s.style.transition='opacity 0.22s ease'; s.style.opacity='0'; }
-      var f = document.querySelector('footer');
-      if (f) { f.style.transition='opacity 0.22s ease'; f.style.opacity='0'; }
-      setTimeout(function() { location.href = href; }, 230);
+        var shell  = document.querySelector('.site-shell');
+        var footer = document.querySelector('footer');
+        if (shell) {
+          shell.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+          shell.style.opacity    = '0';
+          shell.style.transform  = 'translateY(-8px)';
+        }
+        if (footer) {
+          footer.style.transition = 'opacity 0.22s ease';
+          footer.style.opacity    = '0';
+        }
+        setTimeout(function() { window.location.href = url.href; }, 230);
+      });
     });
-  });
+
+    // When the visitor hits Back, Safari/Firefox restore the page exactly as it was
+    // (faded out). Undo the fade so the page isn't blank.
+    window.addEventListener('pageshow', function(e) {
+      if (!e.persisted) return;
+      var shell  = document.querySelector('.site-shell');
+      var footer = document.querySelector('footer');
+      if (shell)  { shell.style.opacity = ''; shell.style.transform = ''; }
+      if (footer) { footer.style.opacity = ''; }
+    });
+  })();
 
   /* ── FETCH EVENTS ── */
   function fetchEvents() {
     return fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=start&perPage=200')
-      .then(function(r) { return r.json(); })
+      .then(function(r) { if (!r.ok) throw new Error('Events request failed ' + r.status); return r.json(); })
       .then(function(data) {
         allEvents = (data.items || []).filter(function(e) { return e.visible !== false; });
         buildTagFilterPills();
@@ -1178,7 +1270,7 @@
     return allEvents.filter(function(ev) {
       if (activeTagFilter !== 'all' && getTags(ev).indexOf(activeTagFilter) === -1) return false;
       if (!includePast) {
-        var endRef = ev.end ? new Date(ev.end) : new Date(ev.start);
+        var endRef = ev.end ? toDate(ev.end) : toDate(ev.start);
         if (endRef < now) return false;
       }
       return true;
@@ -1206,11 +1298,22 @@
 
   function buildFCEvents() {
     return getFilteredEvents(showPastPublic).map(function(ev) {
+      var start = ev.start, end = ev.end || undefined;
+      if (ev.all_day) {
+        // FullCalendar treats an all-day end date as exclusive, so pass the day AFTER the last
+        // day — otherwise multi-day all-day events were missing their final day.
+        start = localDateStr(ev.start);
+        if (ev.end) {
+          var last = toDate(ev.end);
+          last.setDate(last.getDate() + 1);
+          end = localDateStr(last);
+        }
+      }
       return {
         id:    ev.id,
         title: ev.title,
-        start: ev.start,
-        end:   ev.end || undefined,
+        start: start,
+        end:   end,
         color: ev.color || '#2563eb',
         allDay: !!ev.all_day,
         extendedProps: { record: ev }
@@ -1227,7 +1330,7 @@
   /* ── LEAFLET MAP (main) ── */
   function initMap() {
     leafletMap = L.map('calMap', { zoomControl: true });
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
       maxZoom: 19
     }).addTo(leafletMap);
@@ -1251,8 +1354,8 @@
       var marker = L.marker([ev.lat, ev.lng], {icon: icon})
         .addTo(leafletMap)
         .bindPopup(
-          '<strong style="font-size:0.88rem;">' + (ev.title||'Event') + '</strong>' +
-          (ev.location ? '<br><span style="font-size:0.78rem;color:#6b7280;">' + ev.location + '</span>' : '') +
+          '<strong style="font-size:0.88rem;">' + escapeHtml(ev.title||'Event') + '</strong>' +
+          (ev.location ? '<br><span style="font-size:0.78rem;color:#6b7280;">' + escapeHtml(ev.location) + '</span>' : '') +
           (ev.start    ? '<br><span style="font-size:0.78rem;color:#6b7280;">' + fmtDate(ev.start) + '</span>' : '')
         );
       marker.on('click', function() { openDetailOverlay(ev); });
@@ -1281,7 +1384,7 @@
 
     grid.innerHTML = '';
     events.forEach(function(ev) {
-      var d     = new Date(ev.start);
+      var d     = toDate(ev.start);
       var month = d.toLocaleDateString('en-US', { month:'short' }).toUpperCase();
       var day   = d.getDate();
       var color = ev.color || '#2563eb';
@@ -1295,13 +1398,13 @@
           '<div class="event-date-day">'   + day   + '</div>' +
         '</div>' +
         '<div class="event-info">' +
-          '<div class="event-title">' + (ev.title || 'Untitled') + '</div>' +
+          '<div class="event-title">' + escapeHtml(ev.title || 'Untitled') + '</div>' +
           '<div class="event-meta">' +
-            (ev.location ? '<span><i class="fas fa-map-marker-alt"></i> ' + ev.location + '</span>' : '') +
+            (ev.location ? '<span><i class="fas fa-map-marker-alt" aria-hidden="true"></i> ' + escapeHtml(ev.location) + '</span>' : '') +
             (ev.all_day ? '<span><i class="fas fa-calendar-day"></i> All day</span>' : '<span><i class="fas fa-clock"></i> ' + fmtTime(ev.start) + '</span>') +
           '</div>' +
           (tags.length ? '<div class="event-tags">' + tags.map(function(t) {
-            return '<span class="event-tag-chip" style="background:' + tagColor(t) + '">' + t + '</span>';
+            return '<span class="event-tag-chip" style="background:' + tagColor(t) + '">' + escapeHtml(t) + '</span>';
           }).join('') + '</div>' : '') +
         '</div>' +
         '<div class="event-color-dot" style="background:' + color + ';"></div>';
@@ -1313,7 +1416,7 @@
 
   /* ── ICS GENERATION ── */
   function toIcsDate(str) {
-    var d = new Date(str);
+    var d = toDate(str);
     return d.getUTCFullYear() +
       String(d.getUTCMonth()+1).padStart(2,'0') +
       String(d.getUTCDate()).padStart(2,'0') + 'T' +
@@ -1321,25 +1424,39 @@
       String(d.getUTCMinutes()).padStart(2,'0') +
       String(d.getUTCSeconds()).padStart(2,'0') + 'Z';
   }
+  // Calendar files need commas, semicolons and backslashes escaped — an unescaped comma in a
+  // location like "Marriott Hotel, Baltimore MD" can cut the location off in some calendar apps.
+  function icsText(v) {
+    return String(v || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+  }
+  function icsDay(v) { return localDateStr(v).replace(/-/g, ''); }
   function downloadIcsForEvent(ev) {
-    var start = toIcsDate(ev.start);
-    var end   = ev.end ? toIcsDate(ev.end) : toIcsDate(new Date(new Date(ev.start).getTime() + 3600000));
+    var whenLines;
+    if (ev.all_day) {
+      // All-day events are written as dates, so they show as all-day instead of 12:00am–11:59pm
+      var lastDay = toDate(ev.end || ev.start);
+      lastDay.setDate(lastDay.getDate() + 1);   // DTEND is exclusive
+      whenLines = ['DTSTART;VALUE=DATE:' + icsDay(ev.start), 'DTEND;VALUE=DATE:' + icsDay(lastDay)];
+    } else {
+      var end = ev.end ? toIcsDate(ev.end) : toIcsDate(new Date(toDate(ev.start).getTime() + 3600000));
+      whenLines = ['DTSTART:' + toIcsDate(ev.start), 'DTEND:' + end];
+    }
     var lines = [
       'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//JakeBitt3DPrints//Events//EN','BEGIN:VEVENT',
       'UID:' + ev.id + '@jakebitt3dprints.com',
-      'DTSTAMP:' + toIcsDate(new Date().toISOString()),
-      'DTSTART:' + start,
-      'DTEND:' + end,
-      'SUMMARY:' + (ev.title||'Event').replace(/\n/g,' '),
-      ev.location ? 'LOCATION:' + ev.location.replace(/\n/g,' ') : '',
-      ev.description ? 'DESCRIPTION:' + ev.description.replace(/\n/g,'\\n') : '',
+      'DTSTAMP:' + toIcsDate(new Date().toISOString())
+    ].concat(whenLines, [
+      'SUMMARY:' + icsText(ev.title || 'Event'),
+      ev.location ? 'LOCATION:' + icsText(ev.location) : '',
+      ev.description ? 'DESCRIPTION:' + icsText(ev.description) : '',
       'END:VEVENT','END:VCALENDAR'
-    ].filter(Boolean);
+    ]).filter(Boolean);
     var blob = new Blob([lines.join('\r\n')], {type:'text/calendar'});
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = (ev.title || 'event').replace(/[^a-z0-9]+/gi,'_') + '.ics';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
   }
 
   /* ── EVENT DETAIL OVERLAY ── */
@@ -1350,14 +1467,14 @@
     currentDetailEvent = ev;
     var img = document.getElementById('detailImg');
     var url = imageUrl(ev);
-    if (url) { img.src = url; img.style.display = ''; }
-    else      { img.src = ''; img.style.display = 'none'; }
+    if (url) { img.src = url; img.style.display = ''; img.alt = ev.title || ''; }
+    else      { img.removeAttribute('src'); img.style.display = 'none'; }
 
     document.getElementById('detailTitle').textContent = ev.title || 'Event';
 
     var tags = getTags(ev);
     document.getElementById('detailTags').innerHTML = tags.map(function(t) {
-      return '<span class="event-tag-chip" style="background:' + tagColor(t) + '">' + t + '</span>';
+      return '<span class="event-tag-chip" style="background:' + tagColor(t) + '">' + escapeHtml(t) + '</span>';
     }).join('');
 
     var meta = document.getElementById('detailMeta');
@@ -1366,7 +1483,7 @@
         (ev.end ? ' – ' + fmtDate(ev.end) : '') + '</span></div>' +
       (!ev.all_day ? '<div class="event-detail-row"><i class="fas fa-clock"></i><span>' + fmtTime(ev.start) +
         (ev.end ? ' – ' + fmtTime(ev.end) : '') + '</span></div>' : '<div class="event-detail-row"><i class="fas fa-calendar-day"></i><span>All day</span></div>') +
-      (ev.location ? '<div class="event-detail-row"><i class="fas fa-map-marker-alt"></i><span>' + ev.location + '</span></div>' : '');
+      (ev.location ? '<div class="event-detail-row"><i class="fas fa-map-marker-alt"></i><span>' + escapeHtml(ev.location) + '</span></div>' : '');
 
     var desc = document.getElementById('detailDesc');
     if (ev.description) { desc.textContent = ev.description; desc.style.display = ''; }
@@ -1499,7 +1616,7 @@
   function initMiniMaps() {
     if (!addMiniMap) {
       addMiniMap = L.map('addMiniMap', { zoomControl: true }).setView([39.5,-76.6], 7);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(addMiniMap);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(addMiniMap);
       addMiniMap.on('click', function(e) {
         setAddMarker(e.latlng.lat, e.latlng.lng);
         document.getElementById('evLat').value = e.latlng.lat.toFixed(6);
@@ -1509,7 +1626,7 @@
 
     if (!editMiniMap) {
       editMiniMap = L.map('editMiniMap', { zoomControl: true }).setView([39.5,-76.6], 7);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(editMiniMap);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 19 }).addTo(editMiniMap);
       editMiniMap.on('click', function(e) {
         setEditMarker(e.latlng.lat, e.latlng.lng);
         document.getElementById('editLat').value = e.latlng.lat.toFixed(6);
@@ -1604,7 +1721,7 @@
       var chip = document.createElement('span');
       chip.className = 'tag-chip';
       chip.style.background = tagColor(tag);
-      chip.innerHTML = tag + ' <button type="button"><i class="fas fa-xmark"></i></button>';
+      chip.innerHTML = escapeHtml(tag) + ' <button type="button" aria-label="Remove tag"><i class="fas fa-xmark" aria-hidden="true"></i></button>';
       chip.querySelector('button').addEventListener('click', function() { onRemove(idx); });
       container.appendChild(chip);
     });
@@ -1810,20 +1927,20 @@
     fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=start&perPage=200', {
       headers: { 'Authorization': authToken }
     })
-    .then(function(r) { return r.json(); })
+    .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
     .then(function(data) {
       var items = data.items || [];
       var now = new Date();
       if (!showPastAdmin) {
         items = items.filter(function(ev) {
-          var endRef = ev.end ? new Date(ev.end) : new Date(ev.start);
+          var endRef = ev.end ? toDate(ev.end) : toDate(ev.start);
           return endRef >= now;
         });
       }
       if (!items.length) { list.innerHTML = '<div class="manage-empty">No events to show.</div>'; return; }
       list.innerHTML = '';
       items.forEach(function(ev, idx) {
-        var isPast = (ev.end ? new Date(ev.end) : new Date(ev.start)) < now;
+        var isPast = (ev.end ? toDate(ev.end) : toDate(ev.start)) < now;
         var row = document.createElement('div');
         row.className = 'manage-item' + (isPast ? ' is-past' : '');
         row.style.animationDelay = Math.min(idx * 0.03, 0.3) + 's';
@@ -1837,10 +1954,10 @@
         info.className = 'manage-item-info';
         var tags = getTags(ev);
         info.innerHTML =
-          '<div class="manage-item-title">' + (ev.title || 'Untitled') + (isPast ? ' (past)' : '') + '</div>' +
+          '<div class="manage-item-title">' + escapeHtml(ev.title || 'Untitled') + (isPast ? ' (past)' : '') + '</div>' +
           '<div class="manage-item-meta">' + fmtDate(ev.start) +
-          (ev.location ? ' · ' + ev.location : '') +
-          (tags.length ? ' · ' + tags.join(', ') : '') +
+          (ev.location ? ' · ' + escapeHtml(ev.location) : '') +
+          (tags.length ? ' · ' + escapeHtml(tags.join(', ')) : '') +
           ' · ' + (ev.visible !== false ? 'Visible' : 'Hidden') + '</div>';
 
         var actions = document.createElement('div');
@@ -1887,8 +2004,8 @@
     document.getElementById('evAllDay').checked = !!ev.all_day;
     document.getElementById('evStart').type = ev.all_day ? 'date' : 'datetime-local';
     document.getElementById('evEnd').type   = ev.all_day ? 'date' : 'datetime-local';
-    document.getElementById('evStart').value = ev.all_day ? (ev.start||'').slice(0,10) : toLocalInput(ev.start);
-    document.getElementById('evEnd').value   = ev.end ? (ev.all_day ? ev.end.slice(0,10) : toLocalInput(ev.end)) : '';
+    document.getElementById('evStart').value = ev.all_day ? (ev.start ? localDateStr(ev.start) : '') : toLocalInput(ev.start);
+    document.getElementById('evEnd').value   = ev.end ? (ev.all_day ? localDateStr(ev.end) : toLocalInput(ev.end)) : '';
     document.getElementById('evLocation').value = ev.location || '';
     document.getElementById('evLat').value = ev.lat || '';
     document.getElementById('evLng').value = ev.lng || '';
@@ -1957,8 +2074,8 @@
     document.getElementById('editAllDay').checked = !!ev.all_day;
     document.getElementById('editStart').type = ev.all_day ? 'date' : 'datetime-local';
     document.getElementById('editEnd').type   = ev.all_day ? 'date' : 'datetime-local';
-    document.getElementById('editStart').value = ev.all_day ? (ev.start||'').slice(0,10) : toLocalInput(ev.start);
-    document.getElementById('editEnd').value   = ev.end ? (ev.all_day ? ev.end.slice(0,10) : toLocalInput(ev.end)) : '';
+    document.getElementById('editStart').value = ev.all_day ? (ev.start ? localDateStr(ev.start) : '') : toLocalInput(ev.start);
+    document.getElementById('editEnd').value   = ev.end ? (ev.all_day ? localDateStr(ev.end) : toLocalInput(ev.end)) : '';
     document.getElementById('editLocation').value = ev.location || '';
     document.getElementById('editLat').value      = ev.lat      || '';
     document.getElementById('editLng').value      = ev.lng      || '';
