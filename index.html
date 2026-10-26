@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-34HRY5BP01"></script>
   <script>
@@ -10,14 +13,22 @@
     gtag('config', 'G-34HRY5BP01');
   </script>
 
-  <meta charset="UTF-8" />
   <title>JakeBitt3DPrints</title>
   <meta name="description" content="Explore innovative 3D printing projects, designs, tutorials, and vibrant prints at JakeBitt3DPrints." />
+  <link rel="canonical" href="https://jakebitt3dprints.com/" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-  <!-- View Transitions API for smooth page fades -->
-  <meta name="view-transition" content="same-origin">
+  <!-- Link previews (Facebook, iMessage, Discord, etc.) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="JakeBitt3DPrints" />
+  <meta property="og:title" content="JakeBitt3DPrints" />
+  <meta property="og:description" content="Bringing your imagination to life, one layer at a time." />
+  <meta property="og:url" content="https://jakebitt3dprints.com/" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Browser UI colour (mobile address bar); updated by the theme script -->
+  <meta name="theme-color" id="themeColor" content="#f5f5f5" />
 
   <!-- THEME: inline bg on html before any paint — eliminates white flash -->
   <style>html { background: #f5f5f5; } html[data-theme="dark"] { background: #111827; }</style>
@@ -28,6 +39,7 @@
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (stored === 'dark' || (!stored && prefersDark)) {
           document.documentElement.setAttribute('data-theme', 'dark');
+          document.getElementById('themeColor').setAttribute('content', '#111827');
         }
       } catch(e) {}
     })();
@@ -44,6 +56,7 @@
   <style>
     /* ── TOKENS ── */
     :root {
+      color-scheme: light;
       --bg:          #f5f5f5;
       --bg-alt:      #ffffff;
       --text:        #111111;
@@ -66,6 +79,7 @@
       --safe-t: env(safe-area-inset-top,    0px);
     }
     :root[data-theme="dark"] {
+      color-scheme: dark;
       --bg:          #111827;
       --bg-alt:      #020617;
       --text:        #f9fafb;
@@ -86,8 +100,10 @@
 
     /* ── BASE ── */
     html {
-      /* Prevent horizontal overflow at the root */
+      /* Prevent horizontal overflow at the root.
+         'clip' doesn't turn html into a scroll container; 'hidden' is the fallback. */
       overflow-x: hidden;
+      overflow-x: clip;
       max-width: 100%;
     }
 
@@ -95,12 +111,13 @@
       font-family: var(--font-body);
       background: var(--bg);
       color: var(--text);
+      min-height: 100vh;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
-      /* Prevent horizontal scroll on body too */
       overflow-x: hidden;
+      overflow-x: clip;
       max-width: 100%;
       /* Disable double-tap zoom */
       touch-action: manipulation;
@@ -113,7 +130,10 @@
     }
 
     /* ── PAGE FADE TRANSITION ── */
-    /* View Transitions API — fade old out, fade new in */
+    /* Cross-page View Transitions (Chrome/Edge 126+, Safari 18.2+).
+       Must be declared on both the page you leave and the page you land on. */
+    @view-transition { navigation: auto; }
+
     @keyframes vt-fade-in  { from { opacity: 0; } to { opacity: 1; } }
     @keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
 
@@ -170,6 +190,9 @@
       align-items: center;
       gap: 12px;
       flex-shrink: 0;
+      /* brand-left is now a link home — keep it looking identical */
+      text-decoration: none;
+      color: inherit;
     }
     .brand-logo {
       width: 44px; height: 44px;
@@ -191,7 +214,6 @@
 
     /* ── NAV ── */
     .nav-wrap {
-      /* On mobile, nav sits below brand; on desktop it's inline */
       flex-shrink: 0;
     }
     nav {
@@ -203,12 +225,9 @@
       background: var(--nav-bg);
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
-      /* Allow internal scroll on very small screens without leaking to page */
       overflow-x: auto;
-      overflow-y: visible;
       scrollbar-width: none;
       -ms-overflow-style: none;
-      /* CRITICAL: contain overflow so page never shifts */
       max-width: 100%;
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
@@ -223,7 +242,6 @@
       color: var(--nav-text);
       white-space: nowrap;
       flex-shrink: 0;
-      /* Smooth highlight transition */
       transition: background-color 0.22s ease, color 0.22s ease, transform 0.12s ease;
       position: relative;
     }
@@ -374,13 +392,11 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      /* Vertical padding matches .btn-primary so height is identical */
       padding: 10px 10px 10px 18px;
       border-radius: 999px;
       border: 1px solid var(--border);
       background: var(--bg);
       margin-top: 6px;
-      /* Self-center within the flex column card */
       align-self: center;
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
@@ -431,21 +447,28 @@
     .sp-icon.snapchat:hover { background-color: #facc15; }
 
     /* ── SCAN POPUP (QR business-card trigger) ── */
+    /* visibility/opacity instead of display:none so the fade actually animates, in and out */
     .scan-overlay{
       position:fixed; inset:0; z-index:1000;
-      display:none; align-items:center; justify-content:center;
+      display:flex; align-items:center; justify-content:center;
       padding:calc(20px + var(--safe-t)) 20px calc(20px + var(--safe-b));
       background:rgba(15,23,42,.55);
       -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
-      opacity:0; transition:opacity .25s ease;
+      opacity:0; visibility:hidden; pointer-events:none;
+      transition:opacity .25s ease, visibility 0s linear .25s;
     }
     :root[data-theme="dark"] .scan-overlay{ background:rgba(2,6,23,.72); }
-    .scan-overlay.show{ display:flex; opacity:1; }
+    .scan-overlay.show{
+      opacity:1; visibility:visible; pointer-events:auto;
+      transition:opacity .25s ease, visibility 0s linear 0s;
+    }
     .scan-popup{
       position:relative; width:100%; max-width:400px;
       background:var(--bg-alt); border:1px solid var(--border);
       border-radius:var(--radius); box-shadow:var(--shadow-lg);
-      padding:30px 24px 26px; max-height:90dvh; overflow-y:auto;
+      padding:30px 24px 26px;
+      max-height:90vh; max-height:90dvh; overflow-y:auto;
+      overscroll-behavior:contain;
       transform:translateY(16px) scale(.98); transition:transform .25s ease;
     }
     .scan-overlay.show .scan-popup{ transform:translateY(0) scale(1); }
@@ -486,19 +509,20 @@
     }
     .scan-link .meta{ display:flex; flex-direction:column; gap:1px; }
     .scan-link .meta small{ font-weight:400; font-size:.78rem; color:var(--muted); }
+    .scan-link .ico.facebook{ color:#1877f2; }
     .scan-link .ico.youtube{ color:#ff0000; }
     .scan-link .ico.instagram i{ background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
     .scan-link .ico.tiktok i{ background:linear-gradient(45deg,#25f4ee,#fe2c55); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .scan-link .ico.snapchat{ background:#fffc00; border-color:#fffc00; color:#000; }
+    .scan-link .ico.website{ padding:5px; }
+    .scan-link .ico.website img{ width:100%; height:100%; object-fit:contain; transition:filter .3s ease; }
+    :root[data-theme="dark"] .scan-link .ico.website img{ filter:invert(1); }
 
     /* ── FOOTER ── */
     footer {
-      /* Stretch full viewport width */
-      width: 100vw;
-      position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
+      /* footer is a direct child of the flex body, so it is already full width.
+         (The old 100vw trick added a scrollbar's worth of overflow on Windows.) */
+      width: 100%;
       background-color: var(--footer-bg);
       border-top: 1px solid var(--border);
       padding: 16px calc(20px + var(--safe-r)) calc(16px + var(--safe-b)) calc(20px + var(--safe-l));
@@ -595,6 +619,20 @@
       .btn-primary, .btn-ghost { justify-content: center; }
       .footer-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
+
+    /* ── REDUCED MOTION ── (only affects people who turned this on in their OS) */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+      }
+      ::view-transition-group(*),
+      ::view-transition-old(*),
+      ::view-transition-new(*) { animation: none !important; }
+    }
   </style>
 </head>
 
@@ -603,22 +641,22 @@
 
     <!-- BRAND BAR -->
     <header class="brand-bar animate d1">
-      <div class="brand-left">
+      <a class="brand-left" href="/" aria-label="JakeBitt3DPrints home">
         <div class="brand-logo">
-          <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="JakeBitt3DPrints logo">
+          <img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="" width="34" height="34" decoding="async">
         </div>
         <div class="brand-text">
           <div class="brand-name">JakeBitt3DPrints</div>
           <div class="brand-tagline">Bringing your imagination to life, one layer at a time.</div>
         </div>
-      </div>
+      </a>
       <div class="nav-wrap">
         <nav aria-label="Main navigation">
-          <a href="/" class="active">Home</a>
-          <a href="gallery">Gallery</a>
-          <a href="shop">Shop</a>
-          <a href="calendar">Calendar</a>
-          <a href="contact">Contact</a>
+          <a href="/" class="active" aria-current="page">Home</a>
+          <a href="/gallery">Gallery</a>
+          <a href="/shop">Shop</a>
+          <a href="/calendar">Calendar</a>
+          <a href="/contact">Contact</a>
         </nav>
       </div>
     </header>
@@ -632,12 +670,12 @@
           JakeBitt3DPrints specializes in creative 3D printing projects, sharing designs, tips, and tutorials for everyone from beginners to experts. Explore our gallery, shop for unique prints, or reach out with your own ideas.
         </p>
         <div class="hero-actions">
-          <a href="contact" class="btn-primary">
+          <a href="/contact" class="btn-primary">
             <span>Contact Us</span>
-            <i class="fa-solid fa-arrow-right"></i>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
           </a>
-          <a href="gallery" class="btn-ghost">
-            <i class="fa-regular fa-image"></i>
+          <a href="/gallery" class="btn-ghost">
+            <i class="fa-regular fa-image" aria-hidden="true"></i>
             <span>View Gallery</span>
           </a>
         </div>
@@ -646,11 +684,11 @@
         <div class="socials-pill">
           <span class="socials-pill-label">Follow us</span>
           <div class="socials-pill-divider"></div>
-          <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="sp-icon facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-          <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="sp-icon instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="sp-icon youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-          <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="sp-icon tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-          <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="sp-icon snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
+          <a href="https://www.facebook.com/61579251184929/" target="_blank" rel="noopener" class="sp-icon facebook" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="sp-icon instagram" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="sp-icon youtube" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+          <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="sp-icon tiktok" aria-label="TikTok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+          <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="sp-icon snapchat" aria-label="Snapchat"><i class="fab fa-snapchat" aria-hidden="true"></i></a>
         </div>
 
         <p class="hero-contact-email">
@@ -674,17 +712,17 @@
   <!-- FOOTER — full width -->
   <footer>
     <div class="footer-inner animate d4">
-      <div class="footer-left">&copy; 2025 JakeBitt3DPrints. All rights reserved.</div>
+      <div class="footer-left">&copy; <span id="year">2026</span> JakeBitt3DPrints. All rights reserved.</div>
       <div class="footer-right">
         <div class="social-links" aria-label="Social media links">
-          <a href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-          <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-          <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-          <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
+          <a href="https://www.facebook.com/61579251184929/" target="_blank" rel="noopener" class="facebook" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+          <a href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+          <a href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener" class="youtube" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+          <a href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener" class="tiktok" aria-label="TikTok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+          <a href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener" class="snapchat" aria-label="Snapchat"><i class="fab fa-snapchat" aria-hidden="true"></i></a>
         </div>
-        <button type="button" class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-          <span id="themeIcon">🌙</span>
+        <button type="button" class="theme-btn" id="themeToggle">
+          <span id="themeIcon" aria-hidden="true">🌙</span>
           <span id="themeLabel">Dark mode</span>
         </button>
       </div>
@@ -692,40 +730,41 @@
   </footer>
 
   <!-- ── SCAN POPUP (fires only from business-card QR: ?src=card) ── -->
-  <div class="scan-overlay" id="scanPopup" role="dialog" aria-modal="true" aria-labelledby="scanTitle">
+  <div class="scan-overlay" id="scanPopup" role="dialog" aria-modal="true" aria-labelledby="scanTitle" aria-describedby="scanSub">
     <div class="scan-popup">
       <button type="button" class="scan-close" id="scanClose" aria-label="Close">&times;</button>
       <span class="scan-badge">Thanks for scanning</span>
       <h2 class="scan-title" id="scanTitle">Great meeting you!</h2>
-      <p class="scan-sub">Thanks for stopping by my table today. Here's the easiest way to keep in touch and see what I'm making.</p>
+      <p class="scan-sub" id="scanSub">Thanks for stopping by my table today. Here's the easiest way to keep in touch and see what I'm making.</p>
       <div class="scan-links">
         <a class="scan-link" href="mailto:contact@jakebitt3dprints.com">
-          <span class="ico"><i class="fa-solid fa-envelope"></i></span>
+          <span class="ico"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span>
           <span class="meta">Email me<small>Custom orders &amp; questions</small></span>
         </a>
-        <a class="scan-link" href="https://m.facebook.com/61579251184929/" target="_blank" rel="noopener">
-          <span class="ico facebook"><i class="fab fa-facebook"></i></span>
+        <a class="scan-link" href="https://www.facebook.com/61579251184929/" target="_blank" rel="noopener">
+          <span class="ico facebook"><i class="fab fa-facebook" aria-hidden="true"></i></span>
           <span class="meta">Facebook<small>Updates, events &amp; Custom Orders</small></span>
         </a>
-        <a class="scan-link" href="https://jakebitt3dprints.com" target="_blank" rel="noopener">
-          <span class="src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png""><i class="fab fa-website"></i></span>
+        <!-- They're already on the website, so this just closes the popup -->
+        <a class="scan-link" href="/" id="scanWebsite">
+          <span class="ico website"><img src="https://raw.githubusercontent.com/JakeBitt3DPrints/JakeBitt3DPrints/refs/heads/main/jbprintslogotransparentsmall.png" alt="" width="24" height="24" decoding="async"></span>
           <span class="meta">Website<small>Checkout my website for photos, upcoming events and more!</small></span>
         </a>
         <a class="scan-link" href="https://www.instagram.com/jakebitt3dprints/" target="_blank" rel="noopener">
-          <span class="ico instagram"><i class="fab fa-instagram"></i></span>
-          <span class="meta">Instagram<small></small></span>
+          <span class="ico instagram"><i class="fab fa-instagram" aria-hidden="true"></i></span>
+          <span class="meta">Instagram<small>@jakebitt3dprints</small></span>
         </a>
         <a class="scan-link" href="https://www.tiktok.com/@jakebitt3dprints" target="_blank" rel="noopener">
-          <span class="ico tiktok"><i class="fab fa-tiktok"></i></span>
-          <span class="meta">TikTok<small></small></span>
+          <span class="ico tiktok"><i class="fab fa-tiktok" aria-hidden="true"></i></span>
+          <span class="meta">TikTok<small>@jakebitt3dprints</small></span>
         </a>
         <a class="scan-link" href="https://www.youtube.com/@JakeBitt3DPrints" target="_blank" rel="noopener">
-          <span class="ico youtube"><i class="fab fa-youtube"></i></span>
-          <span class="meta">YouTube<small></small></span>
+          <span class="ico youtube"><i class="fab fa-youtube" aria-hidden="true"></i></span>
+          <span class="meta">YouTube<small>@JakeBitt3DPrints</small></span>
         </a>
         <a class="scan-link" href="https://www.snapchat.com/@jakebitt3dprint" target="_blank" rel="noopener">
-          <span class="ico snapchat"><i class="fab fa-snapchat"></i></span>
-          <span class="meta">Snapchat<small></small></span>
+          <span class="ico snapchat"><i class="fab fa-snapchat" aria-hidden="true"></i></span>
+          <span class="meta">Snapchat<small>@jakebitt3dprint</small></span>
         </a>
       </div>
     </div>
@@ -734,69 +773,95 @@
   <script>
   (function() {
 
+    /* ── FOOTER YEAR ── */
+    var yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
     /* ── THEME TOGGLE ── */
-    var root   = document.documentElement;
-    var toggle = document.getElementById('themeToggle');
-    var tIcon  = document.getElementById('themeIcon');
-    var tLabel = document.getElementById('themeLabel');
+    var root      = document.documentElement;
+    var toggle    = document.getElementById('themeToggle');
+    var tIcon     = document.getElementById('themeIcon');
+    var tLabel    = document.getElementById('themeLabel');
+    var metaColor = document.getElementById('themeColor');
+
+    function getStored() { try { return localStorage.getItem('theme'); } catch (e) { return null; } }
+    function setStored(v) { try { localStorage.setItem('theme', v); } catch (e) {} }
 
     function syncTheme() {
       var dark = root.getAttribute('data-theme') === 'dark';
       tIcon.textContent  = dark ? '☀️' : '🌙';
       tLabel.textContent = dark ? 'Light mode' : 'Dark mode';
+      if (metaColor) metaColor.setAttribute('content', dark ? '#111827' : '#f5f5f5');
+    }
+    function applyTheme(dark) {
+      if (dark) root.setAttribute('data-theme', 'dark');
+      else root.removeAttribute('data-theme');
+      syncTheme();
     }
     syncTheme();
 
     toggle.addEventListener('click', function() {
-      var dark = root.getAttribute('data-theme') === 'dark';
-      if (dark) {
-        root.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
-      } else {
-        root.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-      }
-      syncTheme();
+      var dark = root.getAttribute('data-theme') !== 'dark';
+      applyTheme(dark);
+      setStored(dark ? 'dark' : 'light');
     });
+
+    // Follow the device's light/dark setting live, until the visitor picks one manually
+    try {
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      var onSystemChange = function(e) { if (!getStored()) applyTheme(e.matches); };
+      if (mq.addEventListener) mq.addEventListener('change', onSystemChange);
+      else if (mq.addListener) mq.addListener(onSystemChange);
+    } catch (e) {}
 
     /* ── SMOOTH PAGE TRANSITIONS ── */
-    // Use View Transitions API when available, fall back to CSS fade
-    var links = document.querySelectorAll('nav a, .btn-primary, .btn-ghost, .hero-contact-email a');
+    // Browsers with cross-document View Transitions handle the fade natively via
+    // the @view-transition CSS rule, so only the fallback needs JS.
+    var nativeVT = 'CSSViewTransitionRule' in window;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    links.forEach(function(link) {
-      // Only intercept same-origin, non-hash links
-      link.addEventListener('click', function(e) {
-        var href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
-        if (link.target === '_blank') return;
+    if (!nativeVT && !reduceMotion) {
+      var links = document.querySelectorAll('nav a, .brand-left, .btn-primary, .btn-ghost');
 
-        // Resolve to absolute to check same origin
-        var url;
-        try { url = new URL(href, window.location.href); } catch(err) { return; }
-        if (url.origin !== window.location.origin) return;
+      links.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          // Let Cmd/Ctrl/Shift/middle-click open new tabs/windows as normal
+          if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
-        // View Transitions API path
-        if (document.startViewTransition) {
+          var href = link.getAttribute('href');
+          if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+          if (link.target === '_blank') return;
+
+          var url;
+          try { url = new URL(href, window.location.href); } catch (err) { return; }
+          if (url.origin !== window.location.origin) return;
+
           e.preventDefault();
-          document.startViewTransition(function() {
-            window.location.href = href;
-          });
-          return;
-        }
-
-        // Fallback: CSS fade-out then navigate
-        e.preventDefault();
-        var shell = document.querySelector('.site-shell');
-        if (shell) {
-          shell.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
-          shell.style.opacity    = '0';
-          shell.style.transform  = 'translateY(-8px)';
-        }
-        document.querySelector('footer').style.transition = 'opacity 0.22s ease';
-        document.querySelector('footer').style.opacity    = '0';
-        setTimeout(function() { window.location.href = href; }, 230);
+          var shell  = document.querySelector('.site-shell');
+          var footer = document.querySelector('footer');
+          if (shell) {
+            shell.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+            shell.style.opacity    = '0';
+            shell.style.transform  = 'translateY(-8px)';
+          }
+          if (footer) {
+            footer.style.transition = 'opacity 0.22s ease';
+            footer.style.opacity    = '0';
+          }
+          setTimeout(function() { window.location.href = url.href; }, 230);
+        });
       });
-    });
+
+      // If the visitor hits Back, Safari/Firefox restore the page exactly as it was
+      // (faded out). Undo the fade so the page isn't blank.
+      window.addEventListener('pageshow', function(e) {
+        if (!e.persisted) return;
+        var shell  = document.querySelector('.site-shell');
+        var footer = document.querySelector('footer');
+        if (shell)  { shell.style.opacity = ''; shell.style.transform = ''; }
+        if (footer) { footer.style.opacity = ''; }
+      });
+    }
 
   })();
   </script>
@@ -806,22 +871,54 @@
   (function() {
     var overlay = document.getElementById('scanPopup');
     if (!overlay) return;
-    var closeBtn = document.getElementById('scanClose');
+    var closeBtn   = document.getElementById('scanClose');
+    var websiteBtn = document.getElementById('scanWebsite');
+    var lastFocus  = null;
 
-    function open()  { overlay.classList.add('show'); document.body.style.overflow = 'hidden'; }
-    function close() { overlay.classList.remove('show'); document.body.style.overflow = ''; }
+    function isOpen() { return overlay.classList.contains('show'); }
+
+    function open() {
+      lastFocus = document.activeElement;
+      overlay.classList.add('show');
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      // Move keyboard / screen-reader focus into the popup
+      setTimeout(function() { closeBtn.focus({ preventScroll: true }); }, 50);
+    }
+    function close() {
+      if (!isOpen()) return;
+      overlay.classList.remove('show');
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    }
 
     closeBtn.addEventListener('click', close);
-    overlay.addEventListener('click', function(e){ if (e.target === overlay) close(); });
-    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) close(); });
+    if (websiteBtn) websiteBtn.addEventListener('click', function(e) { e.preventDefault(); close(); });
+
+    document.addEventListener('keydown', function(e) {
+      if (!isOpen()) return;
+      if (e.key === 'Escape') { close(); return; }
+      // Keep Tab inside the popup while it's open
+      if (e.key === 'Tab') {
+        var f = overlay.querySelectorAll('a[href], button');
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
 
     // Only trigger when arriving from the business-card QR
     var params = new URLSearchParams(window.location.search);
     if (params.get('src') === 'card') {
       open();
+      // Count card scans in Google Analytics (shows under Events as business_card_scan)
+      if (typeof gtag === 'function') gtag('event', 'business_card_scan');
       // Strip the param so refresh/reshare looks clean and won't re-trigger
       params.delete('src');
-      var clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+      var clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
       window.history.replaceState({}, '', clean);
     }
   })();
