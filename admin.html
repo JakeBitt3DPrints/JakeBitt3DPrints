@@ -7,7 +7,7 @@
 <title>Admin · JakeBitt3DPrints</title>
 <meta name="theme-color" content="#0c0e12">
 <link rel="icon" href="/favicon.ico">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script data-cfasync="false" src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
@@ -477,29 +477,29 @@ tr:last-child td{border-bottom:none;}
     </a>
 
     <div class="nav-group-label">Overview</div>
-    <div class="nav-item active" data-tab="dashboard" tabindex="0"><svg class="i"><use href="#i-dashboard"/></svg>Dashboard</div>
+    <div class="nav-item active" data-tab="dashboard" tabindex="0" role="link" onclick="showTab('dashboard')"><svg class="i"><use href="#i-dashboard"/></svg>Dashboard</div>
 
     <div class="nav-group-label">Website</div>
-    <div class="nav-item" data-tab="gallery" tabindex="0"><svg class="i"><use href="#i-gallery"/></svg>Gallery<span class="count" id="navCountGallery"></span></div>
-    <div class="nav-item" data-tab="events" tabindex="0"><svg class="i"><use href="#i-events"/></svg>Events<span class="count" id="navCountEvents"></span></div>
+    <div class="nav-item" data-tab="gallery" tabindex="0" role="link" onclick="showTab('gallery')"><svg class="i"><use href="#i-gallery"/></svg>Gallery<span class="count" id="navCountGallery"></span></div>
+    <div class="nav-item" data-tab="events" tabindex="0" role="link" onclick="showTab('events')"><svg class="i"><use href="#i-events"/></svg>Events<span class="count" id="navCountEvents"></span></div>
 
     <div class="nav-group-label">Sales</div>
-    <div class="nav-item" data-tab="sell" tabindex="0"><svg class="i"><use href="#i-sell"/></svg>Sell<span class="count" id="navCountCart"></span></div>
-    <div class="nav-item" data-tab="products" tabindex="0"><svg class="i"><use href="#i-products"/></svg>Products</div>
-    <div class="nav-item" data-tab="receipts" tabindex="0"><svg class="i"><use href="#i-receipts"/></svg>Receipts</div>
-    <div class="nav-item" data-tab="customers" tabindex="0"><svg class="i"><use href="#i-customers"/></svg>Customers</div>
-    <div class="nav-item" data-tab="cashdrawer" tabindex="0"><svg class="i"><use href="#i-cash"/></svg>Cash Drawer</div>
-    <div class="nav-item" data-tab="inventory" tabindex="0"><svg class="i"><use href="#i-inventory"/></svg>Inventory &amp; Labels<span class="count" id="navCountLow"></span></div>
+    <div class="nav-item" data-tab="sell" tabindex="0" role="link" onclick="showTab('sell')"><svg class="i"><use href="#i-sell"/></svg>Sell<span class="count" id="navCountCart"></span></div>
+    <div class="nav-item" data-tab="products" tabindex="0" role="link" onclick="showTab('products')"><svg class="i"><use href="#i-products"/></svg>Products</div>
+    <div class="nav-item" data-tab="receipts" tabindex="0" role="link" onclick="showTab('receipts')"><svg class="i"><use href="#i-receipts"/></svg>Receipts</div>
+    <div class="nav-item" data-tab="customers" tabindex="0" role="link" onclick="showTab('customers')"><svg class="i"><use href="#i-customers"/></svg>Customers</div>
+    <div class="nav-item" data-tab="cashdrawer" tabindex="0" role="link" onclick="showTab('cashdrawer')"><svg class="i"><use href="#i-cash"/></svg>Cash Drawer</div>
+    <div class="nav-item" data-tab="inventory" tabindex="0" role="link" onclick="showTab('inventory')"><svg class="i"><use href="#i-inventory"/></svg>Inventory &amp; Labels<span class="count" id="navCountLow"></span></div>
 
     <div class="nav-group-label">Business</div>
-    <div class="nav-item" data-tab="orders" tabindex="0"><svg class="i"><use href="#i-orders"/></svg>Order Notes<span class="count" id="navCountOrders"></span></div>
-    <div class="nav-item" data-tab="tasks" tabindex="0"><svg class="i"><use href="#i-tasks"/></svg>Tasks &amp; Notes<span class="count" id="navCountTasks"></span></div>
-    <div class="nav-item" data-tab="expenses" tabindex="0"><svg class="i"><use href="#i-expenses"/></svg>Expenses</div>
-    <div class="nav-item" data-tab="filament" tabindex="0"><svg class="i"><use href="#i-filament"/></svg>Filament</div>
-    <div class="nav-item" data-tab="calc" tabindex="0"><svg class="i"><use href="#i-calc"/></svg>Calculator</div>
+    <div class="nav-item" data-tab="orders" tabindex="0" role="link" onclick="showTab('orders')"><svg class="i"><use href="#i-orders"/></svg>Order Notes<span class="count" id="navCountOrders"></span></div>
+    <div class="nav-item" data-tab="tasks" tabindex="0" role="link" onclick="showTab('tasks')"><svg class="i"><use href="#i-tasks"/></svg>Tasks &amp; Notes<span class="count" id="navCountTasks"></span></div>
+    <div class="nav-item" data-tab="expenses" tabindex="0" role="link" onclick="showTab('expenses')"><svg class="i"><use href="#i-expenses"/></svg>Expenses</div>
+    <div class="nav-item" data-tab="filament" tabindex="0" role="link" onclick="showTab('filament')"><svg class="i"><use href="#i-filament"/></svg>Filament</div>
+    <div class="nav-item" data-tab="calc" tabindex="0" role="link" onclick="showTab('calc')"><svg class="i"><use href="#i-calc"/></svg>Calculator</div>
 
     <div class="nav-group-label">App</div>
-    <div class="nav-item" data-tab="settings" tabindex="0"><svg class="i"><use href="#i-settings"/></svg>Settings</div>
+    <div class="nav-item" data-tab="settings" tabindex="0" role="link" onclick="showTab('settings')"><svg class="i"><use href="#i-settings"/></svg>Settings</div>
 
     <div class="sidebar-footer">
       <button class="icon-btn" onclick="toggleTheme()" title="Light / dark" aria-label="Switch light or dark"><svg class="i"><use href="#i-sun" id="themeIcon"/></svg></button>
@@ -901,7 +901,7 @@ tr:last-child td{border-bottom:none;}
   <div class="modal" id="modalBody" role="dialog" aria-modal="true"></div>
 </div>
 
-<script>
+<script data-cfasync="false">
 /* ============================================================
    JakeBitt3DPrints Admin — talks directly to the same PocketBase
    backend as the iPhone app (pb.jakebitt3dprints.com).
@@ -1137,7 +1137,8 @@ function isLowProduct(p){ return p.track_inventory && (p.stock_count||0) > 0 && 
 function isOutProduct(p){ return p.track_inventory && (p.stock_count||0) <= 0; }
 
 // ---------- Boot ----------
-window.addEventListener('DOMContentLoaded', () => {
+function bootAdmin(){
+  if(window.__adminBooted) return; window.__adminBooted = true;
   applyTheme(); applyAccent();
   document.getElementById('settingTips').checked = SETTINGS.tips;
   document.getElementById('settingRevenueGoal').value = SETTINGS.revenueGoal;
@@ -1147,7 +1148,6 @@ window.addEventListener('DOMContentLoaded', () => {
   renderAccentSwatches(); applyTipVisibility(); initCashDrawer(); loadCalc(); renderCart();
 
   document.querySelectorAll('.nav-item').forEach(n => {
-    n.addEventListener('click', () => showTab(n.dataset.tab));
     n.addEventListener('keydown', e => { if(e.key==='Enter' || e.key===' '){ e.preventDefault(); showTab(n.dataset.tab); } });
   });
   window.addEventListener('scroll', () => document.getElementById('topbar').classList.toggle('scrolled', window.scrollY > 4), {passive:true});
@@ -1162,7 +1162,7 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', () => { const t = location.hash.slice(1); if(TAB_TITLES[t] && t!==currentTab) showTab(t, true); });
 
   if(authToken) resumeSession();
-});
+}
 
 /** A saved token may have expired — refresh it before showing the dashboard. */
 async function resumeSession(){
@@ -2798,6 +2798,9 @@ function calcUpdate(){
   document.getElementById('calcPrice').textContent = money(price);
   document.getElementById('calcProfit').textContent = 'Profit: ' + money(price - totalCost);
 }
+
+// Start last, after everything above is defined — works whether the page is still loading or not.
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootAdmin); else bootAdmin();
 </script>
 </body>
 </html>
