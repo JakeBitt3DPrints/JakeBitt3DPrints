@@ -260,7 +260,10 @@
       animation: gridItemIn 0.32s cubic-bezier(0.4,0,0.2,1) both;
       transition: transform 0.2s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s ease, border-color 0.3s ease;
     }
-    .gallery-item:hover { transform: scale(1.025); box-shadow: var(--shadow-lg); }
+    @media (hover: hover) {
+      .gallery-item:hover { transform: scale(1.025); box-shadow: var(--shadow-lg); }
+    }
+    .gallery-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .gallery-item:active { transform: scale(0.97); }
     .gallery-item.landscape { aspect-ratio: 4/3; }
     .gallery-item.portrait  { aspect-ratio: 3/4; }
@@ -283,7 +286,13 @@
       color: #fff; font-size: 0.75rem; font-weight: 600;
       opacity: 0; transition: opacity 0.22s ease; pointer-events: none;
     }
-    .gallery-item:hover .gallery-item-label { opacity: 1; }
+    .gallery-item:hover .gallery-item-label,
+    .gallery-item:focus-visible .gallery-item-label { opacity: 1; }
+    /* Phones/tablets can't hover, so show photo titles all the time there */
+    @media (hover: none) {
+      .gallery-item-label { opacity: 1; padding: 20px 8px 6px; font-size: 0.7rem; }
+      .gallery-item-label:empty { display: none; }
+    }
 
     .gallery-skeleton {
       border-radius: 12px; aspect-ratio: 1;
@@ -638,6 +647,8 @@
       .gallery-grid { grid-template-columns: repeat(2,1fr); gap: 9px; }
       .form-row { grid-template-columns: 1fr; }
       .admin-tabs { flex-wrap: wrap; }
+      /* 16px stops iPhone Safari from zooming in when a field is tapped */
+      .form-input, .form-select, .form-textarea { font-size: 16px; }
     }
     @media (max-width: 400px) {
       nav a { padding: 6px 8px; font-size: 0.78rem; }
@@ -1325,7 +1336,8 @@
     if (!filtered.length) {
       var empty = document.createElement('div');
       empty.className = 'gallery-empty';
-      empty.innerHTML = '<i class="fas fa-image"></i><p>No images in this category yet.</p>';
+      empty.innerHTML = '<i class="fas fa-image" aria-hidden="true"></i><p>' +
+        (featuredOnly || activeCategory !== 'all' ? 'No photos match these filters yet.' : 'No photos yet — check back soon!') + '</p>';
       grid.appendChild(empty);
       return;
     }
@@ -1350,7 +1362,8 @@
 
       var label = document.createElement('div');
       label.className = 'gallery-item-label';
-      label.textContent = record.title || '';
+      // Untitled uploads fall back to the camera file name (IMG_1234) — don't show those
+      label.textContent = /^(img|dsc|pxl|image|photo)[_\-\s]?\d*$/i.test((record.title || '').trim()) ? '' : (record.title || '');
 
       item.appendChild(img);
       item.appendChild(label);
@@ -1419,12 +1432,16 @@
     lbImg.src = imageUrl(filtered[lbCurrent]);
     lbImg.alt = filtered[lbCurrent].title || '';
     buildDots();
+    lbLastFocus = document.activeElement;
     lb.classList.add('open');
     document.body.style.overflow = 'hidden';
+    setTimeout(function() { document.getElementById('lbClose').focus({ preventScroll: true }); }, 60);
   }
+  var lbLastFocus = null;
   function closeLightbox() {
     lb.classList.remove('open');
     document.body.style.overflow = '';
+    if (lbLastFocus && lbLastFocus.focus) { try { lbLastFocus.focus({ preventScroll: true }); } catch (e) {} }
     setTimeout(function() { lbImg.removeAttribute('src'); }, 300);
   }
 
@@ -1442,11 +1459,18 @@
     if (e.key === 'ArrowRight') updateLb(lbCurrent+1);
     if (e.key === 'Escape')     closeLightbox();
   });
-  var lbTx = 0;
-  lb.addEventListener('touchstart', function(e) { lbTx = e.touches[0].clientX; }, {passive:true});
+  // Swipe left/right to change photo. Pinch-zooms and mostly-vertical drags are ignored.
+  var lbTx = 0, lbTy = 0, lbMulti = false;
+  lb.addEventListener('touchstart', function(e) {
+    lbMulti = e.touches.length > 1;
+    lbTx = e.touches[0].clientX; lbTy = e.touches[0].clientY;
+  }, {passive:true});
+  lb.addEventListener('touchmove', function(e) { if (e.touches.length > 1) lbMulti = true; }, {passive:true});
   lb.addEventListener('touchend',   function(e) {
-    var diff = lbTx - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) diff > 0 ? updateLb(lbCurrent+1) : updateLb(lbCurrent-1);
+    if (lbMulti || e.touches.length) return;
+    if (filtered.length <= 1) return;
+    var dx = lbTx - e.changedTouches[0].clientX, dy = lbTy - e.changedTouches[0].clientY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) dx > 0 ? updateLb(lbCurrent+1) : updateLb(lbCurrent-1);
   }, {passive:true});
 
   /* ── ADMIN LOGIN ── */
@@ -1684,6 +1708,10 @@
       createImageBitmap(file).then(function(bm) {
         imgBitmap = bm;
         drawCropPreview(selectedCrop);
+      }).catch(function() {
+        // Browser can't decode this format (e.g. HEIC outside Safari): upload the original as-is
+        imgBitmap = null;
+        showStatus('uploadStatus','uploadStatusText','info',"This browser can't crop that file type, so it will upload uncropped.");
       });
     };
     reader.readAsDataURL(file);

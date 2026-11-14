@@ -276,29 +276,105 @@
     .fc .fc-list-empty { background: var(--bg-alt) !important; color: var(--muted) !important; }
     .fc .fc-toolbar { padding: 14px 16px !important; flex-wrap: wrap !important; gap: 8px !important; }
     .fc .fc-toolbar-chunk { display: flex !important; align-items: center !important; gap: 6px !important; }
+    .fc .fc-toolbar.fc-header-toolbar, .fc .fc-toolbar.fc-footer-toolbar { margin: 0 !important; }
+
+    .fc .fc-list-empty-cushion { color: var(--muted) !important; }
 
     @media (max-width: 680px) {
       .fc .fc-daygrid-day-frame { min-height: 56px; }
-      .fc .fc-daygrid-event .fc-event-title { font-size: 0.64rem !important; }
+      .fc .fc-daygrid-day-number { font-size: 0.74rem !important; padding: 3px 4px !important; }
+      /* One tidy line per event on phones instead of titles breaking letter-by-letter */
+      .fc .fc-daygrid-event { padding: 2px 3px !important; margin: 1px !important; }
+      .fc .fc-daygrid-event .fc-event-title {
+        font-size: 0.62rem !important; white-space: nowrap !important;
+        overflow: hidden !important; text-overflow: ellipsis !important;
+      }
+      .fc .fc-col-header-cell { font-size: 0.66rem !important; letter-spacing: 0.04em !important; }
+      .fc .fc-toolbar { padding: 12px !important; }
+      .fc .fc-toolbar-title { font-size: 1.1rem !important; }
+      .fc .fc-footer-toolbar { padding-top: 0 !important; }
+      .fc .fc-list-event-title, .fc .fc-list-event-time { font-size: 0.86rem; }
     }
 
     /* ── MAP + UPCOMING SPLIT LAYOUT ── */
     .map-events-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
     .map-wrap {
       border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
-      height: 380px; position: relative;
+      height: 400px; position: relative;
       transition: border-color 0.3s ease;
     }
-    #calMap { width: 100%; height: 100%; }
+    #calMap { width: 100%; height: 100%; background: var(--bg); }
     .leaflet-pane { z-index: 1; }
     .leaflet-top, .leaflet-bottom { z-index: 2; }
+    .leaflet-container { font-family: var(--font-body); }
 
-    .upcoming-list-wrap { height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; }
+    /* Map pins (one per venue; a number shows when a venue has several dates) */
+    .map-pin {
+      position: relative; width: 26px; height: 26px; border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg); border: 2px solid #fff;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+    }
+    .map-pin::after {
+      content: ''; position: absolute; inset: 7px; border-radius: 50%; background: #fff;
+    }
+    .map-pin-count {
+      position: absolute; top: -8px; right: -10px; min-width: 18px; height: 18px; padding: 0 4px;
+      border-radius: 999px; background: #111; color: #fff; font: 700 0.66rem/18px var(--font-body);
+      text-align: center; border: 2px solid #fff;
+    }
+    .map-pin.is-past { opacity: 0.55; filter: grayscale(0.6); }
+
+    .leaflet-popup-content-wrapper { border-radius: 14px !important; }
+    .leaflet-popup-content { margin: 12px 14px !important; min-width: 190px; }
+    :root[data-theme="dark"] .leaflet-popup-content-wrapper,
+    :root[data-theme="dark"] .leaflet-popup-tip { background: #0f172a; color: #f9fafb; }
+    .map-pop-venue { font-size: 0.74rem; color: #6b7280; margin-bottom: 8px; line-height: 1.35; }
+    :root[data-theme="dark"] .map-pop-venue { color: #9ca3af; }
+    .map-pop-item {
+      display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
+      padding: 7px 8px; margin: 0 -8px; border-radius: 8px; border: none; background: none;
+      cursor: pointer; font-family: var(--font-body); color: inherit;
+    }
+    .map-pop-item:hover { background: rgba(148,163,184,0.16); }
+    .map-pop-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .map-pop-text { display: flex; flex-direction: column; min-width: 0; }
+    .map-pop-title { font-weight: 700; font-size: 0.84rem; line-height: 1.25; }
+    .map-pop-date { font-size: 0.74rem; color: #6b7280; }
+    :root[data-theme="dark"] .map-pop-date { color: #9ca3af; }
+    .map-pop-item .fa-chevron-right { margin-left: auto; font-size: 0.65rem; opacity: 0.5; }
+
+    /* Phones: one finger scrolls the page; tap the map to move it around */
+    .map-touch-hint {
+      position: absolute; inset: 0; z-index: 3; border: none; cursor: pointer;
+      display: flex; align-items: flex-end; justify-content: center; padding-bottom: 14px;
+      background: transparent; font-family: var(--font-body);
+    }
+    .map-touch-hint span {
+      background: rgba(17,17,17,0.78); color: #fff; font-size: 0.78rem; font-weight: 600;
+      padding: 7px 13px; border-radius: 999px; display: inline-flex; align-items: center; gap: 7px;
+    }
+    .map-touch-hint[hidden] { display: none; }
+    .map-empty-note {
+      position: absolute; left: 50%; top: 14px; transform: translateX(-50%); z-index: 3;
+      background: var(--bg-alt); color: var(--muted); border: 1px solid var(--border);
+      font-size: 0.78rem; font-weight: 600; padding: 6px 12px; border-radius: 999px; white-space: nowrap;
+      box-shadow: var(--shadow);
+    }
+    .map-empty-note[hidden] { display: none; }
+
+    .upcoming-list-wrap { height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; }
+    .list-heading { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin: 6px 2px 0; }
+    .list-more-btn {
+      align-self: center; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--bg-alt); color: var(--text); font: 600 0.84rem var(--font-body); cursor: pointer;
+    }
+    .list-more-btn:hover { background-color: rgba(148,163,184,0.12); }
 
     @media (max-width: 768px) {
       .map-events-grid { grid-template-columns: 1fr; }
-      .map-wrap { height: 240px; }
-      .upcoming-list-wrap { height: auto; max-height: 420px; }
+      .map-wrap { height: 300px; }
+      /* No scroll-inside-a-scroll on phones — the list just flows with the page */
+      .upcoming-list-wrap { height: auto; max-height: none; overflow: visible; padding-right: 0; }
     }
 
     /* ── EVENT CARDS ── */
@@ -318,7 +394,13 @@
     .event-date-month { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
     .event-date-day   { font-size: 1.25rem; font-weight: 700; line-height: 1; color: var(--text); }
     .event-info { flex: 1; min-width: 0; }
-    .event-title { font-weight: 700; font-size: 0.88rem; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .event-title {
+      font-weight: 700; font-size: 0.9rem; color: var(--text); margin-bottom: 4px; line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .event-card.is-past { opacity: 0.6; }
+    .event-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .event-date-block.multi .event-date-day { font-size: 0.95rem; }
     .event-meta  { font-size: 0.76rem; color: var(--muted); display: flex; flex-direction: column; gap: 2px; }
     .event-meta i { width: 13px; }
     .event-tags  { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
@@ -353,6 +435,22 @@
     .event-detail-row i { color: var(--accent); width: 16px; margin-top: 2px; flex-shrink: 0; }
     .event-detail-desc { font-size: 0.88rem; color: var(--text); line-height: 1.6; }
     .event-detail-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .event-detail-tags:empty { display: none; }
+
+    /* Phones: event details slide up from the bottom like a native sheet */
+    @media (max-width: 600px) {
+      #detailOverlay { align-items: flex-end; padding: 0; }
+      #detailOverlay .overlay-box {
+        max-width: none; border-radius: 22px 22px 0 0; border-bottom: none;
+        max-height: 88dvh; transform: translateY(40px); opacity: 1;
+        transition: transform 0.32s cubic-bezier(0.4,0,0.2,1), background-color 0.3s ease;
+      }
+      #detailOverlay.open .overlay-box { transform: translateY(0); }
+      #detailOverlay .overlay-inner { padding: 22px 20px calc(20px + var(--safe-b)); }
+      #detailOverlay .overlay-btns { display: grid; grid-template-columns: 1fr 1fr; }
+      #detailOverlay .overlay-btns > * { justify-content: center; text-align: center; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; padding-left: 10px; padding-right: 10px; font-size: 0.86rem; }
+      #detailOverlay #detailClose { order: 9; grid-column: 1 / -1; }
+    }
 
     /* ── FORM ELEMENTS ── */
     .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -402,6 +500,9 @@
       transition: border-color 0.15s ease, color 0.15s ease;
     }
     .tag-suggestion:hover { border-color: var(--accent); color: var(--accent); }
+    .geo-choices { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+    .geo-choices:empty { display: none; }
+    .geo-choice { text-align: left; border-radius: 10px; line-height: 1.35; }
 
     /* Mini map for coordinate picking */
     .mini-map-wrap { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); height: 220px; transition: border-color 0.3s ease; }
@@ -590,6 +691,8 @@
       .card { padding: 20px 16px; }
       .form-row, .form-row-3 { grid-template-columns: 1fr; }
       .geocode-row { flex-direction: column; align-items: stretch; }
+      /* 16px stops iPhone Safari from zooming in when a field is tapped */
+      .form-input, .form-select, .form-textarea { font-size: 16px; }
     }
     @media (max-width: 400px) {
       nav a { padding: 6px 8px; font-size: 0.78rem; }
@@ -684,7 +787,11 @@
     <div class="section-title">Locations &amp; Upcoming Events</div>
     <div class="map-events-grid">
       <div class="map-wrap">
-        <div id="calMap"></div>
+        <div id="calMap" role="region" aria-label="Map of event locations"></div>
+        <div class="map-empty-note" id="mapEmptyNote" hidden>No mapped events yet</div>
+        <button type="button" class="map-touch-hint" id="mapTouchHint" hidden aria-label="Tap to move the map">
+          <span><i class="fas fa-hand-pointer" aria-hidden="true"></i> Tap to move the map</span>
+        </button>
       </div>
       <div class="upcoming-list-wrap" id="upcomingGrid">
         <div class="events-empty">Loading events…</div>
@@ -762,6 +869,7 @@
             <div class="status-msg" id="addGeocodeStatus">
               <div class="status-msg-inner"><div class="status-msg-inner-pad" id="addGeocodeStatusText"></div></div>
             </div>
+            <div class="geo-choices" id="addGeoChoices"></div>
 
             <div class="form-row">
               <div class="form-group">
@@ -875,14 +983,17 @@
       <div class="event-detail-desc" id="detailDesc" style="display:none;"></div>
       <div class="overlay-btns">
         <button class="btn-ghost-sm" id="detailClose">Close</button>
+        <button class="btn-ghost-sm" id="detailOnMap" style="display:none;">
+          <i class="fas fa-map" aria-hidden="true"></i> Show on Map
+        </button>
         <button class="btn-ghost-sm" id="detailDirections" style="display:none;">
           <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Directions
         </button>
         <button class="btn-ghost-sm" id="detailDownloadIcs">
-          <i class="fas fa-download" aria-hidden="true"></i> Download Event
+          <i class="fas fa-calendar-plus" aria-hidden="true"></i> Add to Calendar
         </button>
         <a class="btn-ghost-sm" href="https://event.jakebitt3dprints.com/calendarsubscription" target="_blank" rel="noopener" style="text-decoration:none;">
-          <i class="fas fa-calendar-plus" aria-hidden="true"></i> Subscribe to All
+          <i class="fas fa-bell" aria-hidden="true"></i> Subscribe to All
         </a>
       </div>
     </div>
@@ -952,6 +1063,7 @@
       <div class="status-msg" id="editGeocodeStatus">
         <div class="status-msg-inner"><div class="status-msg-inner-pad" id="editGeocodeStatusText"></div></div>
       </div>
+      <div class="geo-choices" id="editGeoChoices"></div>
 
       <div class="form-row">
         <div class="form-group">
@@ -1114,6 +1226,133 @@
     for (var i=0;i<tag.length;i++) hash = (hash * 31 + tag.charCodeAt(i)) >>> 0;
     return palette[hash % palette.length];
   }
+  function sameDay(a, b) { return localDateStr(a) === localDateStr(b); }
+  // Date line for an event: "Sat, Nov 22, 2026" or "Sat, Nov 22 – Sun, Nov 23, 2026"
+  function fmtDateRange(ev) {
+    if (!ev.end || sameDay(ev.start, ev.end)) return fmtDate(ev.start);
+    var s = toDate(ev.start), e = toDate(ev.end);
+    var sOpts = { weekday:'short', month:'short', day:'numeric' };
+    if (s.getFullYear() !== e.getFullYear()) sOpts.year = 'numeric';
+    return s.toLocaleDateString('en-US', sOpts) + ' – ' + fmtDate(ev.end);
+  }
+  function eventEnd(ev) { return ev.end ? toDate(ev.end) : toDate(ev.start); }
+  function isPast(ev) { return eventEnd(ev) < new Date(); }
+
+  /* ── COORDINATES ── */
+  // Turns whatever is stored into a usable [lat, lng], or null. Catches blanks, 0/0,
+  // out-of-range numbers and lat/lng typed the wrong way round.
+  function cleanCoords(lat, lng) {
+    lat = parseFloat(lat); lng = parseFloat(lng);
+    if (!isFinite(lat) || !isFinite(lng)) return null;
+    if (lat === 0 && lng === 0) return null;
+    // Swapped? (e.g. -76.6, 39.3 for Baltimore). North-American longitudes are big & negative.
+    if (Math.abs(lat) > 90 || (lat < 0 && lng > 0 && Math.abs(lat) > Math.abs(lng))) { var t = lat; lat = lng; lng = t; }
+    if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+    return [lat, lng];
+  }
+  function distKm(a, b) {
+    var R = 6371, toR = Math.PI / 180;
+    var dLat = (b[0]-a[0]) * toR, dLng = (b[1]-a[1]) * toR;
+    var h = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(a[0]*toR)*Math.cos(b[0]*toR)*Math.sin(dLng/2)*Math.sin(dLng/2);
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+
+  /* ── GEOCODER (OpenStreetMap Nominatim) ── */
+  // Results lean toward Maryland and the US, and if the full text isn't found it retries
+  // without the venue name ("Fire Hall, Perry Hall MD" → "Perry Hall MD").
+  // Answers are remembered in the browser so each address is only looked up once.
+  var GEO_CACHE_KEY = 'jb_geo_v1';
+  var geoCache = {};
+  try { geoCache = JSON.parse(localStorage.getItem(GEO_CACHE_KEY) || '{}') || {}; } catch (e) { geoCache = {}; }
+  function saveGeoCache() { try { localStorage.setItem(GEO_CACHE_KEY, JSON.stringify(geoCache)); } catch (e) {} }
+  function geoKey(q) { return String(q || '').toLowerCase().replace(/\s+/g, ' ').trim(); }
+
+  var geoQueue = Promise.resolve(), lastGeoAt = 0;
+  // Nominatim allows one request per second, so requests wait their turn
+  function nominatim(q, limit) {
+    var run = function() {
+      var wait = Math.max(0, lastGeoAt + 1100 - Date.now());
+      return new Promise(function(res) { setTimeout(res, wait); }).then(function() {
+        lastGeoAt = Date.now();
+        var url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=0' +
+          '&limit=' + (limit || 1) + '&countrycodes=us' +
+          '&viewbox=-79.9,40.6,-74.6,37.8' +   // MD / DE / southern PA / northern VA (preferred, not required)
+          '&q=' + encodeURIComponent(q);
+        return fetch(url, { headers: { 'Accept-Language': 'en' } })
+          .then(function(r) { if (!r.ok) throw new Error('Geocoding failed ' + r.status); return r.json(); });
+      });
+    };
+    var p = geoQueue.then(run, run);
+    geoQueue = p.catch(function() {});
+    return p;
+  }
+  function geocodeCandidates(address) {
+    var parts = String(address).split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+    var tries = [parts.join(', ')];
+    for (var i = 1; i < parts.length; i++) tries.push(parts.slice(i).join(', '));
+    // "Hall Rd Perry Hall MD 21128" style text with no commas: also try the last few words
+    if (parts.length === 1) {
+      var words = parts[0].split(/\s+/);
+      if (words.length > 3) tries.push(words.slice(-3).join(' '));
+    }
+    return tries.filter(function(t, i, a) { return t && a.indexOf(t) === i; });
+  }
+  // Resolves to a list of {lat, lng, name} (best first). limit > 1 gives choices for the admin form.
+  function geocodeSmart(address, limit) {
+    var tries = geocodeCandidates(address);
+    var i = 0;
+    function next() {
+      if (i >= tries.length) return Promise.resolve([]);
+      var q = tries[i++];
+      return nominatim(q, limit).then(function(res) {
+        if (res && res.length) {
+          return res.map(function(r) { return { lat: parseFloat(r.lat), lng: parseFloat(r.lon), name: r.display_name, partial: i > 1 }; });
+        }
+        return next();
+      });
+    }
+    return next();
+  }
+  // Public map: cached single best result for an address (null if none)
+  var geoPending = {};
+  function geocodeCached(address) {
+    var k = geoKey(address);
+    var hit = geoCache[k];
+    if (hit && (Date.now() - hit.t) < 30*24*3600*1000) return Promise.resolve(hit.c);
+    if (geoPending[k]) return geoPending[k];
+    geoPending[k] = geocodeSmart(address, 1).then(function(res) {
+      var c = res.length ? [res[0].lat, res[0].lng] : null;
+      geoCache[k] = { c: c, t: Date.now() }; saveGeoCache();
+      delete geoPending[k];
+      return c;
+    }, function(err) { delete geoPending[k]; throw err; });
+    return geoPending[k];
+  }
+
+  // Where an event's pin goes. Uses the saved pin unless the address clearly points
+  // somewhere else (the location was changed but the old pin was kept), or there is no pin.
+  var resolvedCoords = {};   // event id -> [lat,lng] | null
+  var STALE_PIN_KM = 10;   // town-centre lookups land within a few km of a hand-dropped venue pin
+  function pinFor(ev) {
+    if (ev.id in resolvedCoords) return resolvedCoords[ev.id];
+    return cleanCoords(ev.lat, ev.lng);
+  }
+  function resolvePins(events) {
+    var jobs = events.map(function(ev) {
+      if (ev.id in resolvedCoords) return Promise.resolve(false);
+      var saved = cleanCoords(ev.lat, ev.lng);
+      if (!ev.location || !ev.location.trim()) { resolvedCoords[ev.id] = saved; return Promise.resolve(false); }
+      return geocodeCached(ev.location).then(function(found) {
+        var use = saved;
+        if (found && (!saved || distKm(saved, found) > STALE_PIN_KM)) use = found;
+        var changed = String(use) !== String(saved);
+        resolvedCoords[ev.id] = use;
+        return changed;
+      }).catch(function() { resolvedCoords[ev.id] = saved; return false; });
+    });
+    return Promise.all(jobs).then(function(r) { return r.some(Boolean); });
+  }
+
   function shiftDate(dateStr, amount) {
     if (!dateStr) return dateStr;
     var d = toDate(dateStr);
@@ -1215,10 +1454,13 @@
 
   /* ── FETCH EVENTS ── */
   function fetchEvents() {
-    return fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=start&perPage=200')
+    // Newest first from the server so upcoming events are never cut off once there are
+    // more than 200 events in total; then put back in date order here.
+    return fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=-start&perPage=200')
       .then(function(r) { if (!r.ok) throw new Error('Events request failed ' + r.status); return r.json(); })
       .then(function(data) {
-        allEvents = (data.items || []).filter(function(e) { return e.visible !== false; });
+        allEvents = (data.items || []).filter(function(e) { return e.visible !== false; })
+          .sort(function(a, b) { return toDate(a.start) - toDate(b.start); });
         buildTagFilterPills();
         return allEvents;
       });
@@ -1255,7 +1497,7 @@
   document.getElementById('showPastToggle').addEventListener('click', function() {
     showPastPublic = !showPastPublic;
     this.classList.toggle('active', showPastPublic);
-    refreshCalendar(); renderUpcoming();
+    refreshCalendar(); refreshMap(); renderUpcoming();
   });
 
   document.getElementById('manageShowPastToggle').addEventListener('click', function() {
@@ -1269,31 +1511,49 @@
     var now = new Date();
     return allEvents.filter(function(ev) {
       if (activeTagFilter !== 'all' && getTags(ev).indexOf(activeTagFilter) === -1) return false;
-      if (!includePast) {
-        var endRef = ev.end ? toDate(ev.end) : toDate(ev.start);
-        if (endRef < now) return false;
-      }
+      if (!includePast && eventEnd(ev) < now) return false;
       return true;
     });
   }
 
   /* ── FULLCALENDAR ── */
+  var mobileMq = window.matchMedia('(max-width: 680px)');
+  function toolbarFor(mobile) {
+    return mobile
+      ? { header: { left: 'title', center: '', right: 'prev,next' },
+          footer: { left: 'today', center: '', right: 'dayGridMonth,listMonth' } }
+      : { header: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,listMonth' },
+          footer: false };
+  }
   function initCalendar() {
     var el = document.getElementById('calendar');
+    var mobile = mobileMq.matches;
+    var tb = toolbarFor(mobile);
     fcCalendar = new FullCalendar.Calendar(el, {
-      initialView: 'dayGridMonth',
-      headerToolbar: {
-        left:   'prev,next today',
-        center: 'title',
-        right:  'dayGridMonth,timeGridWeek,listMonth'
-      },
+      initialView: mobile ? 'listMonth' : 'dayGridMonth',
+      headerToolbar: tb.header,
+      footerToolbar: tb.footer,
+      buttonText: { today: 'Today', month: 'Month', week: 'Week', list: 'List' },
       height: 'auto',
       displayEventTime: false,
+      dayMaxEvents: mobile ? 2 : false,
+      noEventsContent: function() { return showPastPublic ? 'No events this month.' : 'No upcoming events this month.'; },
       events: buildFCEvents(),
-      eventClick: function(info) { openDetailOverlay(info.event.extendedProps.record); },
+      eventClick: function(info) { info.jsEvent.preventDefault(); openDetailOverlay(info.event.extendedProps.record); },
       eventColor: '#2563eb'
     });
     fcCalendar.render();
+
+    // Rotate / resize between phone and desktop layouts
+    var onChange = function(e) {
+      var t = toolbarFor(e.matches);
+      fcCalendar.setOption('headerToolbar', t.header);
+      fcCalendar.setOption('footerToolbar', t.footer);
+      fcCalendar.setOption('dayMaxEvents', e.matches ? 2 : false);
+      if (e.matches && fcCalendar.view.type === 'timeGridWeek') fcCalendar.changeView('listMonth');
+    };
+    if (mobileMq.addEventListener) mobileMq.addEventListener('change', onChange);
+    else if (mobileMq.addListener) mobileMq.addListener(onChange);
   }
 
   function buildFCEvents() {
@@ -1323,18 +1583,55 @@
 
   function refreshCalendar() {
     if (!fcCalendar) return;
+    fcCalendar.removeAllEventSources();
     fcCalendar.removeAllEvents();
     fcCalendar.addEventSource(buildFCEvents());
   }
 
   /* ── LEAFLET MAP (main) ── */
+  var isTouch = window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
   function initMap() {
-    leafletMap = L.map('calMap', { zoomControl: true });
+    leafletMap = L.map('calMap', {
+      zoomControl: !isTouch,       // phones pinch to zoom; the +/- buttons just got in the way
+      scrollWheelZoom: false,      // page scrolling won't get stuck zooming the map
+      dragging: !isTouch,          // phones: one finger scrolls the page until the map is tapped
+      tap: !isTouch
+    });
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
       maxZoom: 19
     }).addTo(leafletMap);
+
+    // Desktop: wheel-zoom only after clicking into the map
+    leafletMap.on('click focus', function() { leafletMap.scrollWheelZoom.enable(); });
+    leafletMap.on('mouseout', function() { leafletMap.scrollWheelZoom.disable(); });
+
+    var hint = document.getElementById('mapTouchHint');
+    if (isTouch) {
+      hint.hidden = false;
+      hint.addEventListener('click', function() {
+        hint.hidden = true;
+        leafletMap.dragging.enable();
+      });
+      // Scrolling away hands one-finger scrolling back to the page
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function(entries) {
+          if (!entries[0].isIntersecting && hint.hidden) { hint.hidden = false; leafletMap.dragging.disable(); }
+        }).observe(document.getElementById('calMap'));
+      }
+    }
+
     refreshMap();
+  }
+
+  function pinIcon(color, count, past) {
+    return L.divIcon({
+      className: '',
+      html: '<div class="map-pin' + (past ? ' is-past' : '') + '" style="background:' + escapeHtml(color) + '"></div>' +
+            (count > 1 ? '<div class="map-pin-count">' + count + '</div>' : ''),
+      iconSize: [26, 26], iconAnchor: [13, 30], popupAnchor: [0, -28]
+    });
   }
 
   function refreshMap() {
@@ -1342,76 +1639,163 @@
     markers.forEach(function(m) { leafletMap.removeLayer(m); });
     markers = [];
 
-    var coords = [];
-    getFilteredEvents(true).forEach(function(ev) {
-      if (!ev.lat || !ev.lng) return;
-      var color = ev.color || '#2563eb';
-      var icon = L.divIcon({
-        className: '',
-        html: '<div style="width:14px;height:14px;border-radius:50%;background:' + color + ';border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>',
-        iconSize: [14,14], iconAnchor: [7,7]
-      });
-      var marker = L.marker([ev.lat, ev.lng], {icon: icon})
-        .addTo(leafletMap)
-        .bindPopup(
-          '<strong style="font-size:0.88rem;">' + escapeHtml(ev.title||'Event') + '</strong>' +
-          (ev.location ? '<br><span style="font-size:0.78rem;color:#6b7280;">' + escapeHtml(ev.location) + '</span>' : '') +
-          (ev.start    ? '<br><span style="font-size:0.78rem;color:#6b7280;">' + fmtDate(ev.start) + '</span>' : '')
-        );
-      marker.on('click', function() { openDetailOverlay(ev); });
-      markers.push(marker);
-      coords.push([ev.lat, ev.lng]);
+    // Same rules as the list: past events only when "Show Past Events" is on.
+    // Events at the same spot share one pin.
+    var groups = {}, order = [];
+    var visible = getFilteredEvents(showPastPublic);
+    // Look up addresses for shown events with no pin / an outdated pin, then redraw once
+    resolvePins(visible).then(function(changed) { if (changed) refreshMap(); });
+    visible.forEach(function(ev) {
+      var c = pinFor(ev);
+      if (!c) return;
+      var key = c[0].toFixed(4) + ',' + c[1].toFixed(4);
+      if (!groups[key]) { groups[key] = { c: c, evs: [] }; order.push(key); }
+      groups[key].evs.push(ev);
     });
 
+    var coords = [];
+    order.forEach(function(key) {
+      var g = groups[key];
+      // Soonest upcoming first, then past (most recent first)
+      g.evs.sort(function(a, b) {
+        var pa = isPast(a), pb = isPast(b);
+        if (pa !== pb) return pa ? 1 : -1;
+        return pa ? toDate(b.start) - toDate(a.start) : toDate(a.start) - toDate(b.start);
+      });
+      var lead = g.evs[0];
+      var allPast = g.evs.every(isPast);
+
+      var wrap = document.createElement('div');
+      if (lead.location) {
+        var v = document.createElement('div');
+        v.className = 'map-pop-venue';
+        v.textContent = lead.location;
+        wrap.appendChild(v);
+      }
+      g.evs.forEach(function(ev) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'map-pop-item';
+        b.innerHTML =
+          '<span class="map-pop-dot" style="background:' + escapeHtml(ev.color || '#2563eb') + '"></span>' +
+          '<span class="map-pop-text"><span class="map-pop-title">' + escapeHtml(ev.title || 'Event') + '</span>' +
+          '<span class="map-pop-date">' + escapeHtml(fmtDateRange(ev)) + (isPast(ev) ? ' · past' : '') + '</span></span>' +
+          '<i class="fas fa-chevron-right" aria-hidden="true"></i>';
+        b.addEventListener('click', function() { leafletMap.closePopup(); openDetailOverlay(ev); });
+        wrap.appendChild(b);
+      });
+
+      var marker = L.marker(g.c, {
+        icon: pinIcon(lead.color || '#2563eb', g.evs.length, allPast),
+        title: lead.location || lead.title || 'Event',
+        riseOnHover: true
+      }).addTo(leafletMap).bindPopup(wrap, { maxWidth: 260, autoPanPaddingTopLeft: [54, 16], autoPanPaddingBottomRight: [16, 16] });
+      marker._jbIds = g.evs.map(function(e) { return e.id; });
+      markers.push(marker);
+      coords.push(g.c);
+    });
+
+    document.getElementById('mapEmptyNote').hidden = coords.length > 0;
     if (coords.length === 0) {
-      leafletMap.setView([39.5, -76.6], 8);
+      leafletMap.setView([39.4, -76.5], 9);
     } else if (coords.length === 1) {
-      leafletMap.setView(coords[0], 12);
+      leafletMap.setView(coords[0], 11);
     } else {
-      leafletMap.fitBounds(coords, { padding: [30, 30] });
+      leafletMap.fitBounds(coords, { padding: [36, 36], maxZoom: 12 });
     }
   }
 
+  // From the list: centre the map on an event's pin and open its popup
+  function focusOnMap(ev) {
+    var m = markers.filter(function(mk) { return mk._jbIds.indexOf(ev.id) !== -1; })[0];
+    if (!m) return false;
+    leafletMap.setView(m.getLatLng(), Math.max(leafletMap.getZoom(), 12));
+    m.openPopup();
+    return true;
+  }
+
   /* ── UPCOMING EVENTS ── */
+  var UPCOMING_PAGE = 6;
+  var upcomingLimit = UPCOMING_PAGE;
+
+  function eventCard(ev) {
+    var s = toDate(ev.start);
+    var multi = ev.end && !sameDay(ev.start, ev.end);
+    var month = s.toLocaleDateString('en-US', { month:'short' }).toUpperCase();
+    var dayTxt = multi && toDate(ev.end).getMonth() === s.getMonth()
+      ? s.getDate() + '–' + toDate(ev.end).getDate()
+      : '' + s.getDate();
+    var color = ev.color || '#2563eb';
+    var tags  = getTags(ev);
+    var when  = ev.all_day
+      ? (multi ? fmtDateRange(ev) : 'All day')
+      : (multi ? fmtDateRange(ev) : fmtTime(ev.start) + (ev.end ? ' – ' + fmtTime(ev.end) : ''));
+
+    var card = document.createElement('div');
+    card.className = 'event-card' + (isPast(ev) ? ' is-past' : '');
+    card.tabIndex = 0;
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', (ev.title || 'Event') + ', ' + fmtDateRange(ev));
+    card.innerHTML =
+      '<div class="event-date-block' + (dayTxt.length > 2 ? ' multi' : '') + '">' +
+        '<div class="event-date-month">' + month + '</div>' +
+        '<div class="event-date-day">'   + dayTxt + '</div>' +
+      '</div>' +
+      '<div class="event-info">' +
+        '<div class="event-title">' + escapeHtml(ev.title || 'Untitled') + '</div>' +
+        '<div class="event-meta">' +
+          (ev.location ? '<span><i class="fas fa-map-marker-alt" aria-hidden="true"></i> ' + escapeHtml(ev.location) + '</span>' : '') +
+          '<span><i class="fas ' + (ev.all_day ? 'fa-calendar-day' : 'fa-clock') + '" aria-hidden="true"></i> ' + escapeHtml(when) + '</span>' +
+        '</div>' +
+        (tags.length ? '<div class="event-tags">' + tags.map(function(t) {
+          return '<span class="event-tag-chip" style="background:' + tagColor(t) + '">' + escapeHtml(t) + '</span>';
+        }).join('') + '</div>' : '') +
+      '</div>' +
+      '<div class="event-color-dot" style="background:' + escapeHtml(color) + ';"></div>';
+
+    card.addEventListener('click', function() { openDetailOverlay(ev); });
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetailOverlay(ev); }
+    });
+    return card;
+  }
+
   function renderUpcoming() {
     var grid = document.getElementById('upcomingGrid');
-    var events = getFilteredEvents(showPastPublic).slice(0, 20);
+    var list = getFilteredEvents(showPastPublic);
+    var upcoming = list.filter(function(ev) { return !isPast(ev); });
+    var past = list.filter(isPast).sort(function(a, b) { return toDate(b.start) - toDate(a.start); });
 
-    if (!events.length) {
-      grid.innerHTML = '<div class="events-empty">No events to show.</div>';
+    grid.innerHTML = '';
+    if (!upcoming.length && !past.length) {
+      grid.innerHTML = '<div class="events-empty">' +
+        (activeTagFilter !== 'all' ? 'No events with this tag.' : 'No upcoming events right now — check back soon!') + '</div>';
       return;
     }
 
-    grid.innerHTML = '';
-    events.forEach(function(ev) {
-      var d     = toDate(ev.start);
-      var month = d.toLocaleDateString('en-US', { month:'short' }).toUpperCase();
-      var day   = d.getDate();
-      var color = ev.color || '#2563eb';
-      var tags  = getTags(ev);
+    if (!upcoming.length) {
+      grid.insertAdjacentHTML('beforeend', '<div class="events-empty">No upcoming events right now — check back soon!</div>');
+    }
+    upcoming.slice(0, upcomingLimit).forEach(function(ev) { grid.appendChild(eventCard(ev)); });
+    if (upcoming.length > upcomingLimit) {
+      var more = document.createElement('button');
+      more.type = 'button';
+      more.className = 'list-more-btn';
+      more.textContent = 'Show ' + Math.min(UPCOMING_PAGE, upcoming.length - upcomingLimit) + ' more';
+      more.addEventListener('click', function() { upcomingLimit += UPCOMING_PAGE; renderUpcoming(); });
+      grid.appendChild(more);
+    }
 
-      var card = document.createElement('div');
-      card.className = 'event-card';
-      card.innerHTML =
-        '<div class="event-date-block">' +
-          '<div class="event-date-month">' + month + '</div>' +
-          '<div class="event-date-day">'   + day   + '</div>' +
-        '</div>' +
-        '<div class="event-info">' +
-          '<div class="event-title">' + escapeHtml(ev.title || 'Untitled') + '</div>' +
-          '<div class="event-meta">' +
-            (ev.location ? '<span><i class="fas fa-map-marker-alt" aria-hidden="true"></i> ' + escapeHtml(ev.location) + '</span>' : '') +
-            (ev.all_day ? '<span><i class="fas fa-calendar-day"></i> All day</span>' : '<span><i class="fas fa-clock"></i> ' + fmtTime(ev.start) + '</span>') +
-          '</div>' +
-          (tags.length ? '<div class="event-tags">' + tags.map(function(t) {
-            return '<span class="event-tag-chip" style="background:' + tagColor(t) + '">' + escapeHtml(t) + '</span>';
-          }).join('') + '</div>' : '') +
-        '</div>' +
-        '<div class="event-color-dot" style="background:' + color + ';"></div>';
+    if (showPastPublic && past.length) {
+      grid.insertAdjacentHTML('beforeend', '<div class="list-heading">Past events</div>');
+      past.slice(0, 20).forEach(function(ev) { grid.appendChild(eventCard(ev)); });
+    }
+  }
 
-      card.addEventListener('click', function() { openDetailOverlay(ev); });
-      grid.appendChild(card);
-    });
+  // After an admin add/edit/delete: redraw everything and re-check pins
+  function refreshAll() {
+    resolvedCoords = {};
+    refreshCalendar(); refreshMap(); renderUpcoming();
   }
 
   /* ── ICS GENERATION ── */
@@ -1478,44 +1862,67 @@
     }).join('');
 
     var meta = document.getElementById('detailMeta');
+    var timeRow = '';
+    if (ev.all_day) {
+      timeRow = '<div class="event-detail-row"><i class="fas fa-calendar-day" aria-hidden="true"></i><span>All day</span></div>';
+    } else {
+      var multi = ev.end && !sameDay(ev.start, ev.end);
+      timeRow = '<div class="event-detail-row"><i class="fas fa-clock" aria-hidden="true"></i><span>' +
+        (multi ? fmtDate(ev.start) + ', ' + fmtTime(ev.start) + ' – ' + fmtDate(ev.end) + ', ' + fmtTime(ev.end)
+               : fmtTime(ev.start) + (ev.end ? ' – ' + fmtTime(ev.end) : '')) +
+        '</span></div>';
+    }
     meta.innerHTML =
-      '<div class="event-detail-row"><i class="fas fa-calendar"></i><span>' + fmtDate(ev.start) +
-        (ev.end ? ' – ' + fmtDate(ev.end) : '') + '</span></div>' +
-      (!ev.all_day ? '<div class="event-detail-row"><i class="fas fa-clock"></i><span>' + fmtTime(ev.start) +
-        (ev.end ? ' – ' + fmtTime(ev.end) : '') + '</span></div>' : '<div class="event-detail-row"><i class="fas fa-calendar-day"></i><span>All day</span></div>') +
-      (ev.location ? '<div class="event-detail-row"><i class="fas fa-map-marker-alt"></i><span>' + escapeHtml(ev.location) + '</span></div>' : '');
+      '<div class="event-detail-row"><i class="fas fa-calendar" aria-hidden="true"></i><span>' + escapeHtml(fmtDateRange(ev)) +
+        (isPast(ev) ? ' <em>(past)</em>' : '') + '</span></div>' +
+      timeRow +
+      (ev.location ? '<div class="event-detail-row"><i class="fas fa-map-marker-alt" aria-hidden="true"></i><span>' + escapeHtml(ev.location) + '</span></div>' : '');
 
     var desc = document.getElementById('detailDesc');
     if (ev.description) { desc.textContent = ev.description; desc.style.display = ''; }
     else                { desc.style.display = 'none'; }
 
+    var pin = pinFor(ev);
     var dirBtn = document.getElementById('detailDirections');
-    if (ev.location) {
+    if (ev.location || pin) {
       dirBtn.style.display = '';
       dirBtn.onclick = function() {
-        window.open('https://maps.google.com/?q=' + encodeURIComponent(ev.location), '_blank');
+        var q = ev.location ? ev.location : pin[0] + ',' + pin[1];
+        window.open('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q), '_blank', 'noopener');
       };
     } else { dirBtn.style.display = 'none'; }
 
+    var mapBtn = document.getElementById('detailOnMap');
+    var onMap = pin && markers.some(function(m) { return m._jbIds.indexOf(ev.id) !== -1; });
+    mapBtn.style.display = onMap ? '' : 'none';
+    mapBtn.onclick = function() {
+      closeDetail();
+      document.querySelector('.map-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(function() { focusOnMap(ev); }, 350);
+    };
+
+    lastFocusEl = document.activeElement;
     detailOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+    setTimeout(function() { document.getElementById('detailClose').focus({ preventScroll: true }); }, 60);
   }
 
   document.getElementById('detailDownloadIcs').addEventListener('click', function() {
     if (currentDetailEvent) downloadIcsForEvent(currentDetailEvent);
   });
-  document.getElementById('detailClose').addEventListener('click', function() {
+  var lastFocusEl = null;
+  function closeDetail() {
     detailOverlay.classList.remove('open');
     document.body.style.overflow = '';
-  });
-  detailOverlay.addEventListener('click', function(e) {
-    if (e.target === detailOverlay) { detailOverlay.classList.remove('open'); document.body.style.overflow = ''; }
-  });
+    if (lastFocusEl && lastFocusEl.focus) { try { lastFocusEl.focus({ preventScroll: true }); } catch (e) {} }
+  }
+  document.getElementById('detailClose').addEventListener('click', closeDetail);
+  detailOverlay.addEventListener('click', function(e) { if (e.target === detailOverlay) closeDetail(); });
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      [detailOverlay, document.getElementById('adminLoginOverlay'), document.getElementById('editOverlay')]
-        .forEach(function(o) { if (o.classList.contains('open')) { o.classList.remove('open'); document.body.style.overflow = ''; } });
-    }
+    if (e.key !== 'Escape') return;
+    if (editOverlay.classList.contains('open')) { closeEditOverlay(); return; }
+    if (loginOverlay.classList.contains('open')) { closeLogin(); return; }
+    if (detailOverlay.classList.contains('open')) closeDetail();
   });
 
   /* ── ADMIN LOGIN ── */
@@ -1661,40 +2068,60 @@
     });
   });
 
-  /* ── GEOCODING (Nominatim) ── */
-  function geocodeAddress(address, statusWrapId, statusTextId, onSuccess) {
+  /* ── GEOCODING (admin forms) ── */
+  // Uses the same Maryland-leaning lookup as the public map, picks the best match,
+  // and lists other matches so a wrong guess can be fixed with one tap.
+  function geocodeAddress(address, statusWrapId, statusTextId, choicesId, onPick) {
+    var choices = document.getElementById(choicesId);
+    choices.innerHTML = '';
     if (!address.trim()) {
       showStatus(statusWrapId, statusTextId, 'error', 'Please enter a location first.');
-      return;
+      return Promise.resolve(false);
     }
     showStatus(statusWrapId, statusTextId, 'info', 'Searching…');
-    fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(address), {
-      headers: { 'Accept-Language': 'en' }
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(results) {
-      if (!results.length) { showStatus(statusWrapId, statusTextId, 'error', 'No location found for that address.'); return; }
-      var lat = parseFloat(results[0].lat), lon = parseFloat(results[0].lon);
-      onSuccess(lat, lon, results[0].display_name);
-      showStatus(statusWrapId, statusTextId, 'success', 'Found: ' + results[0].display_name);
-    })
-    .catch(function() { showStatus(statusWrapId, statusTextId, 'error', 'Geocoding failed. Try again.'); });
+    return geocodeSmart(address, 5).then(function(results) {
+      if (!results.length) {
+        showStatus(statusWrapId, statusTextId, 'error', 'No match for that address — try adding the town and state, or click the map to drop a pin.');
+        return false;
+      }
+      onPick(results[0].lat, results[0].lng);
+      showStatus(statusWrapId, statusTextId, 'success',
+        (results[0].partial ? 'Closest match (venue name not found): ' : 'Found: ') + results[0].name);
+      if (results.length > 1) {
+        choices.innerHTML = '<div class="form-hint">Wrong spot? Pick another match:</div>';
+        results.slice(1).forEach(function(r) {
+          var b = document.createElement('button');
+          b.type = 'button'; b.className = 'tag-suggestion geo-choice';
+          b.textContent = r.name;
+          b.addEventListener('click', function() {
+            onPick(r.lat, r.lng);
+            choices.innerHTML = '';
+            showStatus(statusWrapId, statusTextId, 'success', 'Using: ' + r.name);
+          });
+          choices.appendChild(b);
+        });
+      }
+      return true;
+    }).catch(function() {
+      showStatus(statusWrapId, statusTextId, 'error', 'Lookup failed. Try again, or click the map to drop a pin.');
+      return false;
+    });
+  }
+  function setAddCoords(lat, lng) {
+    document.getElementById('evLat').value = lat.toFixed(6);
+    document.getElementById('evLng').value = lng.toFixed(6);
+    if (addMiniMap) setAddMarker(lat, lng);
+  }
+  function setEditCoords(lat, lng) {
+    document.getElementById('editLat').value = lat.toFixed(6);
+    document.getElementById('editLng').value = lng.toFixed(6);
+    if (editMiniMap) setEditMarker(lat, lng);
   }
   document.getElementById('addGeocodeBtn').addEventListener('click', function() {
-    var addr = document.getElementById('evLocation').value;
-    geocodeAddress(addr, 'addGeocodeStatus','addGeocodeStatusText', function(lat,lng) {
-      document.getElementById('evLat').value = lat.toFixed(6);
-      document.getElementById('evLng').value = lng.toFixed(6);
-      if (addMiniMap) setAddMarker(lat,lng);
-    });
+    geocodeAddress(document.getElementById('evLocation').value, 'addGeocodeStatus', 'addGeocodeStatusText', 'addGeoChoices', setAddCoords);
   });
   document.getElementById('editGeocodeBtn').addEventListener('click', function() {
-    var addr = document.getElementById('editLocation').value;
-    geocodeAddress(addr, 'editGeocodeStatus','editGeocodeStatusText', function(lat,lng) {
-      document.getElementById('editLat').value = lat.toFixed(6);
-      document.getElementById('editLng').value = lng.toFixed(6);
-      if (editMiniMap) setEditMarker(lat,lng);
-    });
+    geocodeAddress(document.getElementById('editLocation').value, 'editGeocodeStatus', 'editGeocodeStatusText', 'editGeoChoices', setEditCoords);
   });
 
   /* ── ALL-DAY TOGGLE ── */
@@ -1849,6 +2276,7 @@
     document.getElementById('addPreviewImg').classList.remove('visible');
     document.getElementById('addFileInput').value = '';
     document.getElementById('duplicateNotice').className = 'status-msg info';
+    document.getElementById('addGeoChoices').innerHTML = '';
     if (addMiniMarker) { addMiniMap.removeLayer(addMiniMarker); addMiniMarker = null; }
   }
 
@@ -1860,8 +2288,19 @@
     if (!title) { showStatus('addStatus','addStatusText','error','Title is required.'); return; }
     if (!start) { showStatus('addStatus','addStatusText','error','Start date is required.'); return; }
     if (!authToken) { showStatus('addStatus','addStatusText','error','Not authenticated.'); return; }
+    var endCheck = document.getElementById('evEnd').value;
+    if (endCheck && endCheck < start) { showStatus('addStatus','addStatusText','error','The end is before the start.'); return; }
 
     var btn = this;
+    // Address but no pin yet: look it up first so the event shows on the map
+    var locCheck = document.getElementById('evLocation').value.trim();
+    if (locCheck && !document.getElementById('evLat').value && !document.getElementById('evLng').value && !btn._geoTried) {
+      btn._geoTried = true;
+      geocodeAddress(locCheck, 'addGeocodeStatus', 'addGeocodeStatusText', 'addGeoChoices', setAddCoords)
+        .then(function() { btn.click(); });
+      return;
+    }
+    btn._geoTried = false;
     btn.disabled = true;
     document.getElementById('addBtnText').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
 
@@ -1896,7 +2335,7 @@
       resetAddForm();
       return fetchEvents();
     })
-    .then(function() { refreshCalendar(); refreshMap(); renderUpcoming(); })
+    .then(refreshAll)
     .catch(function(err) { showStatus('addStatus','addStatusText','error', err.message); })
     .finally(function() {
       btn.disabled = false;
@@ -1924,12 +2363,12 @@
   function loadManageList() {
     var list = document.getElementById('manageList');
     list.innerHTML = '<div class="manage-empty">Loading…</div>';
-    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=start&perPage=200', {
+    fetch(PB_URL + '/api/collections/' + COLLECTION + '/records?sort=-start&perPage=200', {
       headers: { 'Authorization': authToken }
     })
     .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
     .then(function(data) {
-      var items = data.items || [];
+      var items = (data.items || []).sort(function(a, b) { return toDate(a.start) - toDate(b.start); });
       var now = new Date();
       if (!showPastAdmin) {
         items = items.filter(function(ev) {
@@ -1958,7 +2397,8 @@
           '<div class="manage-item-meta">' + fmtDate(ev.start) +
           (ev.location ? ' · ' + escapeHtml(ev.location) : '') +
           (tags.length ? ' · ' + escapeHtml(tags.join(', ')) : '') +
-          ' · ' + (ev.visible !== false ? 'Visible' : 'Hidden') + '</div>';
+          ' · ' + (ev.visible !== false ? 'Visible' : 'Hidden') +
+          (ev.location && !cleanCoords(ev.lat, ev.lng) ? ' · <span style="color:#d97706">No map pin</span>' : '') + '</div>';
 
         var actions = document.createElement('div');
         actions.className = 'manage-item-actions';
@@ -2060,7 +2500,7 @@
         ' · ' + (ev.visible !== false ? 'Visible' : 'Hidden');
       return fetchEvents();
     })
-    .then(function() { refreshCalendar(); refreshMap(); renderUpcoming(); })
+    .then(refreshAll)
     .catch(function() { alert('Failed to update.'); });
   }
 
@@ -2090,6 +2530,8 @@
     document.getElementById('editFileInput').value        = '';
     document.getElementById('editStatus').className       = 'status-msg';
     document.getElementById('editGeocodeStatus').className = 'status-msg';
+    document.getElementById('editGeoChoices').innerHTML = '';
+    document.getElementById('editSaveBtn')._geoTried = false;
 
     editTags = getTags(ev).slice();
     refreshTagUI('editTagChips','editTagSuggestions', editTags);
@@ -2126,13 +2568,26 @@
       loadManageList();
       return fetchEvents();
     })
-    .then(function() { refreshCalendar(); refreshMap(); renderUpcoming(); })
+    .then(refreshAll)
     .catch(function() { alert('Failed to delete.'); });
   });
 
   document.getElementById('editSaveBtn').addEventListener('click', function() {
     if (!editRecord) return;
     var btn = this;
+    var sv = document.getElementById('editStart').value, evv = document.getElementById('editEnd').value;
+    if (sv && evv && evv < sv) { showStatus('editStatus','editStatusText','error','The end is before the start.'); return; }
+    // Location changed but the pin didn't move: look up the new address so the map pin follows it
+    var newLoc = document.getElementById('editLocation').value.trim();
+    var pinUnchanged = String(parseFloat(document.getElementById('editLat').value) || 0) === String(parseFloat(editRecord.lat) || 0) &&
+                       String(parseFloat(document.getElementById('editLng').value) || 0) === String(parseFloat(editRecord.lng) || 0);
+    if (newLoc && newLoc !== (editRecord.location || '').trim() && pinUnchanged && !btn._geoTried) {
+      btn._geoTried = true;
+      geocodeAddress(newLoc, 'editGeocodeStatus', 'editGeocodeStatusText', 'editGeoChoices', setEditCoords)
+        .then(function() { btn.click(); });
+      return;
+    }
+    btn._geoTried = false;
     btn.disabled = true;
     document.getElementById('editSaveBtnText').textContent = 'Saving…';
 
@@ -2165,7 +2620,7 @@
       loadManageList();
       return fetchEvents();
     })
-    .then(function() { refreshCalendar(); refreshMap(); renderUpcoming(); })
+    .then(refreshAll)
     .catch(function(err) { showStatus('editStatus','editStatusText','error', err.message); })
     .finally(function() { btn.disabled=false; document.getElementById('editSaveBtnText').textContent='Save'; });
   });
@@ -2182,15 +2637,16 @@
   });
 
   /* ── INIT ── */
+  // Calendar + map still draw if PocketBase is unreachable, so the page isn't left blank
+  function safe(fn) { try { fn(); } catch (e) { if (window.console) console.error(e); } }
   fetchEvents()
     .then(function() {
-      initCalendar();
-      initMap();
-      renderUpcoming();
+      safe(initCalendar); safe(initMap); safe(renderUpcoming);
     })
     .catch(function() {
+      safe(initCalendar); safe(initMap);
       document.getElementById('upcomingGrid').innerHTML =
-        '<div class="events-empty">Could not load events. Please try again later.</div>';
+        '<div class="events-empty">Could not load events right now. Please refresh, or check the <a href="https://www.facebook.com/61579251184929/" target="_blank" rel="noopener" style="color:var(--accent)">Facebook page</a>.</div>';
     });
 
 })();

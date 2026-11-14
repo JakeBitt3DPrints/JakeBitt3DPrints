@@ -272,6 +272,23 @@
       transition: border-color 0.3s ease;
     }
 
+    /* In the meantime: where to buy now */
+    .shop-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
+    .btn-solid, .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px;
+      font: 600 0.9rem var(--font-body); text-decoration: none; border: 1px solid transparent;
+      transition: opacity 0.18s ease, background-color 0.18s ease, transform 0.12s ease;
+    }
+    .btn-solid { background: var(--nav-active-bg); color: var(--nav-active-text); }
+    .btn-solid:hover { opacity: 0.86; }
+    .btn-outline { color: var(--text); border-color: var(--border); }
+    .btn-outline:hover { background-color: rgba(148,163,184,0.14); }
+    .btn-solid:active, .btn-outline:active { transform: scale(0.96); }
+    @media (max-width: 400px) {
+      .shop-actions { flex-direction: column; align-self: stretch; }
+      .btn-solid, .btn-outline { justify-content: center; }
+    }
+
     /* ── FOOTER ── */
     footer {
       width: 100%;
@@ -389,6 +406,10 @@
           The online shop is being set up. Check back soon for unique 3D printed designs and custom order options.
         </p>
         <div class="coming-pill">Coming soon – stay tuned.</div>
+        <div class="shop-actions">
+          <a href="/calendar" class="btn-solid"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> Find me at an event</a>
+          <a href="/contact" class="btn-outline"><i class="fa-solid fa-pen-ruler" aria-hidden="true"></i> Request a custom order</a>
+        </div>
       </section>
     </main>
 
@@ -465,7 +486,7 @@
       if ('CSSViewTransitionRule' in window) return;
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-      document.querySelectorAll('nav a, .brand-left').forEach(function(link) {
+      document.querySelectorAll('nav a, .brand-left, .shop-actions a').forEach(function(link) {
         link.addEventListener('click', function(e) {
           // Let Cmd/Ctrl/Shift/middle-click open new tabs/windows as normal
           if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
