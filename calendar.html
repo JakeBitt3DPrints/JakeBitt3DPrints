@@ -437,9 +437,50 @@
     .event-detail-tags { display: flex; gap: 6px; flex-wrap: wrap; }
     .event-detail-tags:empty { display: none; }
 
+    /* ── SUBSCRIBE POPUP ── */
+    #subscribeOverlay .overlay-box { max-width: 440px; }
+    .sub-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .sub-x {
+      width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--border);
+      background: var(--bg); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .sub-x:hover { color: var(--text); }
+    .sub-note {
+      display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; padding: 9px 11px; border-radius: 10px;
+      font-size: 0.78rem; line-height: 1.45; color: var(--muted); background: var(--bg); border: 1px solid var(--border);
+    }
+    .sub-note i { margin-top: 2px; color: var(--accent); }
+    .sub-note[hidden] { display: none; }
+    .sub-options { display: flex; flex-direction: column; gap: 8px; }
+    .sub-opt {
+      display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 13px; border-radius: 14px;
+      border: 1px solid var(--border); background: var(--bg); color: var(--text); text-decoration: none;
+      font: 600 0.95rem var(--font-body); text-align: left; cursor: pointer;
+      transition: border-color 0.15s ease, transform 0.12s ease, background-color 0.3s ease;
+    }
+    .sub-opt:hover { border-color: var(--accent); }
+    .sub-opt:active { transform: scale(0.98); }
+    .sub-ico {
+      width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; background: var(--bg-alt); border: 1px solid var(--border);
+    }
+    .sub-txt { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+    .sub-txt small { font-weight: 400; font-size: 0.76rem; color: var(--muted); }
+    .sub-chev { color: var(--muted); font-size: 0.75rem; }
+    .sub-opt.best { background: var(--nav-active-bg); color: var(--nav-active-text); border-color: var(--nav-active-bg); }
+    .sub-opt.best .sub-txt small, .sub-opt.best .sub-chev { color: inherit; opacity: 0.75; }
+    .sub-opt.best .sub-ico { background: rgba(127,127,127,0.2); border-color: transparent; color: inherit !important; }
+
     /* Phones: event details slide up from the bottom like a native sheet */
     @media (max-width: 600px) {
-      #detailOverlay { align-items: flex-end; padding: 0; }
+      #detailOverlay, #subscribeOverlay { align-items: flex-end; padding: 0; }
+      #subscribeOverlay .overlay-box {
+        max-width: none; border-radius: 22px 22px 0 0; border-bottom: none;
+        max-height: 90dvh; transform: translateY(40px); opacity: 1;
+        transition: transform 0.32s cubic-bezier(0.4,0,0.2,1), background-color 0.3s ease;
+      }
+      #subscribeOverlay.open .overlay-box { transform: translateY(0); }
+      #subscribeOverlay .overlay-inner { padding: 22px 20px calc(20px + var(--safe-b)); }
       #detailOverlay .overlay-box {
         max-width: none; border-radius: 22px 22px 0 0; border-bottom: none;
         max-height: 88dvh; transform: translateY(40px); opacity: 1;
@@ -746,10 +787,10 @@
 
     <!-- Subscribe -->
     <div class="subscribe-row">
-      <a href="https://event.jakebitt3dprints.com/calendarsubscription" target="_blank" rel="noopener" class="subscribe-btn">
+      <button type="button" class="subscribe-btn" id="subscribeBtn" aria-haspopup="dialog">
         <i class="fas fa-calendar-plus" aria-hidden="true"></i> Subscribe to Calendar
-      </a>
-      <span class="subscribe-hint">Get notified of new events automatically</span>
+      </button>
+      <span class="subscribe-hint">New events show up in your calendar automatically</span>
     </div>
 
     <!-- Filter/Settings toggle -->
@@ -992,9 +1033,64 @@
         <button class="btn-ghost-sm" id="detailDownloadIcs">
           <i class="fas fa-calendar-plus" aria-hidden="true"></i> Add to Calendar
         </button>
-        <a class="btn-ghost-sm" href="https://event.jakebitt3dprints.com/calendarsubscription" target="_blank" rel="noopener" style="text-decoration:none;">
+        <button type="button" class="btn-ghost-sm" id="detailSubscribe">
           <i class="fas fa-bell" aria-hidden="true"></i> Subscribe to All
-        </a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUBSCRIBE POPUP -->
+<div class="overlay" id="subscribeOverlay" role="dialog" aria-modal="true" aria-labelledby="subTitle">
+  <div class="overlay-box">
+    <div class="overlay-inner">
+      <div class="sub-head">
+        <div>
+          <div class="overlay-title" id="subTitle">Add my events to your calendar</div>
+          <div class="overlay-sub" style="margin-top:4px;">New events and changes show up on their own.</div>
+        </div>
+        <button type="button" class="sub-x" id="subClose" aria-label="Close"><i class="fas fa-xmark" aria-hidden="true"></i></button>
+      </div>
+
+      <div>
+        <div class="filter-section-label">Remind me</div>
+        <div class="filter-pills" id="subRemind" role="radiogroup" aria-label="Reminders">
+          <button type="button" class="filter-pill active" data-remind="none" role="radio" aria-checked="true">No reminders</button>
+          <button type="button" class="filter-pill" data-remind="1d" role="radio" aria-checked="false">Day before</button>
+          <button type="button" class="filter-pill" data-remind="morning" role="radio" aria-checked="false">Morning of</button>
+          <button type="button" class="filter-pill" data-remind="2h" role="radio" aria-checked="false">2 hours before</button>
+        </div>
+        <div class="sub-note" id="subRemindNote" hidden>
+          <i class="fas fa-circle-info" aria-hidden="true"></i>
+          <span>On iPhone, switch off <b>Remove Alerts</b> on the next screen so the reminders stay. Google and Outlook use their own reminder settings instead.</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="filter-section-label">Your calendar</div>
+        <div class="sub-options" id="subOptions">
+          <a class="sub-opt" data-platform="apple" id="subApple" href="#">
+            <span class="sub-ico"><i class="fab fa-apple" aria-hidden="true"></i></span>
+            <span class="sub-txt">Apple Calendar<small>iPhone, iPad &amp; Mac</small></span>
+            <i class="fas fa-chevron-right sub-chev" aria-hidden="true"></i>
+          </a>
+          <a class="sub-opt" data-platform="google" id="subGoogle" href="#" target="_blank" rel="noopener">
+            <span class="sub-ico" style="color:#4285f4"><i class="fab fa-google" aria-hidden="true"></i></span>
+            <span class="sub-txt">Google Calendar<small>Android &amp; Gmail · updates every few hours</small></span>
+            <i class="fas fa-chevron-right sub-chev" aria-hidden="true"></i>
+          </a>
+          <a class="sub-opt" data-platform="outlook" id="subOutlook" href="#" target="_blank" rel="noopener">
+            <span class="sub-ico" style="color:#0078d4"><i class="fab fa-microsoft" aria-hidden="true"></i></span>
+            <span class="sub-txt">Outlook<small>Outlook.com &amp; Hotmail</small></span>
+            <i class="fas fa-chevron-right sub-chev" aria-hidden="true"></i>
+          </a>
+          <button type="button" class="sub-opt" data-platform="other" id="subCopy">
+            <span class="sub-ico"><i class="fas fa-link" aria-hidden="true"></i></span>
+            <span class="sub-txt"><span id="subCopyLabel">Copy link</span><small>For any other calendar app</small></span>
+            <i class="far fa-copy sub-chev" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -1922,8 +2018,94 @@
     if (e.key !== 'Escape') return;
     if (editOverlay.classList.contains('open')) { closeEditOverlay(); return; }
     if (loginOverlay.classList.contains('open')) { closeLogin(); return; }
+    if (subOverlay.classList.contains('open')) { closeSubscribe(); return; }
     if (detailOverlay.classList.contains('open')) closeDetail();
   });
+
+  /* ── SUBSCRIBE POPUP ── */
+  // The live calendar feed served by the event-feed app on the NAS
+  var CAL_FEED_URL = 'https://evntcal.jakebitt3dprints.com/calendar.ics';
+  var CAL_NAME     = 'JakeBitt3DPrints Events';
+  var subOverlay   = document.getElementById('subscribeOverlay');
+  var subRemind    = 'none';
+  var subLastFocus = null;
+
+  function feedUrl() { return CAL_FEED_URL + (subRemind !== 'none' ? '?remind=' + subRemind : ''); }
+  function updateSubLinks() {
+    var https  = feedUrl();
+    var webcal = https.replace(/^https?:/, 'webcal:');
+    document.getElementById('subApple').href   = webcal;
+    document.getElementById('subGoogle').href  = 'https://calendar.google.com/calendar/render?cid=' + encodeURIComponent(webcal);
+    document.getElementById('subOutlook').href = 'https://outlook.live.com/calendar/0/addfromweb?url=' + encodeURIComponent(https) + '&name=' + encodeURIComponent(CAL_NAME);
+    document.getElementById('subRemindNote').hidden = subRemind === 'none';
+  }
+  // Put this device's calendar first and highlight it
+  (function() {
+    var ua = navigator.userAgent;
+    var best = /iPhone|iPad|iPod|Macintosh/.test(ua) ? 'apple' : /Android/.test(ua) ? 'google' : /Windows/.test(ua) ? 'outlook' : 'apple';
+    var el = document.querySelector('#subOptions [data-platform="' + best + '"]');
+    el.classList.add('best');
+    el.parentNode.insertBefore(el, el.parentNode.firstChild);
+  })();
+
+  function openSubscribe() {
+    subLastFocus = document.activeElement;
+    updateSubLinks();
+    subOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function() { var b = subOverlay.querySelector('.sub-opt.best'); if (b) b.focus({ preventScroll: true }); }, 60);
+    if (typeof gtag === 'function') gtag('event', 'calendar_subscribe_open');
+  }
+  function closeSubscribe() {
+    subOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+    if (subLastFocus && subLastFocus.focus) { try { subLastFocus.focus({ preventScroll: true }); } catch (e) {} }
+  }
+  document.getElementById('subscribeBtn').addEventListener('click', openSubscribe);
+  document.getElementById('detailSubscribe').addEventListener('click', function() {
+    detailOverlay.classList.remove('open');
+    openSubscribe();
+  });
+  document.getElementById('subClose').addEventListener('click', closeSubscribe);
+  subOverlay.addEventListener('click', function(e) { if (e.target === subOverlay) closeSubscribe(); });
+
+  document.getElementById('subRemind').addEventListener('click', function(e) {
+    var pill = e.target.closest('.filter-pill');
+    if (!pill) return;
+    this.querySelectorAll('.filter-pill').forEach(function(p) {
+      var on = p === pill;
+      p.classList.toggle('active', on);
+      p.setAttribute('aria-checked', String(on));
+    });
+    subRemind = pill.getAttribute('data-remind');
+    updateSubLinks();
+  });
+
+  document.getElementById('subOptions').addEventListener('click', function(e) {
+    var opt = e.target.closest('.sub-opt');
+    if (!opt) return;
+    if (typeof gtag === 'function') gtag('event', 'calendar_subscribe', { calendar: opt.getAttribute('data-platform'), reminder: subRemind });
+  });
+  document.getElementById('subCopy').addEventListener('click', function() {
+    var label = document.getElementById('subCopyLabel');
+    var url = feedUrl();
+    var done = function() { label.textContent = 'Link copied!'; setTimeout(function() { label.textContent = 'Copy link'; }, 2000); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done, function() { window.prompt('Copy this calendar link:', url); });
+    } else {
+      window.prompt('Copy this calendar link:', url);
+    }
+  });
+
+  // Links like jakebitt3dprints.com/calendar?subscribe=1 open the popup straight away
+  try {
+    var sp = new URLSearchParams(location.search);
+    if (sp.get('subscribe') === '1') {
+      openSubscribe();
+      sp.delete('subscribe');
+      history.replaceState({}, '', location.pathname + (sp.toString() ? '?' + sp.toString() : '') + location.hash);
+    }
+  } catch (e) {}
 
   /* ── ADMIN LOGIN ── */
   var loginOverlay = document.getElementById('adminLoginOverlay');
